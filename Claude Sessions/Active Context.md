@@ -21,21 +21,10 @@ If a session disconnects, START HERE.
 - **Goal:** Set up Obsidian-based session tracking (COMPLETE)
 
 ## Last Checkpoint
-- **Time:** 2026-04-09 (auto-save #3)
-- **Status:** No changes since last checkpoint. Session is idle — Obsidian setup is complete, waiting for user to give next task.
-- **Next action:** User needs to say what to work on next
+- **Time:** 2026-04-09 (auto-save #4)
+- **Status:** No changes since checkpoint #2. Session idle. Obsidian setup complete.
+- **Next action:** Waiting for user to give next task
 
 ## Quick Recovery Instructions
 1. Open: `Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md`
-2. Start a new Claude session — CLAUDE.md auto-loads Obsidian context and prints [obsidian] logs
-
-## Structure
-```
-Claude Sessions/
-├── Active Context.md              ← THIS NOTE
-├── Index.md
-├── Session Template.md
-└── silia/
-    └── Initial Obsidian Setup/
-        └── 2026-04-09.md
-```
+2. Start new Claude session — CLAUDE.md auto-loads context
