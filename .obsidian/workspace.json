@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/Session Template.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-04-09"
+              "title": "Session Template"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/Session Template.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 2026-04-09"
+              "title": "Backlinks for Session Template"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/Session Template.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 2026-04-09"
+              "title": "Outgoing links from Session Template"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/Session Template.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2026-04-09"
+              "title": "Outline of Session Template"
             }
           }
         ]
@@ -185,11 +185,14 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "fc802b9b17579861",
+  "active": "aa0985d8c9ec21c7",
   "lastOpenFiles": [
+    "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
+    "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
+    "Claude Sessions/silia/SL-1154 Tools Falling Main",
+    "Claude Sessions/silia",
     "Claude Sessions/Session Template.md",
     "Claude Sessions/2026-04-09 — Obsidian setup and workflow.md",
-    "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
     "Claude Sessions/SL-1154 Tools Falling Main",
     "Claude Sessions/Index.md",
     "Claude Sessions/Active Context.md",
