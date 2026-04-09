@@ -11,14 +11,10 @@
             "id": "fc802b9b17579861",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Claude Work Log.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Claude Work Log"
+              "title": "New tab"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Claude Work Log.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Claude Work Log"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Claude Work Log.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Claude Work Log"
+              "title": "Outgoing links"
             }
           },
           {
@@ -185,8 +179,13 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "fc802b9b17579861",
+  "active": "aa0985d8c9ec21c7",
   "lastOpenFiles": [
+    "Claude Sessions/2026-04-09 — Obsidian setup and workflow.md",
+    "Claude Sessions/Active Context.md",
+    "Claude Sessions/Session Template.md",
+    "Claude Sessions/Index.md",
+    "Claude Sessions",
     "Claude Work Log.md",
     "hola.md",
     "Untitled"
