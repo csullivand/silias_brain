@@ -1,11 +1,14 @@
 # Claude Sessions Index
 
 Master index of all Claude Code work sessions on the Silia/ECA project.
-Each session note has: branch, goal, every step taken, files changed, and pickup instructions.
+Organized by project. Each project folder contains dated session notes.
 
 ---
 
-## Sessions
+## Projects
 
-
-- [[2026-04-09 — Obsidian setup and workflow]] — Set up session tracking structure, auto-save loop. Branch: feat/SL-1154-tools-falling-main
+### [[SL-1154 Tools Falling Main]]
+- **Branch:** feat/SL-1154-tools-falling-main
+- **Status:** In progress
+- **Sessions:**
+  - [[2026-04-09]] — Set up Obsidian session tracking, restructured to project folders. No code changes yet.

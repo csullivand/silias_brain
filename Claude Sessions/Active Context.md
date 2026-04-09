@@ -13,28 +13,34 @@ If a session disconnects, START HERE.
 
 ## Current Session
 - **Date:** 2026-04-09
-- **Session note:** [[2026-04-09 — Obsidian setup and workflow]]
+- **Project:** [[SL-1154 Tools Falling Main]]
+- **Session note:** [[Claude Sessions/SL-1154 Tools Falling Main/2026-04-09]]
 - **Branch:** feat/SL-1154-tools-falling-main
 - **Working directory:** Assistant/infrastructure
-- **Goal:** Set up Obsidian-based session tracking so no work context is ever lost
+- **Goal:** Set up Obsidian-based session tracking, then work on SL-1154
 
 ## Last Checkpoint
-- **Time:** 2026-04-09 (initial setup complete)
+- **Time:** 2026-04-09 (structure complete)
 - **What was just done:**
-  1. Created Obsidian folder structure: `Claude Sessions/` with Index, Template, Active Context, and today's session note
-  2. Set up 10-minute auto-save loop (cron job 70ea37f3) that updates this note and appends to the session note
-  3. Saving auto-memory so future Claude sessions know about this workflow
-- **What was happening when last saved:** Finishing the Obsidian setup. No actual code work started yet.
-- **Next action:** Ask user what they want to work on (likely SL-1154 tools falling on main)
+  1. Created Obsidian folder structure organized by project
+  2. Set up 10-minute auto-save loop (cron job 70ea37f3)
+  3. Saved auto-memory for future Claude sessions
+  4. Restructured from flat files to project-based folders
+- **What was happening when last saved:** Finished reorganizing Obsidian to project-based folders. No actual code work started yet.
+- **Next action:** Ask user what they want to work on for SL-1154
 
 ## Quick Recovery Instructions
-1. Open the current session note: [[2026-04-09 — Obsidian setup and workflow]]
+1. Open the current session note: `Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md`
 2. Scroll to the last entry in the "Work Log" section
 3. Read "How to Pick Up From Here" at the bottom of that note
-4. Tell Claude: "Read my Obsidian note at Claude Sessions/Active Context.md and the session note, then continue where we left off"
+4. Tell Claude: "Read my Obsidian note at Claude Sessions/Active Context.md and the session note for SL-1154, then continue where we left off"
 
-## Obsidian Structure Reference
-- `Claude Sessions/Index.md` — master list of all sessions
-- `Claude Sessions/Active Context.md` — THIS NOTE, always latest state
-- `Claude Sessions/Session Template.md` — template for new session notes
-- `Claude Sessions/YYYY-MM-DD — description.md` — individual session notes
+## Obsidian Structure
+```
+Claude Sessions/
+├── Active Context.md          ← THIS NOTE (start here)
+├── Index.md                   ← Master list of all projects
+├── Session Template.md        ← Template for new sessions
+└── SL-1154 Tools Falling Main/
+    └── 2026-04-09.md          ← Today's session
+```
