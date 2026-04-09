@@ -18,7 +18,6 @@ Updated automatically every 10 minutes. If disconnected, START HERE.
 - **Working directory:** Assistant/infrastructure
 
 ## Last Checkpoint
-- **Time:** 2026-04-09 (auto-save #5)
-- **Status:** Idle. Fixed auto-save cron to use correct folder path. No other changes.
-- **Auto-save cron:** job 54770d83 (correct paths now)
+- **Time:** 2026-04-09 (auto-save #6)
+- **Status:** No changes since checkpoint #5. Session idle.
 - **Next action:** Waiting for user to give next task
