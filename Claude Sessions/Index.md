@@ -1,7 +1,7 @@
 # Claude Sessions Index
 
 Master index of all Claude Code work sessions.
-Organized by project > ticket/feature > dated sessions.
+Organized by project > topic/ticket > dated sessions.
 
 ---
 
@@ -10,8 +10,8 @@ Organized by project > ticket/feature > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
-#### SL-1154 Tools Falling Main
-- **Branch:** feat/SL-1154-tools-falling-main
-- **Status:** In progress
+#### Initial Obsidian Setup
+- **Branch:** develop
+- **Status:** Complete
 - **Sessions:**
-  - [[Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09|2026-04-09]] — Set up Obsidian session tracking. No code changes yet.
+  - [[Claude Sessions/silia/Initial Obsidian Setup/2026-04-09|2026-04-09]] — Set up full Obsidian session tracking system with project folders, auto-save, startup logs

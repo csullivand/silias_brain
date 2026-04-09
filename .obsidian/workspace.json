@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
                 "mode": "source",
                 "source": false
               },
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +113,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -156,7 +156,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
+                "file": "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -188,8 +188,10 @@
   "active": "fc802b9b17579861",
   "lastOpenFiles": [
     "Claude Sessions/Session Template.md",
-    "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
     "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
+    "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
+    "Claude Sessions/silia/Initial Obsidian Setup",
+    "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
     "Claude Sessions/silia/SL-1154 Tools Falling Main",
     "Claude Sessions/silia",
     "Claude Sessions/2026-04-09 — Obsidian setup and workflow.md",
