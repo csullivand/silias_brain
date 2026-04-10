@@ -19,5 +19,5 @@ Updated automatically every 10 minutes. If disconnected, START HERE.
 
 ## Last Checkpoint
 - **Time:** 2026-04-10
-- **Status:** Obsidian setup COMPLETE. Session idle. No changes.
-- **Next action:** Waiting for user to give next task
+- **Status:** Obsidian setup COMPLETE. Session idle.
+- **Next action:** Waiting for user
