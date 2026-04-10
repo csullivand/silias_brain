@@ -18,6 +18,7 @@ Updated automatically every 10 minutes. If disconnected, START HERE.
 - **Working directory:** Assistant/infrastructure
 
 ## Last Checkpoint
-- **Time:** 2026-04-10 (auto-save #40)
-- **Status:** No changes. Session idle.
-- **Next action:** Waiting for user
+- **Time:** 2026-04-10
+- **What just happened:** Cleaned up session note — removed 35+ empty "no changes" spam checkpoints, rewrote note cleanly. Updated cron job (bc6a08c4) to only append when something actually changed.
+- **Status:** Obsidian setup COMPLETE. Session idle.
+- **Next action:** Waiting for user to give next task
