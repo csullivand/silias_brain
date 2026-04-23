@@ -1,23 +1,31 @@
 ---
 tags: [claude-session, active]
-updated: 2026-04-13
+updated: 2026-04-23
 ---
 
 # Active Context
 
-Updated automatically every 10 minutes. If disconnected, START HERE.
+Updated when something changes. If disconnected, START HERE.
 
 ---
 
 ## Current Session
-- **Date:** 2026-04-09 (started) → 2026-04-13 (ongoing)
+- **Date:** 2026-04-22
 - **Project:** silia
-- **Topic:** Initial Obsidian Setup
-- **Session note:** `Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md`
-- **Branch:** develop
-- **Working directory:** Assistant/infrastructure
+- **Topic:** SL-677 Dunning Process
+- **Session note:** `Claude Sessions/silia/SL-677 Dunning Process/2026-04-22.md`
+- **Branch:** feat/SL-677-dunnig-process
 
 ## Last Checkpoint
-- **Time:** 2026-04-13
-- **Status:** Obsidian setup COMPLETE. Session idle.
-- **Next action:** Waiting for user
+- **What was just done:**
+  - Fixed account reactivation bug in activateAssistant()
+  - Added IAM permissions to BillingWebhookRole (Account PutItem/UpdateItem, AccountStatusAudit PutItem, Chatbot PutItem)
+  - Applied code review suggestions (Stripe types, dunning constants, structured logging)
+  - Fixed eslint security violations
+- **Status:** Ready to deploy
+- **Files changed this session:**
+  - Billing/application/handlers/StripeWebhookHandler.ts
+  - Billing/infrastructure/aws.template.yml
+  - Billing/infrastructure/aws/handlers/uploadPaymentProof/uploadPaymentProof.ts
+  - Billing/infrastructure/gateways/StripeGateway.ts
+- **Next action:** Build, commit, deploy

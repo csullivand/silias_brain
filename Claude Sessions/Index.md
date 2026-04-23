@@ -15,3 +15,33 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** Complete
 - **Sessions:**
   - [[Claude Sessions/silia/Initial Obsidian Setup/2026-04-09|2026-04-09]] — Set up full Obsidian session tracking system with project folders, auto-save, startup logs
+
+#### Close Conversation Endpoint
+- **Branch:** feat/SL-1144-close-conversation-endpoint
+- **Status:** Complete
+- **Sessions:**
+  - [[Claude Sessions/silia/Close Conversation Endpoint/2026-04-13|2026-04-13]] — Created PUT /conversation/{id}/close for n8n, local testing, Postman collection
+
+#### SL-1162 Template Security
+- **Branch:** fix/SL-1162-template-security
+- **Status:** Complete
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1162 Template Security/2026-04-14|2026-04-14]] — Fixed 7 API Gateway model mismatches, domainTopic validation, security lint
+
+#### SL-669 Account Status Stripe Pause/Resume
+- **Branch:** feat/SL-669-account-status-change
+- **Status:** Implementation done, pending build/deploy/test
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-669 Account Status Stripe/2026-04-15|2026-04-15]] — Added Stripe pause/resume to AccountStatusService + dunning process planning
+
+#### Close Conversation by ChannelId
+- **Branch:** feat/SL-1155-close-conversation-api-main
+- **Status:** Complete — cherry-picked to main
+- **Sessions:**
+  - [[Claude Sessions/silia/Close Conversation by ChannelId/2026-04-21|2026-04-21]] — Changed close endpoint to use channelId instead of conversationId
+
+#### SL-677 Dunning Process
+- **Branch:** feat/SL-677-dunnig-process
+- **Status:** In progress — code review fixes applied, pending commit
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-677 Dunning Process/2026-04-22|2026-04-22]] — Eslint fixes, Stripe type improvements, dunning constants, structured logging

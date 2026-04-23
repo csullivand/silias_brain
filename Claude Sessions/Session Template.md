@@ -10,11 +10,6 @@ tags: [claude-session, template]
 - **Ticket/Issue:** 
 - **Goal for this session:** 
 
-## Starting State
-- **Uncommitted changes:** 
-- **Last commit:** 
-- **Important context from previous sessions:** 
-
 ## Work Log (step by step)
 > Every action taken, in order. No summaries. Include file paths, line numbers, what was changed and why.
 
@@ -44,4 +39,4 @@ tags: [claude-session, template]
 
 1. 
 2. 
-3. 
+3.
