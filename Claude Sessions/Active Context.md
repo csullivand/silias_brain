@@ -10,22 +10,22 @@ Updated when something changes. If disconnected, START HERE.
 ---
 
 ## Current Session
-- **Date:** 2026-04-22
+- **Date:** 2026-04-23
 - **Project:** silia
-- **Topic:** SL-677 Dunning Process
-- **Session note:** `Claude Sessions/silia/SL-677 Dunning Process/2026-04-22.md`
-- **Branch:** feat/SL-677-dunnig-process
+- **Topic:** SL-678 Billing Retrocompatibility
+- **Session note:** `Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md`
+- **Branch:** feat/SL-678-suspension-no-payment
 
 ## Last Checkpoint
 - **What was just done:**
-  - Fixed account reactivation bug in activateAssistant()
-  - Added IAM permissions to BillingWebhookRole (Account PutItem/UpdateItem, AccountStatusAudit PutItem, Chatbot PutItem)
-  - Applied code review suggestions (Stripe types, dunning constants, structured logging)
-  - Fixed eslint security violations
-- **Status:** Ready to deploy
+  - Analyzed billing retrocompatibility for existing accounts (pre-billing)
+  - Implemented auto-subscribe logic in Assistant/application/Put/index.ts
+  - When chatbot billing plan is updated and chatbot has no stripeSubscriptionId:
+    - Auto-onboards account (creates Stripe customer) if needed
+    - Creates Stripe subscription
+    - Saves stripeSubscriptionId + taxRate on chatbot
+  - Non-blocking, follows existing patterns
+- **Status:** Implemented, not yet tested or committed
 - **Files changed this session:**
-  - Billing/application/handlers/StripeWebhookHandler.ts
-  - Billing/infrastructure/aws.template.yml
-  - Billing/infrastructure/aws/handlers/uploadPaymentProof/uploadPaymentProof.ts
-  - Billing/infrastructure/gateways/StripeGateway.ts
-- **Next action:** Build, commit, deploy
+  - Assistant/application/Put/index.ts (+51 lines: AccountModel import + auto-subscribe else-if branch)
+- **Next action:** Test the 4 scenarios, then commit

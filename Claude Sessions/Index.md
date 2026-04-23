@@ -45,3 +45,9 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** In progress — code review fixes applied, pending commit
 - **Sessions:**
   - [[Claude Sessions/silia/SL-677 Dunning Process/2026-04-22|2026-04-22]] — Eslint fixes, Stripe type improvements, dunning constants, structured logging
+
+#### SL-678 Billing Retrocompatibility
+- **Branch:** feat/SL-678-suspension-no-payment
+- **Status:** In progress — implemented, pending test/commit
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23|2026-04-23]] — Auto-subscribe logic for pre-billing accounts in chatbot PUT handler

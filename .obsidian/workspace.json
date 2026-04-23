@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Claude Sessions/silia/SL-677 Dunning Process/2026-04-22.md",
+                "file": "Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-04-22"
+              "title": "2026-04-23"
             }
           }
         ]
@@ -198,8 +198,10 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
-    "Claude Sessions/silia/Close Conversation by ChannelId/2026-04-21.md",
     "Claude Sessions/silia/SL-677 Dunning Process/2026-04-22.md",
+    "Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md",
+    "Claude Sessions/silia/SL-678 Suspension No Payment",
+    "Claude Sessions/silia/Close Conversation by ChannelId/2026-04-21.md",
     "Claude Sessions/silia/SL-677 Dunning Process",
     "Claude Sessions/Session Template.md",
     "Claude Sessions/Index.md",
@@ -225,7 +227,6 @@
     "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
     "Claude Sessions/silia/Close Conversation Endpoint",
     "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
-    "Claude Sessions/silia/Initial Obsidian Setup",
     "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md",
     "Claude Sessions/2026-04-09 — Obsidian setup and workflow.md",
     "Claude Work Log.md",
