@@ -18,14 +18,10 @@ Updated when something changes. If disconnected, START HERE.
 
 ## Last Checkpoint
 - **What was just done:**
-  - Analyzed billing retrocompatibility for existing accounts (pre-billing)
   - Implemented auto-subscribe logic in Assistant/application/Put/index.ts
-  - When chatbot billing plan is updated and chatbot has no stripeSubscriptionId:
-    - Auto-onboards account (creates Stripe customer) if needed
-    - Creates Stripe subscription
-    - Saves stripeSubscriptionId + taxRate on chatbot
-  - Non-blocking, follows existing patterns
-- **Status:** Implemented, not yet tested or committed
+  - Added pendingEffectiveFrom guard to skip subscription creation for future-dated plan changes
+  - Flow: if chatbot has no stripeSubscriptionId → auto-onboard account + create subscription (unless pending future date)
+- **Status:** Implemented with guard, not yet tested or committed
 - **Files changed this session:**
-  - Assistant/application/Put/index.ts (+51 lines: AccountModel import + auto-subscribe else-if branch)
+  - Assistant/application/Put/index.ts (+56 lines: AccountModel import, auto-subscribe else-if branch with isPendingFuture guard)
 - **Next action:** Test the 4 scenarios, then commit
