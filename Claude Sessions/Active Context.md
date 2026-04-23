@@ -12,16 +12,13 @@ Updated when something changes. If disconnected, START HERE.
 ## Current Session
 - **Date:** 2026-04-23
 - **Project:** silia
-- **Topic:** SL-678 Billing Retrocompatibility
-- **Session note:** `Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md`
-- **Branch:** feat/SL-678-suspension-no-payment
+- **Branch:** main
 
 ## Last Checkpoint
 - **What was just done:**
-  - Implemented auto-subscribe logic in Assistant/application/Put/index.ts
-  - Added pendingEffectiveFrom guard to skip subscription creation for future-dated plan changes
-  - Flow: if chatbot has no stripeSubscriptionId → auto-onboard account + create subscription (unless pending future date)
-- **Status:** Implemented with guard, not yet tested or committed
-- **Files changed this session:**
-  - Assistant/application/Put/index.ts (+56 lines: AccountModel import, auto-subscribe else-if branch with isPendingFuture guard)
-- **Next action:** Test the 4 scenarios, then commit
+  - Branch switched to main
+  - PR #728 (close conversation api) merged to main
+  - User working on frontend: app/src/features/inbox (ImageMessage, InboxChatMessages)
+- **Previous work:**
+  - SL-677 Dunning: reactivation fix, IAM permissions, imports refactor, code review suggestions (on feat/SL-677-dunnig-process)
+  - Close Conversation by ChannelId: complete, merged via PR #728
