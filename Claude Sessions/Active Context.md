@@ -18,14 +18,12 @@ Updated when something changes. If disconnected, START HERE.
 
 ## Last Checkpoint
 - **What was just done:**
-  - Backend: Auto-subscribe logic in Assistant PUT handler with pendingEffectiveFrom guard and country fallback
-  - Frontend: Disabled Change Plan button with tooltip when account has no billingPlan
-  - Fix: Country metadata fallback to MX for Stripe tax location
-  - Build: config-overrides.js and package.json changes to fix frontend compilation
-- **Status:** Fixing frontend build errors, still need to update Account billingPlan during auto-onboard
-- **Files changed this session:**
-  - Assistant/application/Put/index.ts (+56 lines)
-  - app/src/features/account/components/AccountManagement/AccountManagement.tsx (+52/-11)
-  - app/config-overrides.js (+30/-)
-  - package.json (+4)
-- **Next action:** Verify frontend compiles, then test Change Plan button behavior, then add account billingPlan update to auto-onboard
+  - Changes to Put/index.ts and AccountManagement.tsx were REVERTED
+  - Only yarn.lock, config-overrides.js, package.json changes remain
+- **Status:** Implementation reverted — need to re-apply or discuss new approach
+- **Files currently changed:**
+  - Assistant/infrastructure/yarn.lock
+  - app/config-overrides.js
+  - package.json
+  - yarn.lock
+- **Next action:** Clarify with user whether to re-implement or take different approach
