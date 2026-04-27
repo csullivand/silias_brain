@@ -18,13 +18,18 @@ Updated when something changes. If disconnected, START HERE.
 
 ## Last Checkpoint
 - **What was just done:**
-  - Added auto-onboard in account PUT handler: creates Stripe customer when billingPlan is set
-  - Fixed Change Plan button disabled check to use stripeCustomerId instead of billingPlan.monthlyBaseFee
-  - Previous commits have auto-subscribe logic in Assistant PUT handler
-- **Status:** In progress — account onboard + chatbot auto-subscribe implemented, needs testing
+  - Added payment method success notification in addPaymentMethod handler
+  - Added auto-onboard in account PUT handler + SSM permissions
+  - Added Account table GetItem permission to Assistant chatbot-write role
+  - Fixed Change Plan button disabled check (stripeCustomerId)
+  - Auto-subscribe logic in Assistant PUT handler (committed)
+- **Status:** In progress — uncommitted: addPaymentMethod notification
 - **Files changed (uncommitted):**
-  - Accounts/application/put/index.ts (+20 lines: auto-onboard Stripe customer)
+  - Billing/infrastructure/aws/handlers/addPaymentMethod/addPaymentMethod.ts (+15 lines)
 - **Files changed (committed):**
-  - Assistant/application/Put/index.ts (auto-subscribe logic)
-  - AccountManagement.tsx (disabled button with stripeCustomerId check)
-- **Next action:** Test full flow: update account → Change Plan enabled → create subscription
+  - Accounts/application/put/index.ts (auto-onboard)
+  - Accounts/infrastructure/aws/aws.template.yml (SSM permissions)
+  - Assistant/application/Put/index.ts (auto-subscribe)
+  - Assistant/infrastructure/aws.template.yml (Account table permission)
+  - AccountManagement.tsx (disabled button check)
+- **Next action:** Test payment method notification, commit, then address second issue user mentioned
