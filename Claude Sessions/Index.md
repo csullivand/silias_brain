@@ -51,3 +51,9 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** In progress — implemented, pending test/commit
 - **Sessions:**
   - [[Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23|2026-04-23]] — Auto-subscribe logic for pre-billing accounts in chatbot PUT handler
+
+#### SL-1143 Minutes Card RTA
+- **Branch:** feat/SL-1143-minutes-card-rta
+- **Status:** In progress
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28|2026-04-28]] — RTA agent card in Billing view with minutes, unit cost, usage cost
