@@ -1,26 +1,32 @@
 ---
-tags: [claude-session, active]
-updated: 2026-04-28
+tags: [active-context]
 ---
 
 # Active Context
 
-Updated when something changes. If disconnected, START HERE.
-
----
-
 ## Current Session
-- **Date:** 2026-04-28
-- **Project:** silia
-- **Topic:** SL-1143 Minutes Card RTA in Billing
-- **Session note:** `Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md`
+- **Note:** [[SL-1143 Minutes Card RTA/2026-04-28]]
 - **Branch:** feat/SL-1143-minutes-card-rta
+- **Project:** silia
+- **Last updated:** 2026-04-29
 
-## Last Checkpoint
-- **What was just done:**
-  - Full SL-1143 implementation complete (all requirements, AC, UX verified)
-  - Figma remote MCP server installed, needs OAuth auth on session restart
-  - Session note fully updated with detailed work log
-- **Status:** Implementation complete, waiting for session restart to auth Figma MCP
-- **Files changed (uncommitted):** 13 files, 772 insertions, 199 deletions
-- **Next action:** User should restart Claude Code (/exit), then authenticate Figma MCP, then commit + visual test
+## What's Happening
+- SL-1143: Billing UI alignment with Figma designs
+- Figma MCP authenticated, visual comparison done
+- Text fixes applied: Spanish→English, label casing to match Figma
+- Total Usage card updated: now shows both minutes + conversations for mixed agent scenarios
+
+## Current State
+- **Uncommitted changes:** ~13 files
+- **Fixes applied to AccountManagement.tsx:**
+  - Section title: Agents → Usage Agents
+  - Usage value: 'min usados este mes' → 'minutes'
+  - Undefined rate: 'Por definir' → 'To be defined'
+  - Label casing: 'Unit Cost' → 'Unit cost', 'Usage Cost' → 'Usage cost'
+  - Total Usage: now always visible, combines minutes + conversations
+- **No backend changes** (taxId Figma designs were for a different story, reverted)
+
+## How to Continue
+1. Review all changes once more
+2. Commit when ready
+3. Visual test in browser if dev server is available
