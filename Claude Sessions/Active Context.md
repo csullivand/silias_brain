@@ -11,15 +11,15 @@ tags: [active-context]
 - **Last updated:** 2026-04-29
 
 ## What's Happening
-- SL-678: Billing retrocompatibility — scheduled subscription fix
-- Aligned auto-subscribe scheduled path with existing createSubscription endpoint
-- Put/index.ts appears reverted/committed — no longer in diff
+- SL-678 + SL-1177: Billing retrocompatibility
+- Scheduled subscription fix committed as c1ce4d1df on feat/SL-1177-billing-retrocompability
+- Needs cherry-pick to develop (not included in merged PR #793)
 
 ## Current State
-- **Uncommitted:** 5 files (+125/-10) — settings, csvProcessor, fileValidator, config-overrides, yarn.lock
-- **Key outcome:** Scheduled path verified to match existing endpoint across all scenarios
+- **Uncommitted:** Only .claude/settings.local.json
+- **Pending action:** Cherry-pick c1ce4d1df to develop
 
 ## How to Continue
-1. Verify Put/index.ts state (committed or reverted?)
-2. Test Change Plan with future date
-3. Address pre-existing immediate path gaps if needed
+1. git checkout develop && git cherry-pick c1ce4d1df
+2. Verify it applies cleanly
+3. Push to develop
