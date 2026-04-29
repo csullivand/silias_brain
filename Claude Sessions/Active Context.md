@@ -5,28 +5,21 @@ tags: [active-context]
 # Active Context
 
 ## Current Session
-- **Note:** [[SL-1143 Minutes Card RTA/2026-04-28]]
-- **Branch:** feat/SL-1143-minutes-card-rta
+- **Note:** [[SL-678 Suspension No Payment/2026-04-23]]
+- **Branch:** feat/SL-678-suspension-no-payment
 - **Project:** silia
 - **Last updated:** 2026-04-29
 
 ## What's Happening
-- SL-1143: Billing UI alignment with Figma designs
-- Figma MCP authenticated, visual comparison done
-- Text fixes applied: Spanish→English, label casing to match Figma
-- Total Usage card updated: now shows both minutes + conversations for mixed agent scenarios
+- SL-678: Billing retrocompatibility — scheduled subscription fix
+- Aligned auto-subscribe scheduled path with existing createSubscription endpoint
+- Put/index.ts appears reverted/committed — no longer in diff
 
 ## Current State
-- **Uncommitted changes:** ~13 files
-- **Fixes applied to AccountManagement.tsx:**
-  - Section title: Agents → Usage Agents
-  - Usage value: 'min usados este mes' → 'minutes'
-  - Undefined rate: 'Por definir' → 'To be defined'
-  - Label casing: 'Unit Cost' → 'Unit cost', 'Usage Cost' → 'Usage cost'
-  - Total Usage: now always visible, combines minutes + conversations
-- **No backend changes** (taxId Figma designs were for a different story, reverted)
+- **Uncommitted:** 5 files (+125/-10) — settings, csvProcessor, fileValidator, config-overrides, yarn.lock
+- **Key outcome:** Scheduled path verified to match existing endpoint across all scenarios
 
 ## How to Continue
-1. Review all changes once more
-2. Commit when ready
-3. Visual test in browser if dev server is available
+1. Verify Put/index.ts state (committed or reverted?)
+2. Test Change Plan with future date
+3. Address pre-existing immediate path gaps if needed
