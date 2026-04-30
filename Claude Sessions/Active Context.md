@@ -11,15 +11,16 @@ tags: [active-context]
 - **Last updated:** 2026-04-30
 
 ## What's Happening
-- SL-1143 UI fixes done, ready to commit
-- New ticket 'Configurar rate por minuto desde BO': full billing audit complete
-- perMinuteRate exists in data layer but has NO Stripe integration
-- 6 gaps identified across createSubscription, updateSubscription, StripeGateway, webhooks, validation, audit
+- Backend implementation for 'Configurar rate por minuto desde BO' COMPLETE
+- 10 files changed + 1 new file (BillingRateAudit.model.ts)
+- Uses Stripe legacy metered billing (usage_type: 'metered')
 
 ## Current State
-- Waiting for user decision on implementation approach
-- Key files needing work: StripeGateway.ts, createSubscription.ts, Put/index.ts, StripeWebhookHandler.ts
+- **Uncommitted:** 10 modified + 1 new file, 208 insertions
+- **Pending infra:** DynamoDB table for BillingRateAudit in aws.template.yml
+- **Deferred:** Webhook usage reporting (Step 8)
 
 ## How to Continue
-1. Commit SL-1143 UI changes
-2. Implement backend: validation → StripeGateway metered pricing → PUT sync → audit log
+1. Add DynamoDB table + IAM + env var to Billing/infrastructure/aws.template.yml
+2. Commit all changes
+3. Test: PUT with perMinuteRate on RTA agent, verify Stripe Price creation + audit
