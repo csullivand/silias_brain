@@ -5,21 +5,21 @@ tags: [active-context]
 # Active Context
 
 ## Current Session
-- **Note:** [[SL-678 Suspension No Payment/2026-04-23]]
-- **Branch:** feat/SL-678-suspension-no-payment
+- **Note:** [[SL-1143 Minutes Card RTA/2026-04-28]]
+- **Branch:** feat/SL-1143-minutes-card-rta
 - **Project:** silia
-- **Last updated:** 2026-04-29
+- **Last updated:** 2026-04-30
 
 ## What's Happening
-- SL-678 + SL-1177: Billing retrocompatibility
-- Scheduled subscription fix committed as c1ce4d1df on feat/SL-1177-billing-retrocompability
-- Needs cherry-pick to develop (not included in merged PR #793)
+- SL-1143 UI fixes done, ready to commit
+- New ticket 'Configurar rate por minuto desde BO': full billing audit complete
+- perMinuteRate exists in data layer but has NO Stripe integration
+- 6 gaps identified across createSubscription, updateSubscription, StripeGateway, webhooks, validation, audit
 
 ## Current State
-- **Uncommitted:** Only .claude/settings.local.json
-- **Pending action:** Cherry-pick c1ce4d1df to develop
+- Waiting for user decision on implementation approach
+- Key files needing work: StripeGateway.ts, createSubscription.ts, Put/index.ts, StripeWebhookHandler.ts
 
 ## How to Continue
-1. git checkout develop && git cherry-pick c1ce4d1df
-2. Verify it applies cleanly
-3. Push to develop
+1. Commit SL-1143 UI changes
+2. Implement backend: validation → StripeGateway metered pricing → PUT sync → audit log
