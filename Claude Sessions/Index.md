@@ -54,6 +54,12 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
 #### SL-1143 Minutes Card RTA
 - **Branch:** feat/SL-1143-minutes-card-rta
-- **Status:** In progress
+- **Status:** Complete (continued as SL-1146)
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28|2026-04-28]] — RTA agent card in Billing view with minutes, unit cost, usage cost
+
+#### SL-1146 Metering Minutes
+- **Branch:** feat/SL-1146-metering-minutes
+- **Status:** In progress — infra complete, pending commit/test
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1146 Metering Minutes/2026-05-04|2026-05-04]] — Added IAM for BillingRateAudit table, completing infra setup
