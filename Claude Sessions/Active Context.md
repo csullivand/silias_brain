@@ -11,19 +11,16 @@ tags: [active-context]
 - **Last updated:** 2026-05-04
 
 ## What's Happening
-- Implemented usage tracking: AudioStream records call duration → BillingUsage DynamoDB table
-- BillingUsage model created with all fields (chatbotId, accountId, sessionId, agentType, unit, durationSeconds, minutes, reportedToStripe)
-- DynamoDB table with ChatbotIdTimestampIndex GSI for batch job queries
-- IAM configured for both AudioStream (PutItem) and BillingGeneralRole (full CRUD for batch job)
+- Full metered billing pipeline complete with EXACT second billing (no rounding)
+- Stripe price uses unit_amount_decimal for sub-cent per-second pricing
+- Reports durationSeconds as integer to Stripe — no rounding anywhere
 
 ## Current State
-- **Uncommitted:** 13 modified + 2 new files, 303 insertions
-- **Done:** Usage recording on call end, DynamoDB infra, IAM, env vars
-- **Remaining:** Batch job Lambda, minutesUsed transformer, retry/alerting
+- **Uncommitted:** 16 modified + 3 new files, 425 insertions
+- **Complete:** All implementation done, exact-second billing
+- **Pending decisions answered:** No redondeo (exact seconds), no event schema needed (server-side tracking)
 
 ## How to Continue
-1. Implement batch job Lambda (reportUsageToStripe handler)
-2. Wire minutesUsed in transformers.ts:161 (replace placeholder)
-3. Add retry/alerting to batch job
-4. Commit all changes
-5. Test end-to-end
+1. Commit all changes
+2. Test end-to-end on DEV
+3. Verify 30s call charges exactly /bin/zsh.05 at /bin/zsh.10/min rate
