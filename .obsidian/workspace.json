@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md",
+                "file": "projects/silia/RTA Module Architecture.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-04-28"
+              "title": "RTA Module Architecture"
             }
           }
         ]
@@ -198,9 +198,12 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
-    "Untitled.base",
-    "Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md",
     "Claude Sessions/silia/SL-1146 Metering Minutes/2026-05-04.md",
+    "projects/silia/RTA Module Architecture.md",
+    "projects/silia",
+    "projects",
+    "Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md",
+    "Untitled.base",
     "Claude Sessions/silia/SL-1146 Metering Minutes",
     "Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md",
     "Claude Sessions/silia/SL-1143 Minutes Card RTA",
@@ -221,10 +224,8 @@
     "CLAUDE.md",
     "nombre-de-nota.md",
     "Templates/CLAUDE.local Template.md",
-    "Templates",
     "Untitled 1.md",
     "Untitled.canvas",
-    "Untitled",
     "Claude Sessions/silia/SL-1162 Template Security/2026-04-14.md",
     "Claude Sessions/silia/SL-669 Account Status Stripe/2026-04-15.md",
     "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
