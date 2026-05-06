@@ -11,14 +11,15 @@ tags: [active-context]
 - **Last updated:** 2026-05-05
 
 ## What's Happening
-- All implementation complete, final review passed
-- Linter ran on AudioStream/index.ts (minor formatting)
-- Ready for commit
+- Full RTA billing flow verified end-to-end
+- Key fixes: isRta inferred from perMinuteRate, Account.tsx maps baseFee→perMinuteRate for usage billing
+- PR #868 merged into branch (billing type UI)
 
 ## Current State
-- **Uncommitted:** 16 modified + 4 new files, 497 insertions
-- **Status:** Review complete, no issues remaining
+- **Uncommitted:** 16 files (482 insertions) + 1 untracked (reportUsageToStripe)
+- **Flow verified:** Account creation → Chatbot → Subscription → Metered pricing → Usage tracking → Stripe invoice
 
 ## How to Continue
 1. Commit all changes
-2. Test end-to-end on DEV
+2. Test frontend flow in browser
+3. Verify Stripe integration in dev environment
