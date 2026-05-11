@@ -63,3 +63,9 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** In progress — infra complete, pending commit/test
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1146 Metering Minutes/2026-05-04|2026-05-04]] — Added IAM for BillingRateAudit table, completing infra setup
+
+#### SL-1149 RTA Metered Scheduling
+- **Branch:** fix/SL-1149-dunning-rta
+- **Status:** In progress — code complete, pending deploy/test
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1149 RTA Metered Scheduling/2026-05-11|2026-05-11]] — Fixed RTA metered subscriptions for future dates + activation metered item saving
