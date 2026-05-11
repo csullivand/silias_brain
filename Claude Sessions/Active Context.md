@@ -11,16 +11,16 @@ tags: [active-context]
 - **Last updated:** 2026-05-11
 
 ## What's Happening
-- Fixed RTA metered subscription scheduling for future dates (3 billing files on fix/SL-1149-dunning-rta)
-- Removed RTA submodule noise from PR #914 — committed and pushed
-- Fixed billing rounding mismatch: monthlyTotal now matches sum of displayed usageCost + taxes
+- Fixed RTA metered subscription scheduling for future dates
+- Removed RTA submodule noise from PR #914
+- Fixed billing rounding mismatch in monthlyTotal
+- New: stripeSubscriptionId now saved on chatbot at creation time
 
 ## Current State
-- **Uncommitted:** 6 files (settings, csvProcessor, fileValidator, yarn.lock, RTA submodule, transformers.ts)
-- **transformers.ts:** Rounding fix for both RTA and conversational billing paths
-- **Billing changes:** On fix/SL-1149-dunning-rta (StripeGateway, createSubscription, StripeWebhookHandler) — not yet committed
+- **Uncommitted:** 5 files (settings, csvProcessor, fileValidator, yarn.lock, createSubscription.ts)
+- **createSubscription.ts:** +1 line saving stripeSubscriptionId on chatbot
 
 ## How to Continue
-1. Commit transformers.ts rounding fix
-2. Switch to fix/SL-1149-dunning-rta to commit billing changes
-3. Deploy and test both fixes
+1. Commit pending changes
+2. Deploy and test RTA subscription with future date
+3. Verify full lifecycle: create → activate → usage reporting
