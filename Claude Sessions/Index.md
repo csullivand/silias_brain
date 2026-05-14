@@ -69,3 +69,14 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** In progress — code complete, pending deploy/test
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1149 RTA Metered Scheduling/2026-05-11|2026-05-11]] — Fixed RTA metered subscriptions for future dates + activation metered item saving
+
+---
+
+### loteria
+Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
+Sistema de gestión para bancas de lotería en Centroamérica.
+
+#### Setup Session Tracking
+- **Status:** In progress
+- **Sessions:**
+  - [[Claude Sessions/loteria/Setup Session Tracking/2026-05-13|2026-05-13]] — Set up Obsidian session tracking for loteria project

@@ -11,10 +11,14 @@
             "id": "3842513b74267942",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Templates/CLAUDE.local Template.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "CLAUDE.local Template"
             }
           }
         ]
@@ -194,6 +198,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "Claude Sessions/loteria/Setup Session Tracking/2026-05-13.md",
+    "Claude Sessions/loteria/Setup Session Tracking",
+    "Claude Sessions/loteria",
     "projects/silia/Detail View Layout Implementation.md",
     "projects/silia/RTA Module Architecture.md",
     "Claude Sessions/silia/SL-1149 RTA Metered Scheduling/2026-05-11.md",
@@ -215,11 +222,9 @@
     "Claude Sessions/Session Template.md",
     "Claude Sessions/Index.md",
     "Claude Sessions/Active Context.md",
-    "Claude Sessions/silia/Close Conversation by ChannelId",
     "Claude Sessions/silia/Close Conversation Endpoint/2026-04-13.md",
     "journal/2026-04-20.md",
     "Note Name.md",
-    "journal",
     "Claude Sessions/silia/Obsidian Vault Cleanup/2026-04-20.md",
     "CLAUDE.md",
     "nombre-de-nota.md",
@@ -229,7 +234,6 @@
     "Claude Sessions/silia/SL-1162 Template Security/2026-04-14.md",
     "Claude Sessions/silia/SL-669 Account Status Stripe/2026-04-15.md",
     "Claude Sessions/silia/Initial Obsidian Setup/2026-04-09.md",
-    "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md",
-    "Claude Sessions/SL-1154 Tools Falling Main/2026-04-09.md"
+    "Claude Sessions/silia/SL-1154 Tools Falling Main/2026-04-09.md"
   ]
 }
