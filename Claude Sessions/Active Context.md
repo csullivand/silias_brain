@@ -5,19 +5,24 @@ tags: [active-context]
 # Active Context
 
 ## Current Session
-- **Note:** [[Claude Sessions/loteria/Setup Session Tracking/2026-05-13]]
-- **Project:** loteria
-- **Working directory:** /Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte
-- **Last updated:** 2026-05-14
+- **Branch:** feat/SL-1146-metering-minutes + fix/SL-1149-dunning-rta + feat/detail-view-layout
+- **Project:** silia
+- **Last updated:** 2026-05-18
 
 ## What's Happening
-- APP DEPLOYED to Oracle Cloud: http://157.151.226.186:4000
-- Oracle Linux 9, x86, 945MB RAM + 2.5GB swap
-- Node 22 via nvm, PM2, frontend built locally and uploaded
-- Fixed: CORS origin for IP access, cookie secure flag for HTTP
-- Server serves frontend static files + API on same port
+- DynamicTables: Detail View Layout feature — backend complete
+- Column visibility sync with layout (TransactWriteItems atomic)
+- Create column auto-adds to layout (leftColumn or actionsState for buttons)
+- PATCH /tables/{tableId} accepts detailViewConfig with validations
+- Feature 4 endpoint: POST column with default visibility table_view + layout position
 
 ## Current State
-- **Git:** 3 files modified (server.js, auth/routes.js, vite.config.js), uncommitted
-- **Server:** PM2 running, health OK, user testing in browser
-- **Pending:** Commit deploy fixes, test in browser, setup PM2 startup
+- **Detail View Layout:** Backend complete, frontend API switch pending
+- **Metering PR:** Merged/deployed, working in dev
+- **Dunning PR:** Implemented, pending deploy
+
+## Recent Work
+- [[Detail View Layout Implementation]] — full notes
+- [[RTA Billing Flow End-to-End]] — billing flow reference
+- [[RTA Dunning Analysis]] — dunning gap analysis
+- [[Billing Code Review Learnings]] — patterns to follow
