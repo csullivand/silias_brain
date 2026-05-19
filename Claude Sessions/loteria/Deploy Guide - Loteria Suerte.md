@@ -83,3 +83,25 @@ Para proteger la DB en deploys, el rsync SIEMPRE excluye `data/`:
 ```
 --exclude='data'
 ```
+
+---
+
+## Backup Automático (configurado 2026-05-19)
+
+- **Script:** `/opt/loteria/scripts/backup.cjs` (usa better-sqlite3 .backup())
+- **Cron:** cada 6 horas (`0 */6 * * *`)
+- **Destino:** `/opt/loteria/backups/db-YYYY-MM-DD-HH-MM.sqlite.gz`
+- **Retención:** últimos 30 backups (~5 días)
+- **Log:** `/opt/loteria/backups/backup.log`
+
+### Restore manual
+```bash
+ssh opc@157.151.226.186
+pm2 stop loteria-api
+gunzip /opt/loteria/backups/db-2026-05-19-18-53.sqlite.gz -k
+cp /opt/loteria/backend/data/db.sqlite /opt/loteria/backend/data/db.broken.sqlite
+cp /opt/loteria/backups/db-2026-05-19-18-53.sqlite /opt/loteria/backend/data/db.sqlite
+pm2 start loteria-api
+```
+
+**TODO:** Subir backups a Cloudflare R2 para protección offsite
