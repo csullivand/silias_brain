@@ -5,27 +5,24 @@ tags: [active-context]
 # Active Context
 
 ## Current Session
-- **Branch:** develop
+- **Branch:** fix/reactivation-suspension-reason
 - **Project:** silia
 - **Last updated:** 2026-05-21
 
 ## What's Happening
-- Billing suspension + reactivation feature audit
-- Two tickets analyzed: Suspensión automática + Reactivación automática post-pago
+- Implemented 2 fixes for billing reactivation ticket
+- Fix 1: suspensionReason-based filter in AccountStatusService (don't reactivate user-disabled agents)
+- Fix 2: RTA sync on account-level suspend/reactivate operations
 
 ## Current State
-- **Suspension audit:** Complete — 4 frontend gaps identified (banner, module access, 30-day grace, read-only)
-- **Reactivation audit:** Complete — core backend done, email template basic, critical bug found
-- **Critical bug:** `AccountStatusService.updateChatbotsStatus()` reactivates ALL chatbots blindly. Fix designed using `suspensionReason` field as filter. Pending implementation.
+- **Implementation:** Complete, lint clean
+- **Pending:** Commit confirmation from user
+- **Files changed:**
+  - `Accounts/domain/services/AccountStatusService.ts` — main logic (reason filter + RTA sync)
+  - `Billing/application/handlers/StripeWebhookHandler.ts` — 2 callers pass reason: 'dunning'
+  - `Billing/application/services/BillingService.ts` — safety-net caller passes reason: 'dunning'
 
-## Designed Fix: suspensionReason-based reactivation
-- Add `reason?: 'dunning' | 'manual'` to `ChangeStatusInput`
-- Deactivate: only touch active chatbots, mark with `suspensionReason`
-- Reactivate: only restore chatbots matching the reason
-- File: `Accounts/domain/services/AccountStatusService.ts`
-- Callers to update: `BillingService.ts:185`, `StripeWebhookHandler.ts:897,553`
-
-## Gaps Still to Build
+## Still To Do (other tickets)
 1. Global suspension banner in MainLayout
 2. Module access control by account status
 3. 30-day grace timeline
@@ -34,5 +31,3 @@ tags: [active-context]
 
 ## Recent Work
 - [[Billing Suspension Audit]] — current session
-- [[RTA Billing Flow End-to-End]] — billing flow reference
-- [[RTA Dunning Analysis]] — dunning gap analysis
