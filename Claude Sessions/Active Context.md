@@ -5,24 +5,27 @@ tags: [active-context]
 # Active Context
 
 ## Current Session
-- **Branch:** feat/SL-1146-metering-minutes + fix/SL-1149-dunning-rta + feat/detail-view-layout
+- **Branch:** develop
 - **Project:** silia
-- **Last updated:** 2026-05-18
+- **Last updated:** 2026-05-21
 
 ## What's Happening
-- DynamicTables: Detail View Layout feature — backend complete
-- Column visibility sync with layout (TransactWriteItems atomic)
-- Create column auto-adds to layout (leftColumn or actionsState for buttons)
-- PATCH /tables/{tableId} accepts detailViewConfig with validations
-- Feature 4 endpoint: POST column with default visibility table_view + layout position
+- Billing suspension feature audit — mapping acceptance criteria to existing code
+- Ticket: BILLING: FE: Suspensión automática por falta de pago
 
 ## Current State
-- **Detail View Layout:** Backend complete, frontend API switch pending
-- **Metering PR:** Merged/deployed, working in dev
-- **Dunning PR:** Implemented, pending deploy
+- **Audit complete:** Full gap analysis done
+- **Backend dunning/suspension:** Fully implemented (StripeWebhookHandler, AgentSuspensionService, AccountStatusService, NotificationService, safety-net cron)
+- **Frontend gaps identified:** 4 items to build
+
+## Gaps to Build
+1. **Global suspension banner** in MainLayout (highest priority)
+2. **Module access control by account status** — block certain modules for suspended accounts, allow Billing
+3. **30-day grace timeline** — suspendedAt field + scheduled job
+4. **Read-only mode** for suspended accounts
 
 ## Recent Work
-- [[Detail View Layout Implementation]] — full notes
+- [[Billing Suspension Audit]] — full audit session
+- [[Detail View Layout Implementation]] — previous work
 - [[RTA Billing Flow End-to-End]] — billing flow reference
 - [[RTA Dunning Analysis]] — dunning gap analysis
-- [[Billing Code Review Learnings]] — patterns to follow

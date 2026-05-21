@@ -70,6 +70,12 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1149 RTA Metered Scheduling/2026-05-11|2026-05-11]] — Fixed RTA metered subscriptions for future dates + activation metered item saving
 
+#### Billing Suspension Audit
+- **Branch:** develop
+- **Status:** In progress — audit complete, implementation pending
+- **Sessions:**
+  - [[Claude Sessions/silia/Billing Suspension Audit/2026-05-21|2026-05-21]] — Full codebase audit of suspension feature: backend complete, 4 frontend gaps identified
+
 ---
 
 ### loteria
