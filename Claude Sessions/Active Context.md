@@ -11,20 +11,17 @@ tags: [active-context]
 - **Last updated:** 2026-05-22
 
 ## What's Happening
-- Investigating missing Langfuse traces in production
-- Fixed false-positive initializeFlowState ERROR log (cloud requests)
-- Root cause found: shutdownAsync() is fire-and-forget in regular chat mode — Lambda freezes before flush
-- New issue: Langfuse metrics API returning 504 Gateway Time-out
+- Investigating missing Langfuse traces in production + 504 on metrics API
+- initializeFlowState fix was applied then REVERTED
+- Two root causes identified, no code fixes applied yet
 
 ## Current State
-- **Implementation:** initializeFlowState fix done, Langfuse flush fix pending
-- **Pending:** Await flush fix, investigate 504, commit
-- **Files changed:**
-  - `shared/clases/AIChatbotProcessContext.class.ts` — initializeFlowState gate fix (line 449-459)
+- **Diagnosis:** Complete
+- **Issue 1:** Fire-and-forget shutdownAsync() — traces created in memory but never flushed before Lambda freezes
+- **Issue 2:** 30-day metrics query exceeds nginx 60s proxy timeout → 504
+- **Pending:** User direction on which fixes to implement
 
-## Key Finding
-At AIChatbotProcessContext.class.ts:2462-2476, for regular chat:
-- shutdownAsync() is in fire-and-forget IIFE
-- Lambda terminates before batch is sent
-- Langfuse client has no flushAt/flushInterval config (shared/langfuseClient.ts:86-90)
-- 504 from Langfuse API may explain why shutdown was made async originally
+## Awaiting User Input
+- Proposed fix for traces: await flushAsync() with 5s Promise.race timeout
+- Proposed fix for 504: break query into 7-day chunks OR increase nginx timeout
+- Both fixes? Which first?
