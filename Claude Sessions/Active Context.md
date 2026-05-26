@@ -7,23 +7,19 @@ tags: [active-context]
 ## Current Session
 - **Branch:** feat/SL-682-audit-logs
 - **Project:** silia
-- **Topic:** [[Claude Sessions/silia/billing-audit-tax/2026-05-25|Billing Audit + Tax + RTA Sync]]
+- **Topic:** [[Claude Sessions/silia/billing-audit-tax/2026-05-25|Billing Audit + Tax]]
 - **Last updated:** 2026-05-26
 
-## What Was Done
-- Audit log PR review fixes (accountId resolution, IAM permissions)
-- US-TAX-01: automatic_tax: { enabled: true } unconditionally, taxRate=0 everywhere
-- RTA sync: replaced HTTP syncRtaStatus with DynamoDB via lightweight RtaConfig model in Accounts module
-- Checkov baseline: added 4 new entries + renamed BillingRateAudit → BillingAuditLog
+## What's Happening
+- PR review fixes for audit log PR
+- Reverted both checkov baseline commits, then re-applied only the BillingRateAudit→BillingAuditLog rename
+- Fixed reactivateAgent sentinel check (chatbot.id !== '0')
+- Confirmed BillingRateAuditTable has no data — safe to delete
+- CKV_AWS_119 on BillingAuditLogTable: discussed CMK vs baseline approach, waiting on user decision
 
-## Current State
-- Branch: 8 commits ahead of develop, all committed
-- Tax PR created
-- Audit log PR in review
-- CI checkov baseline updated
+## Uncommitted Changes
+- .checkov.baseline: BillingRateAuditTable → BillingAuditLogTable rename
+- reactivateAgent.ts: sentinel check fix
 
-## Next Tasks
-1. Suspension FE (analysis saved in memory)
-2. AgentSuspensionService HTTP→DynamoDB migration (separate task)
-3. FE: US-TAX-02, US-TAX-03 (tax display)
-4. Audit log read endpoint (GSI permissions already in place)
+## Pending Decision
+- CKV_AWS_119: use baseline (consistent with project) or add KMS CMK (like Metrics module)?
