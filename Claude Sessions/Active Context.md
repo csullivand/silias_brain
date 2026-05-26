@@ -7,21 +7,23 @@ tags: [active-context]
 ## Current Session
 - **Branch:** feat/SL-682-audit-logs
 - **Project:** silia
-- **Topic:** [[Claude Sessions/silia/billing-audit-tax/2026-05-25|Billing Audit + Tax]]
-- **Last updated:** 2026-05-25
+- **Topic:** [[Claude Sessions/silia/billing-audit-tax/2026-05-25|Billing Audit + Tax + RTA Sync]]
+- **Last updated:** 2026-05-26
 
-## What's Happening
-- US-TAX-01 implemented: automatic_tax conditional on country=US across all 5 Stripe integration points
-- Removed hardcoded MX=16% taxRate — now taxRate=0 for all (Stripe handles US after invoice finalization)
-- Audit log handler imports were reverted by user (handlers simplified back)
-- 8 files modified total
+## What Was Done
+- Audit log PR review fixes (accountId resolution, IAM permissions)
+- US-TAX-01: automatic_tax: { enabled: true } unconditionally, taxRate=0 everywhere
+- RTA sync: replaced HTTP syncRtaStatus with DynamoDB via lightweight RtaConfig model in Accounts module
+- Checkov baseline: added 4 new entries + renamed BillingRateAudit → BillingAuditLog
 
 ## Current State
-- automatic_tax logic: complete across StripeGateway (4 places) + StripeWebhookHandler (1 place)
-- taxRate=0 defaults: createSubscription.ts + Assistant/Put/index.ts (2 places)
-- Not yet committed
+- Branch: 8 commits ahead of develop, all committed
+- Tax PR created
+- Audit log PR in review
+- CI checkov baseline updated
 
-## How to Continue
-1. Verify if user wants audit log handlers re-added or kept stripped
-2. Commit and PR
-3. FE tasks: US-TAX-02, US-TAX-03 (show tax_amount in UI)
+## Next Tasks
+1. Suspension FE (analysis saved in memory)
+2. AgentSuspensionService HTTP→DynamoDB migration (separate task)
+3. FE: US-TAX-02, US-TAX-03 (tax display)
+4. Audit log read endpoint (GSI permissions already in place)

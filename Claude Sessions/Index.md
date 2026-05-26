@@ -76,6 +76,12 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Sessions:**
   - [[Claude Sessions/silia/Billing Suspension Audit/2026-05-21|2026-05-21]] — Full codebase audit of suspension feature: backend complete, 4 frontend gaps identified
 
+#### SL-682 Billing Audit + Tax + RTA Sync
+- **Branch:** feat/SL-682-audit-logs
+- **Status:** Complete — PRs created, CI passing
+- **Sessions:**
+  - [[Claude Sessions/silia/billing-audit-tax/2026-05-25|2026-05-25]] — Audit log PR fixes, US-TAX-01 automatic_tax, RTA syncRtaStatus HTTP→DynamoDB, checkov baseline
+
 ---
 
 ### loteria
