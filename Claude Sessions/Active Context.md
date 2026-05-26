@@ -11,15 +11,16 @@ tags: [active-context]
 - **Last updated:** 2026-05-26
 
 ## What's Happening
-- PR review fixes for audit log PR
-- Reverted both checkov baseline commits, then re-applied only the BillingRateAudit→BillingAuditLog rename
-- Fixed reactivateAgent sentinel check (chatbot.id !== '0')
-- Confirmed BillingRateAuditTable has no data — safe to delete
-- CKV_AWS_119 on BillingAuditLogTable: discussed CMK vs baseline approach, waiting on user decision
+- Added KMS Customer Managed CMK for BillingAuditLog table (same pattern as Metrics module)
+- Cross-stack export of key ARN for Assistant template to import
+- Removed BillingRateAuditTable from baseline (table deleted + CMK makes CKV_AWS_119 pass)
+- reactivateAgent sentinel check fixed
 
-## Uncommitted Changes
-- .checkov.baseline: BillingRateAuditTable → BillingAuditLogTable rename
-- reactivateAgent.ts: sentinel check fix
+## Uncommitted Changes (8 files)
+- .checkov.baseline: removed BillingRateAuditTable entry
+- Billing/aws.template.yml: KMS key + alias + SSEType + IAM + Outputs export
+- Assistant/aws.template.yml: KMS ImportValue for cross-stack key
+- reactivateAgent.ts: sentinel check
 
-## Pending Decision
-- CKV_AWS_119: use baseline (consistent with project) or add KMS CMK (like Metrics module)?
+## Next
+- Commit and push for CI validation
