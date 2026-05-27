@@ -7,21 +7,19 @@ tags: [active-context]
 ## Current Session
 - **Branch:** develop
 - **Project:** silia
-- **Topic:** [[Claude Sessions/silia/billing-audit-tax/2026-05-25|Billing Audit + Tax + Security]]
+- **Topic:** Suspension FE — Account-level banner
 - **Last updated:** 2026-05-27
 
-## What Was Done (2026-05-25/26)
-- SL-682: Billing audit log PR — model, service, 12+ handler integrations, DynamoDB table, KMS CMK
-- US-TAX-01: automatic_tax: true unconditionally, removed MX=16% hardcode
-- SL-679: RTA syncRtaStatus HTTP→DynamoDB, backwards-compat suspensionReason fix
-- Security: CMK encryption for BillingAuditLog + IntentTable + AgentConfigAuditTable, DLQ + concurrency + env encryption for 5 new lambdas
+## What's Happening
+- Implemented account-level suspension banner in MainLayout
+- Added status field to Account interface + AccountContext
+- Inline Alert in MainLayout (no separate component — same pattern as per-agent dunning banner)
 
-## Current State
-- Branch: develop, all PRs merged
-- No pending uncommitted work
+## Uncommitted Changes
+- app/src/utils/accountUtils.ts: added status to Account interface
+- app/src/store/AccountContext.tsx: passes status from accountDetails
+- app/src/Components/layouts/MainLayout.tsx: Alert banner when status !== 'active'
 
-## Next Tasks
-1. Suspension FE (analysis in memory)
-2. AgentSuspensionService HTTP→DynamoDB migration
-3. FE: US-TAX-02/03 (tax display)
-4. Audit log read endpoint
+## Next
+- Test banner visually in browser
+- Module access blocking (Config, Deploy disabled when suspended)
