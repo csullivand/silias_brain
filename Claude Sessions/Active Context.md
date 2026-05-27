@@ -7,19 +7,22 @@ tags: [active-context]
 ## Current Session
 - **Branch:** develop
 - **Project:** silia
-- **Topic:** Suspension FE — Account-level banner
+- **Topic:** Suspension FE — Banner + Login unblock
 - **Last updated:** 2026-05-27
 
 ## What's Happening
-- Implemented account-level suspension banner in MainLayout
-- Added status field to Account interface + AccountContext
-- Inline Alert in MainLayout (no separate component — same pattern as per-agent dunning banner)
+- Removed login block for inactive accounts (Auth/login.ts line 113)
+- Added suspension banner in MainLayout (Alert with StopOutlined)
+- Added status to Account interface + AccountContext
+- Currently isSuspended = true (hardcoded for visual testing)
 
-## Uncommitted Changes
-- app/src/utils/accountUtils.ts: added status to Account interface
-- app/src/store/AccountContext.tsx: passes status from accountDetails
-- app/src/Components/layouts/MainLayout.tsx: Alert banner when status !== 'active'
+## Uncommitted Changes (8 files)
+- Auth/login.ts: removed account.status !== 'active' check
+- MainLayout.tsx: suspension banner (hardcoded true for testing)
+- AccountContext.tsx: passes status
+- accountUtils.ts: status field on Account interface
 
 ## Next
-- Test banner visually in browser
+- Test banner visually
+- Revert isSuspended to real check
 - Module access blocking (Config, Deploy disabled when suspended)
