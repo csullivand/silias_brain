@@ -12,21 +12,14 @@ tags: [active-context]
 - **Last updated:** 2026-05-28
 
 ## What's Happening
-- New session started, branch changed to feat/SL-664-pre-suspension-email
-- Prior work: fixed findOne() bug, daysOverdue/dueDate, URL double app., sendInvoiceNotification AccountModel
-- Found 3 more AccountModel.findOne() without params bugs
-- 8 files with uncommitted changes carried over
+- Billing/Notification changes appear to have been committed or stashed outside this session
+- User was asking about access control (access policy, end user access, CSV whitelist)
 
-## Uncommitted Changes
+## Uncommitted Changes (4 files, 40+, 1-)
 - .claude/settings.local.json
 - Assistant/infrastructure/utils/csvProcessor.ts
 - Assistant/infrastructure/utils/fileValidator.ts
-- Billing/application/handlers/StripeWebhookHandler.ts
-- Billing/application/services/BillingService.ts
-- Billing/application/services/NotificationService.ts
-- Billing/infrastructure/aws/handlers/cancelSubscription/cancelSubscription.ts
 - DynamicTables/application/Tables/get/listTables.ts
 
 ## Next
 - Awaiting user direction
-- Pending: fix remaining 3 AccountModel.findOne() bugs, deploy to DEV, create day-6 email template
