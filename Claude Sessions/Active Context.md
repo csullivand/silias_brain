@@ -12,14 +12,18 @@ tags: [active-context]
 - **Last updated:** 2026-05-28
 
 ## What's Happening
-- Billing/Notification changes appear to have been committed or stashed outside this session
-- User was asking about access control (access policy, end user access, CSV whitelist)
+- Session mostly idle — user asked about access control feature earlier
+- Active development happening outside this session: frontend routing (AppRouter, SidebarMenu), billing (cancelSubscription)
 
-## Uncommitted Changes (4 files, 40+, 1-)
+## Uncommitted Changes (8 files, 94+, 15-)
 - .claude/settings.local.json
 - Assistant/infrastructure/utils/csvProcessor.ts
 - Assistant/infrastructure/utils/fileValidator.ts
+- Billing/infrastructure/aws/handlers/cancelSubscription/cancelSubscription.ts
 - DynamicTables/application/Tables/get/listTables.ts
+- RTA (submodule)
+- app/src/components/SidebarMenu/SidebarMenu.tsx
+- app/src/router/AppRouter.tsx
 
 ## Next
 - Awaiting user direction
