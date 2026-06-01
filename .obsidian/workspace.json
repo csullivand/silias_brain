@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Templates/CLAUDE.local Template.md",
+                "file": "Claude Sessions/silia/suspension-fe/2026-05-27.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CLAUDE.local Template"
+              "title": "2026-05-27"
             }
           }
         ]
@@ -196,9 +196,15 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "aa0985d8c9ec21c7",
+  "active": "3842513b74267942",
   "lastOpenFiles": [
+    "Claude Sessions/Index.md",
+    "Claude Sessions/loteria/Setup Session Tracking/2026-05-13.md",
+    "Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md",
+    "Claude Sessions/silia/suspension-fe/2026-05-27.md",
+    "Claude Sessions/silia/suspension-fe",
     "Claude Sessions/silia/debugging-and-dunning/2026-05-26.md",
+    "Templates/CLAUDE.local Template.md",
     "Claude Sessions/silia/debugging-and-dunning",
     "journal/2026-05-25.md",
     "journal",
@@ -210,7 +216,6 @@
     "Claude Sessions/silia/Billing Suspension Audit",
     "Claude Sessions/loteria/Plan - Banca Multinivel.md",
     "Claude Sessions/loteria/Deploy Guide - Loteria Suerte.md",
-    "Claude Sessions/loteria/Setup Session Tracking/2026-05-13.md",
     "Claude Sessions/loteria/Setup Session Tracking",
     "Claude Sessions/loteria",
     "projects/silia/Detail View Layout Implementation.md",
@@ -221,19 +226,14 @@
     "projects/silia/Billing Code Review Learnings.md",
     "Claude Sessions/silia/SL-1146 Metering Minutes/2026-05-04.md",
     "projects/silia",
-    "projects",
-    "Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md",
     "Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md",
     "Claude Sessions/silia/SL-677 Dunning Process/2026-04-22.md",
     "Claude Sessions/silia/Close Conversation by ChannelId/2026-04-21.md",
     "Claude Sessions/Session Template.md",
-    "Claude Sessions/Index.md",
     "Claude Sessions/Active Context.md",
     "Claude Sessions/silia/Close Conversation Endpoint/2026-04-13.md",
     "journal/2026-04-20.md",
     "Note Name.md",
-    "Claude Sessions/silia/Obsidian Vault Cleanup/2026-04-20.md",
-    "CLAUDE.md",
     "Untitled.canvas"
   ]
 }

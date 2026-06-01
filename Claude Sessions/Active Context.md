@@ -5,25 +5,23 @@ tags: [active-context]
 # Active Context
 
 ## Current Session
-- **Branch:** feat/SL-664-pre-suspension-email
+- **Branch:** feat/SL-1178-account-suspended-banner
 - **Project:** silia
-- **Topic:** Debugging + Dunning email testing (continued)
-- **Session note:** [[Claude Sessions/silia/debugging-and-dunning/2026-05-26]]
+- **Topic:** [[Claude Sessions/silia/suspension-fe/2026-05-27|Suspension FE + Backend Enforcement]]
 - **Last updated:** 2026-05-28
 
-## What's Happening
-- Session mostly idle — user asked about access control feature earlier
-- Active development happening outside this session: frontend routing (AppRouter, SidebarMenu), billing (cancelSubscription)
+## What Was Done
+- Suspension banner in MainLayout
+- Login unblock for inactive accounts
+- Module blocking: 5 sidebar items disabled + 9 routes guarded
+- Backend enforcement: accountStatus in JWT → authorizer context → requireActiveAccount middleware
+- All committed
 
-## Uncommitted Changes (8 files, 94+, 15-)
-- .claude/settings.local.json
-- Assistant/infrastructure/utils/csvProcessor.ts
-- Assistant/infrastructure/utils/fileValidator.ts
-- Billing/infrastructure/aws/handlers/cancelSubscription/cancelSubscription.ts
-- DynamicTables/application/Tables/get/listTables.ts
-- RTA (submodule)
-- app/src/components/SidebarMenu/SidebarMenu.tsx
-- app/src/router/AppRouter.tsx
+## Current State
+- Branch: feat/SL-1178-account-suspended-banner, all committed
+- requireActiveAccount middleware created but not yet applied to handlers
 
 ## Next
-- Awaiting user direction
+1. Apply middleware to write handlers
+2. Fix refresh.ts (separate ticket)
+3. Test end-to-end

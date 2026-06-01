@@ -48,15 +48,21 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
 #### SL-682 Billing Audit + Tax + RTA Sync
 - **Branch:** feat/SL-682-audit-logs
-- **Status:** Complete — PRs created, CI passing
+- **Status:** Complete — PRs merged
 - **Sessions:**
-  - [[Claude Sessions/silia/billing-audit-tax/2026-05-25|2026-05-25]] — Audit log PR fixes, US-TAX-01, RTA sync
+  - [[Claude Sessions/silia/billing-audit-tax/2026-05-25|2026-05-25]] — Audit log PR fixes, US-TAX-01, RTA sync, security hardening
 
 #### Debugging + Dunning Email Testing
 - **Branch:** feat/SL-1296-tax-management
 - **Status:** In progress — findOne bug fixed, template data fixed, pending deploy
 - **Sessions:**
-  - [[Claude Sessions/silia/debugging-and-dunning/2026-05-26|2026-05-26]] — Multi-day: prod chatbot fix (OpenAI credits), escalation logger bug, dunning email testing with Test Clock, findOne bug fix
+  - [[Claude Sessions/silia/debugging-and-dunning/2026-05-26|2026-05-26]] — Multi-day: prod chatbot fix, escalation logger bug, dunning email testing
+
+#### SL-1178 Suspension FE: Banner + Module Blocking
+- **Branch:** feat/SL-1178-account-suspended-banner
+- **Status:** In progress — banner PR created, module blocking implemented
+- **Sessions:**
+  - [[Claude Sessions/silia/suspension-fe/2026-05-27|2026-05-27]] — Suspension banner, login unblock, module access blocking (sidebar + routes)
 
 ---
 
