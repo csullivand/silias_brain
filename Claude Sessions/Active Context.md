@@ -1,28 +1,25 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-06-04
+updated: 2026-06-08
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** CASL Authorization POC
-- **Session notes:** [[Claude Sessions/silia/casl-authorization-poc/2026-06-03]]
-- **Branch:** feat/SL-1318-filter-bar-configuration-model
+- **Topic:** CASL Authorization — Story 0 + Story 0.1
+- **Session notes:** [[Claude Sessions/silia/casl-authorization-poc/2026-06-08]]
+- **Plan:** [[projects/silia/CASL Authorization Plan]]
 
 ## What Was Done
-- CASL POC fully validated: 21 unit tests + live DynamoDB
-- Postman collection created with 7 requests
-- Local auth setup (LocalAuthFunction + env.json)
-- Presentation doc complete (14 sections)
+- Full implementation plan created (18 days, 2 parts)
+- POC handlers converted to Middy pattern
+- CASL files recreated with auto-detection + audit logging
 
 ## Current State
-- POC complete, not committed
-- Local API changes are for dev only (don't commit auth changes)
+- Plan ready for execution
+- POC code ready, tests not run yet
 
 ## How to Continue
-1. Start local API: cd POC/infrastructure && yarn POC
-2. Test with Postman using admin/user JWT tokens
-3. Commit POC code (exclude local auth changes)
-4. Roll out to all endpoints
+1. Run tests to validate POC
+2. Start executing Story 0 Step 1.1 (expand Permission model)
