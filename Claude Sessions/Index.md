@@ -64,6 +64,24 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Sessions:**
   - [[Claude Sessions/silia/suspension-fe/2026-05-27|2026-05-27]] — Suspension banner, login unblock, module access blocking (sidebar + routes)
 
+#### Folders CRUD Backend Module
+- **Branch:** TBD (needs own branch)
+- **Status:** In progress — code complete, not compiled/tested
+- **Sessions:**
+  - [[Claude Sessions/silia/folders-crud-module/2026-06-01|2026-06-01]] — Full Folders/ module: 14 files, DynamoDB model, 6 REST endpoints, SQS async, SAM template
+
+#### Filter Bar Config Backend
+- **Branch:** TBD
+- **Status:** In progress — code complete, not compiled/tested
+- **Sessions:**
+  - [[Claude Sessions/silia/filter-bar-config/2026-06-02|2026-06-02]] — GET/PUT endpoints in DynamicTables module, per-user per-table column config
+
+#### CASL Authorization POC
+- **Branch:** feat/SL-1318-filter-bar-configuration-model
+- **Status:** Complete — 3 files, 0 new tables, 15 tests passing
+- **Sessions:**
+  - [[Claude Sessions/silia/casl-authorization-poc/2026-06-03|2026-06-03]] — CASL POC complete: uses existing Role/Permission/Resource tables, 15 tests passing
+
 ---
 
 ### loteria

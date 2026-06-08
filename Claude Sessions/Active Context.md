@@ -1,27 +1,28 @@
 ---
-tags: [active-context]
+tags: [claude-session, active-context]
+updated: 2026-06-04
 ---
 
 # Active Context
 
 ## Current Session
-- **Branch:** feat/SL-1178-account-suspended-banner
-- **Project:** silia
-- **Topic:** [[Claude Sessions/silia/suspension-fe/2026-05-27|Suspension FE + Backend Enforcement]]
-- **Last updated:** 2026-05-28
+- **Project:** Silia
+- **Topic:** CASL Authorization POC
+- **Session notes:** [[Claude Sessions/silia/casl-authorization-poc/2026-06-03]]
+- **Branch:** feat/SL-1318-filter-bar-configuration-model
 
 ## What Was Done
-- Suspension banner in MainLayout
-- Login unblock for inactive accounts
-- Module blocking: 5 sidebar items disabled + 9 routes guarded
-- Backend enforcement: accountStatus in JWT → authorizer context → requireActiveAccount middleware
-- All committed
+- CASL POC fully validated: 21 unit tests + live DynamoDB
+- Postman collection created with 7 requests
+- Local auth setup (LocalAuthFunction + env.json)
+- Presentation doc complete (14 sections)
 
 ## Current State
-- Branch: feat/SL-1178-account-suspended-banner, all committed
-- requireActiveAccount middleware created but not yet applied to handlers
+- POC complete, not committed
+- Local API changes are for dev only (don't commit auth changes)
 
-## Next
-1. Apply middleware to write handlers
-2. Fix refresh.ts (separate ticket)
-3. Test end-to-end
+## How to Continue
+1. Start local API: cd POC/infrastructure && yarn POC
+2. Test with Postman using admin/user JWT tokens
+3. Commit POC code (exclude local auth changes)
+4. Roll out to all endpoints
