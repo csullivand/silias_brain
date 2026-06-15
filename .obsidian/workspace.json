@@ -194,6 +194,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "projects/silia/Adversarial Verify Prompt.md",
+    "projects/silia/Auto-Improvement Prompt.md",
+    "projects/silia/PR Review Prompt.md",
     "projects/silia/CASL Authorization Plan.md",
     "Claude Sessions/silia/suspension-fe/2026-05-27.md",
     "Claude Sessions/silia/casl-authorization-poc/2026-06-08.md",
@@ -227,9 +230,6 @@
     "Claude Sessions/silia/SL-1149 RTA Metered Scheduling/2026-05-11.md",
     "projects/silia/RTA Dunning Analysis.md",
     "projects/silia/Billing Code Review Learnings.md",
-    "Claude Sessions/silia/SL-1146 Metering Minutes/2026-05-04.md",
-    "Claude Sessions/silia/SL-678 Suspension No Payment/2026-04-23.md",
-    "Claude Sessions/silia/SL-677 Dunning Process/2026-04-22.md",
     "Untitled.canvas"
   ]
 }
