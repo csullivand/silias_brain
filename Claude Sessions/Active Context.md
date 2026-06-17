@@ -1,30 +1,33 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topics:** CASL Authorization, Folders CRUD, Logger Fix
-- **Session notes:** [[Claude Sessions/silia/casl-authorization-poc/2026-06-08]]
 - **Branch:** feat/SL-1273-folder-crud (folders), feat/SL-1271-auth-system (CASL)
 
-## What Was Done
-- CASL authorization system: 211 tests, 62 PRD permissions, middleware, endpoints
-- Folders CRUD: 9 bugs fixed from PR reviews, all security checks passing
-- Logger fix: default level warn→info so logger.info() appears in CloudWatch
+## What Was Done (this session)
+- CASL authorization: 211 tests, 62 PRD permissions, middleware, endpoints, billing wired
+- Folders CRUD: 9 bugs fixed, all security checks passing, PR open
+- Logger fix: default level warn to info (one line in logger.ts)
 - Frontend integration guide for Folders
-- 3 CI prompts saved (PR review, adversarial verify, auto-improvement)
+- Dynamic Tables refactor plan (10 days, 4 phases)
+- 3 CI prompts saved to CLAUDE.local.md + Obsidian
 
-## Current State
-- Folders PR open, passing reviews
-- CASL blocked on PM permission mapping
-- Logger fix ready for separate PR
+## Pending
+- Folders PR: waiting for final review approval
+- Logger fix: needs separate branch/PR
+- CASL: blocked on PM permission mapping (docs/permission-mapping-for-pms.md)
+- Dynamic Tables refactor: plan ready, needs Tech Lead decisions before starting
 
-## How to Continue
-1. Merge Folders PR
-2. Create separate branch/PR for logger fix
-3. Get PM answers for permission mapping (docs/permission-mapping-for-pms.md)
-4. Apply requirePermission to remaining modules once mapping confirmed
+## Key Files
+- docs/casl-authorization-plan.md
+- docs/permission-developer-guide.md
+- docs/permission-mapping-for-pms.md
+- docs/folders-frontend-integration-guide.md
+- docs/dynamic-tables-refactor-plan.md
+- scripts/seed-permissions.sh
+- scripts/cleanup-permissions.sh
