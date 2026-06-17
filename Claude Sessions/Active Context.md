@@ -7,27 +7,16 @@ updated: 2026-06-17
 
 ## Current Session
 - **Project:** Silia
-- **Branch:** feat/SL-1273-folder-crud (folders), feat/SL-1271-auth-system (CASL)
+- **Topic:** Dynamic Tables Refactor (Phase 0-2 done)
+- **Session notes:** [[Claude Sessions/silia/dynamic-tables-refactor/2026-06-17]]
+- **Branch:** feat/SL-1273-folder-crud
 
-## What Was Done (this session)
-- CASL authorization: 211 tests, 62 PRD permissions, middleware, endpoints, billing wired
-- Folders CRUD: 9 bugs fixed, all security checks passing, PR open
-- Logger fix: default level warn to info (one line in logger.ts)
-- Frontend integration guide for Folders
-- Dynamic Tables refactor plan (10 days, 4 phases)
-- 3 CI prompts saved to CLAUDE.local.md + Obsidian
+## What Was Done
+- Dynamic Tables: Phase 0 (feature flag), Phase 1 (schema + models + SAM), Phase 2 (migration script)
+- New AgentTableConnection model for N:N agent-table relationship
+- accountId + folderId added to DynamicTable model
+- New DynamoDB table + GSI in SAM template
 
-## Pending
-- Folders PR: waiting for final review approval
-- Logger fix: needs separate branch/PR
-- CASL: blocked on PM permission mapping (docs/permission-mapping-for-pms.md)
-- Dynamic Tables refactor: plan ready, needs Tech Lead decisions before starting
-
-## Key Files
-- docs/casl-authorization-plan.md
-- docs/permission-developer-guide.md
-- docs/permission-mapping-for-pms.md
-- docs/folders-frontend-integration-guide.md
-- docs/dynamic-tables-refactor-plan.md
-- scripts/seed-permissions.sh
-- scripts/cleanup-permissions.sh
+## Next
+- Phase 3: Refactor 30+ handlers (replace requireChatbotAccess)
+- Not committed yet — needs separate branch
