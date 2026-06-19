@@ -1,28 +1,31 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-06-18
+updated: 2026-06-19
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** Multi-topic: Filters, Folders CRUD, Document Search, Chatbot Investigation
-- **Session notes:** [[Claude Sessions/silia/multi-topic-session/2026-06-18]]
-- **Branches:** feat/SL-1273-folder-crud, feat/SL-1369-no-retorna-archivos-busqueda, feat/SL-1367-permission-implementation-bucket-main
+- **Topic:** Folder-aware objects + itemCounts + unified listing
+- **Session notes:** [[Claude Sessions/silia/folder-aware-objects/2026-06-19]]
+- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
 
 ## What Was Done
-- **Folders CRUD**: Fixed DynamoDB GSI null crash with ROOT sentinel, added Pino structured logging, PR #1250 created
-- **Document filter**: Built valueLower fix (3 write points + helper + tests + backfill script), tested on staging DB
-- **Multi-select filter**: Applied label fix to FiltersModal and RowDetailModal
-- **S3 permissions**: PR #1223 with implementation bucket + RTA pointer fix
-- **Chatbot deactivation**: Investigated but root cause unclear (logs expired)
-- **KMS deploys**: Identified as infra issue (IAM/SCP)
+- Added folderId to ChatbotModel (interface, class, constructor, save, query method)
+- Added itemCounts to FolderModel with atomic incrementItemCount method
+- Extended listFolders endpoint to return folders + agents + tables with type discriminator
+- Wired counter updates to all create/delete/move operations (agents, tables, folders)
+- Created migration script for backfilling folder item counts
+- Added folderId to chatbot response transformers, schemas, and PUT update schema
 
 ## Pending
-1. Folders PR #1250 — user to commit logger conversion, push, merge
-2. Document filter — commit on feat/SL-1369, deploy, run backfill
-3. Multi-select filter — verify in refactored FiltersModal
-4. S3 permissions PR #1223 — merge to prod
-5. KMS — waiting on infra team
-6. Chatbot deactivation — add audit logging to PUT endpoint
+1. Review and commit changes on feat/SL-1274-refactor-tablas-dinamicas
+2. Test locally with SAM
+3. Run migration scripts on staging (tables first-class + folder counts)
+4. Frontend: update home page to use unified listing endpoint
+5. Other open items from previous sessions:
+   - Document filter valueLower fix (feat/SL-1369) — code ready, needs deploy + backfill
+   - Multi-select filter fix — verify in refactored FiltersModal
+   - S3 permissions PR #1223 — merge to prod
+   - Chatbot deactivation mystery — add audit logging
