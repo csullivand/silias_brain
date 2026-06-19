@@ -1,24 +1,28 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-06-17
+updated: 2026-06-18
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** Dynamic Tables Refactor — PR Review Fixes
-- **Session notes:** [[Claude Sessions/silia/dynamic-tables-refactor/2026-06-17]]
-- **Branch:** feat/SL-1318-filter-bar-configuration-model
+- **Topic:** Multi-topic: Filters, Folders CRUD, Document Search, Chatbot Investigation
+- **Session notes:** [[Claude Sessions/silia/multi-topic-session/2026-06-18]]
+- **Branches:** feat/SL-1273-folder-crud, feat/SL-1369-no-retorna-archivos-busqueda, feat/SL-1367-permission-implementation-bucket-main
 
-## What Was Done (Session 2)
-- Fixed all PR review blockers: IAM role, Lambda entries, build scripts, publishDynamicTableEvent accountId
-- Found and fixed pre-existing missing build scripts for publishTable/unpublishTable
-- Fixed deleteTable to clean up AgentTableConnections on delete
-- Added KMS encryption to AgentTableConnectionsTable (key + alias + SSE + IAM perms)
-- All 5 new build scripts verified — webpack compiles successfully
-- All changes unstaged, waiting for user to confirm commit
+## What Was Done
+- **Folders CRUD**: Fixed DynamoDB GSI null crash with ROOT sentinel, added Pino structured logging, PR #1250 created
+- **Document filter**: Built valueLower fix (3 write points + helper + tests + backfill script), tested on staging DB
+- **Multi-select filter**: Applied label fix to FiltersModal and RowDetailModal
+- **S3 permissions**: PR #1223 with implementation bucket + RTA pointer fix
+- **Chatbot deactivation**: Investigated but root cause unclear (logs expired)
+- **KMS deploys**: Identified as infra issue (IAM/SCP)
 
-## Next
-- User to review and confirm commit
-- Create PR against develop
+## Pending
+1. Folders PR #1250 — user to commit logger conversion, push, merge
+2. Document filter — commit on feat/SL-1369, deploy, run backfill
+3. Multi-select filter — verify in refactored FiltersModal
+4. S3 permissions PR #1223 — merge to prod
+5. KMS — waiting on infra team
+6. Chatbot deactivation — add audit logging to PUT endpoint
