@@ -11,10 +11,14 @@
             "id": "3842513b74267942",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "projects/silia/Tables Refactor - Complete Guide.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Tables Refactor - Complete Guide"
             }
           }
         ]
@@ -194,8 +198,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
-    "projects/silia/Tables Refactor - Complete Guide.md",
+    "projects/silia/DynamicTables Migration Script.md",
     "projects/silia/Tables Refactor Deployment Runbook.md",
+    "projects/silia/Tables Refactor - Complete Guide.md",
     "concepts/Webpack Cross-Module Imports.md",
     "concepts",
     "Claude Sessions/silia/refactor-tables-pr/2026-06-23.md",
@@ -229,7 +234,6 @@
     "Claude Sessions/silia/debugging-and-dunning",
     "journal/2026-05-25.md",
     "Claude Sessions/silia/billing-audit-tax/2026-05-25.md",
-    "Claude Sessions/silia/langfuse-traces-fix/2026-05-22.md",
     "Untitled.canvas"
   ]
 }
