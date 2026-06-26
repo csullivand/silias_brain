@@ -10,6 +10,13 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### DynamicTables Refactor PR #1353
+- **Branch:** feat/SL-1273-folder-crud
+- **Status:** In progress — rowCount feature complete, pending deploy
+- **Sessions:**
+  - [[Claude Sessions/silia/refactor-tables-pr/2026-06-26|2026-06-26]] — Fixed Adversarial Verify BLOCK issues (env var + deploy order)
+  - [[Claude Sessions/silia/refactor-tables-pr/2026-06-23|2026-06-23]] — Encoder/vocab fix, infra cross-stack, incrementItemCount CAS
+
 #### Initial Obsidian Setup
 - **Branch:** develop
 - **Status:** Complete
