@@ -10,6 +10,12 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### Permission Cache Invalidation (Feature 6)
+- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
+- **Status:** Complete — 25 tests passing, PR reviewed, ready to commit
+- **Sessions:**
+  - [[Claude Sessions/silia/permission-invalidation/2026-06-30|2026-06-30]] — Full implementation: PermissionInvalidationService, SQS processor, hooks in 3 modules
+
 #### DynamicTables Refactor PR #1353
 - **Branch:** feat/SL-1273-folder-crud
 - **Status:** In progress — rowCount feature complete, pending deploy

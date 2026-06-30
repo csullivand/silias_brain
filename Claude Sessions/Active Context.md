@@ -1,33 +1,40 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-06-26
+updated: 2026-06-30
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** DynamicTables Refactor PR #1353 — rowCount feature + deploy fixes
-- **Session notes:** [[Claude Sessions/silia/refactor-tables-pr/2026-06-26]]
-- **Branch:** feat/SL-1273-folder-crud
+- **Topic:** Feature 6 - Permission Cache Invalidation on Object Moves
+- **Session notes:** [[Claude Sessions/silia/permission-invalidation/2026-06-30]]
+- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
 
-## What Was Done (2026-06-26)
-- Fixed Adversarial Verify BLOCK issues:
-  - Added `DYNAMIC_TABLES_ROWS_TABLE` env var to Folders Globals (was causing rowCount to always return 0)
-  - Documented deploy order in all 3 templates: Folders → Assistant → DynamicTables
-- Previous session work:
-  - Implemented O(1) rowCount via META row counter in DynamicRow.model.ts
-  - Added incrementActiveRowCount/getActiveRowCount methods
-  - Updated createRow, deleteRow, restoreRow handlers to maintain counter
-  - Added rowCount to listFolders table items
-  - Fixed KMS permissions (ImportValue instead of alias ARN)
-  - Added IAM for Folders to read DynamicTables-Rows
+## What Was Done (2026-06-30)
 
-## Latest Commit
-`20d82d5f3` — fix(infra): add missing env var and document deploy order for row count feature
+### Feature 6: Permission Cache Invalidation — implemented earlier; TODAY = infra/template review
+
+Implementation (done in prior session): automatic cache invalidation when objects (folders, agents, tables) move between folders. New `Access/domain/services/PermissionInvalidationService.ts`, SQS processor, 25 passing tests. Hooks added to `Folders/.../moveFolder.ts`, `Assistant/application/Put/index.ts`, `DynamicTables/.../patch/updateTable.ts`.
+
+### TODAY: Debugged "PATCH /dynamic-tables/tables/{id} → no CloudWatch logs" → reviewed DynamicTables template
+
+**Root-cause findings (analysis only, NO code changed today):**
+
+- 🔴 **Finding 1 — Deploy-time blocker (most likely root cause):** The template diff adds `PERMISSION_INVALIDATION_QUEUE_URL: !ImportValue ${StackName}-permission-invalidation-queue-url` to `Globals` (DynamicTables + Folders + Assistant). That export is owned ONLY by the **untracked, not-yet-deployed** `Access` stack (`Access/.../aws.template.yml:436`). Until Access is deployed, DynamoTables/Folders/Assistant stacks FAIL to deploy (CFN: "No export named ... found") → new code never lands → explains no logs.
+- 🟠 **Finding 2 — Runtime IAM gap:** No DT role grants `dynamodb:GetItem/Query` on `AccessGrant`/`TeamUser` or `sqs:SendMessage` on the queue. Bites non-superusers; current superuser token masks it (bypass @ `requirePermission.ts:383`).
+- 🟡 **Finding 3 — Blast radius:** import is in `Globals` → all ~40 functions hard-depend on it.
+
+**Route wiring itself is correct** (`TablesPatch` @ template:1563). Secondary live-symptom candidate: PATCH body fails `UpdateTableModel` (`ValidateBody:true`, `minProperties:1`) → 400 with no logs.
 
 ## Pending
-1. Deploy to dev and verify rowCount works
-2. Run backfill script for existing tables (pre-existing tables won't have META row)
-3. Merge PR #1353 after dev verification
-4. Optional: Add CloudWatch metric for counter drift detection
+1. **Confirm Finding 1:** `aws cloudformation list-exports --query "Exports[?Name=='dev-app-silia-com-permission-invalidation-queue-url']"` (+ check DynamicTables dev stack for ROLLBACK).
+2. **Deploy ordering:** deploy `Access` stack to dev FIRST, verify export, THEN Folders/Assistant/DynamicTables.
+3. **Fix IAM (Finding 2):** add AccessGrant/TeamUser read + SQS SendMessage to DtTableWriteRole (+ peers); import queue ARN via `${StackName}-permission-invalidation-queue-arn`.
+4. **Get PATCH status code** to disambiguate deploy-blocker vs 400 body-validation.
+5. Commit changes; include in PR #1353.
+
+## Related Notes
+- [[Dynamic Tables Refactor Plan]]
+- [[Permission Invalidation Design]]
+- [[CASL Authorization Plan]]

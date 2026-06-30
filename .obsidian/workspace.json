@@ -198,6 +198,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "projects/silia/Permission Invalidation Design.md",
+    "Claude Sessions/silia/permission-invalidation/2026-06-30.md",
+    "Claude Sessions/silia/permission-invalidation",
     "Claude Sessions/silia/refactor-tables-pr/2026-06-26.md",
     "projects/silia/Move Objects Between Folders.md",
     "projects/silia/DynamicTables Migration Script.md",
@@ -231,9 +234,6 @@
     "Claude Sessions/loteria/Setup Session Tracking/2026-05-13.md",
     "Claude Sessions/silia/SL-1143 Minutes Card RTA/2026-04-28.md",
     "Claude Sessions/silia/suspension-fe",
-    "Claude Sessions/silia/debugging-and-dunning/2026-05-26.md",
-    "Templates/CLAUDE.local Template.md",
-    "Claude Sessions/silia/debugging-and-dunning",
     "Untitled.canvas"
   ]
 }
