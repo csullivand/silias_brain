@@ -1,40 +1,39 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-06-30
+updated: 2026-07-01
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** Feature 6 - Permission Cache Invalidation on Object Moves
-- **Session notes:** [[Claude Sessions/silia/permission-invalidation/2026-06-30]]
-- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
+- **Topic:** Feature 7 - Superadmin Folder Access + Bug Fixes
+- **Branch:** feat/SL-1284-permisos-efectivos-herencia
 
-## What Was Done (2026-06-30)
+## What Was Done (2026-07-01)
 
-### Feature 6: Permission Cache Invalidation — implemented earlier; TODAY = infra/template review
+### Role-Based Filtering in listFolders — COMPLETE ✅
+Added filtering to hide agent/table cards from users whose role lacks view permissions.
 
-Implementation (done in prior session): automatic cache invalidation when objects (folders, agents, tables) move between folders. New `Access/domain/services/PermissionInvalidationService.ts`, SQS processor, 25 passing tests. Hooks added to `Folders/.../moveFolder.ts`, `Assistant/application/Put/index.ts`, `DynamicTables/.../patch/updateTable.ts`.
+**Key Fix:** `checkPermission` is async, must use `await` (Promise objects are always truthy).
 
-### TODAY: Debugged "PATCH /dynamic-tables/tables/{id} → no CloudWatch logs" → reviewed DynamicTables template
+### Cross-Tenant Permission Leak — COMPLETE ✅
+Fixed `PermissionResolver.getAncestorFolderIds()` to properly isolate tenants:
+- If `folder.accountId !== accountId` → return `[]` (not `[folderId]`)
+- Separated tenant check from no-path check
 
-**Root-cause findings (analysis only, NO code changed today):**
+### Superadmin `?accountId` Support — COMPLETE ✅
+All three Folders GET endpoints now accept `?accountId` query param for superusers.
 
-- 🔴 **Finding 1 — Deploy-time blocker (most likely root cause):** The template diff adds `PERMISSION_INVALIDATION_QUEUE_URL: !ImportValue ${StackName}-permission-invalidation-queue-url` to `Globals` (DynamicTables + Folders + Assistant). That export is owned ONLY by the **untracked, not-yet-deployed** `Access` stack (`Access/.../aws.template.yml:436`). Until Access is deployed, DynamoTables/Folders/Assistant stacks FAIL to deploy (CFN: "No export named ... found") → new code never lands → explains no logs.
-- 🟠 **Finding 2 — Runtime IAM gap:** No DT role grants `dynamodb:GetItem/Query` on `AccessGrant`/`TeamUser` or `sqs:SendMessage` on the queue. Bites non-superusers; current superuser token masks it (bypass @ `requirePermission.ts:383`).
-- 🟡 **Finding 3 — Blast radius:** import is in `Globals` → all ~40 functions hard-depend on it.
+## Latest Commits
+- `971903e7a` — fix(access): prevent cross-tenant permission inheritance leak
+- `d2f1eb23c` — fix(folders): await async checkPermission calls in listFolders
+- `c1b4f44d5` — feat(folders): add role-based filtering to listFolders
 
-**Route wiring itself is correct** (`TablesPatch` @ template:1563). Secondary live-symptom candidate: PATCH body fails `UpdateTableModel` (`ValidateBody:true`, `minProperties:1`) → 400 with no logs.
+## Branch Status
+Working tree is clean. Ready for PR review.
 
 ## Pending
-1. **Confirm Finding 1:** `aws cloudformation list-exports --query "Exports[?Name=='dev-app-silia-com-permission-invalidation-queue-url']"` (+ check DynamicTables dev stack for ROLLBACK).
-2. **Deploy ordering:** deploy `Access` stack to dev FIRST, verify export, THEN Folders/Assistant/DynamicTables.
-3. **Fix IAM (Finding 2):** add AccessGrant/TeamUser read + SQS SendMessage to DtTableWriteRole (+ peers); import queue ARN via `${StackName}-permission-invalidation-queue-arn`.
-4. **Get PATCH status code** to disambiguate deploy-blocker vs 400 body-validation.
-5. Commit changes; include in PR #1353.
-
-## Related Notes
-- [[Dynamic Tables Refactor Plan]]
-- [[Permission Invalidation Design]]
-- [[CASL Authorization Plan]]
+1. Run adversarial verify before merging
+2. Ensure CI passes
+3. Update PR description if needed
