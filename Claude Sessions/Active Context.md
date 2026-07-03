@@ -1,39 +1,56 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-07-01
+updated: 2026-07-03
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** Feature 7 - Superadmin Folder Access + Bug Fixes
-- **Branch:** feat/SL-1284-permisos-efectivos-herencia
+- **Topic:** Feature 2 - Visible Objects Endpoint (`visible_to=me`)
+- **Branch:** fix/SL-1278-endpoint-objetos-visibles-usuario
 
-## What Was Done (2026-07-01)
+## What Was Done (2026-07-03)
 
-### Role-Based Filtering in listFolders — COMPLETE ✅
-Added filtering to hide agent/table cards from users whose role lacks view permissions.
+### Feature 2: Visibility Filter — COMPLETE ✅
 
-**Key Fix:** `checkPermission` is async, must use `await` (Promise objects are always truthy).
+Implemented `?visible_to=me` query parameter on `GET /folders` endpoint.
 
-### Cross-Tenant Permission Leak — COMPLETE ✅
-Fixed `PermissionResolver.getAncestorFolderIds()` to properly isolate tenants:
-- If `folder.accountId !== accountId` → return `[]` (not `[folderId]`)
-- Separated tenant check from no-path check
+**New Files Created:**
+- `Access/domain/services/VisibilityResolver.ts` — Core visibility resolution
+- `Access/domain/services/__tests__/VisibilityResolver.test.ts` — 15 unit tests
 
-### Superadmin `?accountId` Support — COMPLETE ✅
-All three Folders GET endpoints now accept `?accountId` query param for superusers.
+**Modified Files:**
+- `Folders/application/Folders/get/listFolders.ts` — Added visible_to filter
+- `Folders/domain/models/Folder.model.ts` — Added findByIds() method
+- `Teams/domain/models/TeamUser.model.ts` — Fixed to use GSI queries
+- `Folders/infrastructure/aws.template.yml` — Added IAM for AccessGrant + TeamUser
+- `tsconfig.eslint.json` — Added Access + Folders modules
+- Postman collections updated
 
-## Latest Commits
-- `971903e7a` — fix(access): prevent cross-tenant permission inheritance leak
-- `d2f1eb23c` — fix(folders): await async checkPermission calls in listFolders
-- `c1b4f44d5` — feat(folders): add role-based filtering to listFolders
+**Key Features:**
+- Direct grants, team grants, folder inheritance (up to 5 levels)
+- Admin/Superuser/Superadmin bypass
+- Graceful degradation on errors (fail-open)
+- Tenant isolation via accountId filtering
 
-## Branch Status
-Working tree is clean. Ready for PR review.
+**Commits:**
+- `a17cc3a31` — feat(folders): add visible_to=me filter
+- `a04a285c7` — fix(folders): add IAM permissions and graceful degradation
 
-## Pending
-1. Run adversarial verify before merging
-2. Ensure CI passes
-3. Update PR description if needed
+**Documentation:**
+- Created `docs/folders-and-permissions-frontend-guide.md`
+- Added to Obsidian: [[Folders and Permissions Frontend Guide]]
+
+## Tests
+- 15 unit tests passing
+- 28 scenario tests passing
+- 5 filterVisibleItems tests passing
+
+## Adversarial Verify
+All 5 lenses PASS ✅ after fixes
+
+## Related Notes
+- [[Dynamic Tables Refactor Plan]]
+- [[Tables Refactor Deployment Runbook]]
+- [[Folders and Permissions Frontend Guide]]
