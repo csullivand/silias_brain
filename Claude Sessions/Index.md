@@ -10,6 +10,12 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### Access Module Template Fixes
+- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
+- **Status:** In progress — template fixed, pending commit/push
+- **Sessions:**
+  - [[Claude Sessions/silia/access-template-fixes/2026-07-03|2026-07-03]] — Handler naming, KMS policy, BasePathMapping, URL paths
+
 #### Permission Cache Invalidation (Feature 6)
 - **Branch:** feat/SL-1274-refactor-tablas-dinamicas
 - **Status:** Complete — 25 tests passing, PR reviewed, ready to commit

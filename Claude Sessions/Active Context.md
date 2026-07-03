@@ -7,48 +7,69 @@ updated: 2026-07-03
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** Feature 2 - Visible Objects Endpoint (`visible_to=me`)
-- **Branch:** fix/SL-1278-endpoint-objetos-visibles-usuario
+- **Topic:** Access Module Template Fixes + CI Build Fixes
+- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
 
 ## What Was Done (2026-07-03)
 
-### Feature 2: Visibility Filter — COMPLETE ✅
+### Access Module Infrastructure Fixes
 
-Implemented `?visible_to=me` query parameter on `GET /folders` endpoint.
+Fixed multiple issues with the Access module SAM template to align with other modules:
+
+**Handler Naming (CI Build Fix):**
+- All 6 handlers changed from `handler.handler` to `handlerMin.handler`
+- `createGrant.handler` → `createGrantMin.handler`
+- `listGrants.handler` → `listGrantsMin.handler`
+- `getEffectivePermissions.handler` → `getEffectivePermissionsMin.handler`
+- `deleteGrant.handler` → `deleteGrantMin.handler`
+- `updateGrant.handler` → `updateGrantMin.handler`
+- `processInvalidation.handler` → `processInvalidationMin.handler`
+
+**Import Case Sensitivity (Linux CI Fix):**
+- `User.model` → `user.model` in createGrant.ts (macOS case-insensitive, Linux case-sensitive)
+
+**Template Alignment with Other Modules:**
+- Added `USER_TABLE` env var to Globals (needed by createGrant.ts)
+- Added `BasePathMapping` for custom domain routing (`/access`)
+- Added `kms:CreateGrant` to KMS policy (matches Folders/DynamicTables)
+- Fixed `${Region}` → `${AWS::Region}` in KMS ViaService condition
+- Fixed `${Region}` → `${AWS::Region}` in API endpoint output
+
+**URL Path Fixes (Prevent Double Prefix):**
+- `/access/effective` → `/effective`
+- `/access/grants` → `/grants`
+- `/access/grants/{grantId}` → `/grants/{grantId}`
+- BasePath already adds `/access`, so Lambda paths shouldn't include it
 
 **New Files Created:**
-- `Access/domain/services/VisibilityResolver.ts` — Core visibility resolution
-- `Access/domain/services/__tests__/VisibilityResolver.test.ts` — 15 unit tests
+- `Access/infrastructure/package.json` — webpack build scripts for all 6 Lambda handlers
+- `Access/infrastructure/env.json` — local development environment variables
 
-**Modified Files:**
-- `Folders/application/Folders/get/listFolders.ts` — Added visible_to filter
-- `Folders/domain/models/Folder.model.ts` — Added findByIds() method
-- `Teams/domain/models/TeamUser.model.ts` — Fixed to use GSI queries
-- `Folders/infrastructure/aws.template.yml` — Added IAM for AccessGrant + TeamUser
-- `tsconfig.eslint.json` — Added Access + Folders modules
-- Postman collections updated
+### Daniel Rubiano's Question (AgentTableConnection)
 
-**Key Features:**
-- Direct grants, team grants, folder inheritance (up to 5 levels)
-- Admin/Superuser/Superadmin bypass
-- Graceful degradation on errors (fail-open)
-- Tenant isolation via accountId filtering
+Investigated existing endpoints for connecting agents to tables:
 
-**Commits:**
-- `a17cc3a31` — feat(folders): add visible_to=me filter
-- `a04a285c7` — fix(folders): add IAM permissions and graceful degradation
+**Existing Endpoints:**
+- `POST /tables/{tableId}/agents` — Connect agent to table
+- `GET /tables/{tableId}/agents` — List agents connected to table
+- `DELETE /tables/{tableId}/agents/{agentId}` — Disconnect agent
 
-**Documentation:**
-- Created `docs/folders-and-permissions-frontend-guide.md`
-- Added to Obsidian: [[Folders and Permissions Frontend Guide]]
+**What Daniel Needs to Create:**
+- `GET /agents/{agentId}/tables` — Model method `findByAgentId()` already exists
+- `PATCH /tables/{tableId}/agents/{agentId}` — Needs new endpoint + model update method
 
-## Tests
-- 15 unit tests passing
-- 28 scenario tests passing
-- 5 filterVisibleItems tests passing
+**No conflicts** with current platform work (Folders/Permissions).
 
-## Adversarial Verify
-All 5 lenses PASS ✅ after fixes
+## Pending
+1. Commit and push Access template fixes
+2. Verify CI build passes
+3. Daniel to create missing endpoints
+
+## Files Modified
+- `Access/infrastructure/aws.template.yml` — Template fixes
+- `Access/infrastructure/package.json` — NEW: build scripts
+- `Access/infrastructure/env.json` — NEW: local env vars
+- `Access/application/Grants/post/createGrant.ts` — Import case fix
 
 ## Related Notes
 - [[Dynamic Tables Refactor Plan]]
