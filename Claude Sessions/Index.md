@@ -10,11 +10,11 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
-#### Access Module Template Fixes
-- **Branch:** feat/SL-1274-refactor-tablas-dinamicas
-- **Status:** In progress — template fixed, pending commit/push
+#### Access Module Deployment
+- **Branch:** fix/SL-1278-endpoint-objetos-visibles-usuario
+- **Status:** Complete — template fixed, resources seeded
 - **Sessions:**
-  - [[Claude Sessions/silia/access-template-fixes/2026-07-03|2026-07-03]] — Handler naming, KMS policy, BasePathMapping, URL paths
+  - [[Claude Sessions/silia/access-deployment/2026-07-03|2026-07-03]] — Fixed SQS VisibilityTimeout, seeded access.view/access.manage permissions
 
 #### Permission Cache Invalidation (Feature 6)
 - **Branch:** feat/SL-1274-refactor-tablas-dinamicas
