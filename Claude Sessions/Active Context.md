@@ -1,44 +1,37 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-07-03
+updated: 2026-07-14
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** Access Module Deployment Fix
-- **Branch:** fix/SL-1278-endpoint-objetos-visibles-usuario
+- **Topic:** CASL IAM grants for Folders & DynamicTables (admin delete fix)
+- **Branch:** develop (edits uncommitted)
+- **Session note:** [[Claude Sessions/silia/casl-iam-role-tables/2026-07-14]]
 
-## What Was Done (2026-07-03)
+## What Was Done (2026-07-14)
 
-### Access Module Deployment Fix
-- Fixed CloudFormation validation error `AWS::EarlyValidation::PropertyValidation`
-- Root cause: Invalid SQS property name `VisibilityTimeoutSeconds` → `VisibilityTimeout`
-- Commit: `bc93547b3`
+### Root cause
+Non-superuser **admins** got `AccessDeniedException` on `createFolder` (and could not delete folders/tables). Cause: the CASL permission check does `dynamodb:Scan` on `${StackName}-role`, but the Lambda exec roles were not granted the CASL tables (`-role`, `-permission`, `-resource`). Superusers short-circuit to `manage:all` and skip the DB read — hence "superuser can but admin doesn't". There is NO "last item" delete rule anywhere; the requirement was really "unblock admins".
 
-### Access Resources Seeded
-Ran `scripts/migrations/seed-access-resources.ts` for dev environment:
+### Fix (IAM only, matches Assistant/Access pattern)
+Added the canonical 3-statement CASL grant (Scan on role, Query on permission+index, GetItem on resource; no KMS needed):
+- `Folders/infrastructure/aws.template.yml` — `FolderReadRole` + `FolderWriteRole`
+- `DynamicTables/infrastructure/aws.template.yml` — 10 CASL roles: table read/write, column read/write, row read/write, document, agent-connection, filterbar-config, assistant-suggestions
 
-| Resource | Granted To |
-|----------|------------|
-| `access.view` | admin, supervisor |
-| `access.manage` | admin |
+Agents were never affected (delete uses `assertRole` = JWT only, no DB).
 
-**Note:** Table names are lowercase: `dev-app-silia-com-resource`, `dev-app-silia-com-permission`, `dev-app-silia-com-role`
-
-### Template Verification
-Confirmed Access template alignment with Folders/DynamicTables:
-- Handler names: `*Min.handler` ✓
-- Lambda paths: no `/access` prefix (uses BasePathMapping) ✓
-- SQS VisibilityTimeout: fixed ✓
-- All dist files built ✓
+`cfn-lint` clean on both (only a pre-existing unrelated `AWS::Serverless::Api SecurityPolicy` warning).
 
 ## Pending
-1. Verify CI deployment succeeds after push
-2. Test Access endpoints in dev environment
-3. Run seed script for staging/prod when deploying there
+1. Branch + commit both templates (suggested: `fix/casl-iam-role-tables-folders-dynamictables`).
+2. Deploy Folders + DynamicTables stacks.
+3. Test as an admin: create/list/delete folder + table incl. the last one.
+4. Audit other modules using `assertPermission`/`requireTableAccess` for the same missing grant.
 
 ## Related Notes
+- [[Claude Sessions/silia/casl-iam-role-tables/2026-07-14]]
 - [[SAM Template Patterns]]
-- [[Tables Refactor Deployment Runbook]]
+- Previous: [[Claude Sessions/silia/access-deployment/2026-07-03]] (Access module deploy, same table naming)

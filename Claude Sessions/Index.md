@@ -110,3 +110,8 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** In progress
 - **Sessions:**
   - [[Claude Sessions/loteria/Setup Session Tracking/2026-05-13|2026-05-13]] — Set up Obsidian session tracking
+#### CASL IAM Role Tables (admin delete fix)
+- **Branch:** develop (uncommitted)
+- **Status:** Code complete — pending commit + deploy + admin test
+- **Sessions:**
+  - [[Claude Sessions/silia/casl-iam-role-tables/2026-07-14|2026-07-14]] — Granted CASL role/permission/resource tables to Folders (2 roles) + DynamicTables (10 roles). Fixes admin AccessDeniedException on delete/create/list.
