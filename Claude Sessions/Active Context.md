@@ -1,37 +1,42 @@
 ---
 tags: [claude-session, active-context]
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 
 # Active Context
 
 ## Current Session
 - **Project:** Silia
-- **Topic:** CASL IAM grants for Folders & DynamicTables (admin delete fix)
-- **Branch:** develop (edits uncommitted)
-- **Session note:** [[Claude Sessions/silia/casl-iam-role-tables/2026-07-14]]
+- **Topic:** [Feature 5] access_grants polimórfico (SL-1282)
+- **Branch:** fix/SL-1282-access-polimorficos (basada en develop, SIN COMMITEAR)
 
-## What Was Done (2026-07-14)
+## Estado (2026-07-15)
+Feature 5 (modelo AccessGrant + endpoints /access) — **desarrollo COMPLETO**, sin commitear. Detalle completo en [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]].
 
-### Root cause
-Non-superuser **admins** got `AccessDeniedException` on `createFolder` (and could not delete folders/tables). Cause: the CASL permission check does `dynamodb:Scan` on `${StackName}-role`, but the Lambda exec roles were not granted the CASL tables (`-role`, `-permission`, `-resource`). Superusers short-circuit to `manage:all` and skip the DB read — hence "superuser can but admin doesn't". There is NO "last item" delete rule anywhere; the requirement was really "unblock admins".
+### Implementado (todos los AC + extras)
+- S1 idempotencia, S2 validar role, S5 permiso share (object-level), S6 audit log (tabla dedicada), S7 cascada user/team, S8 cascada objeto, S9 invalidar miembros team, S3 herencia en listGrants (is_inherited+origen), S4 bloquear revocar heredado (403), S11 soft delete (reemplaza hard delete), S12 admin_objects (era stub).
+- 8 tests nuevos, verdes.
 
-### Fix (IAM only, matches Assistant/Access pattern)
-Added the canonical 3-statement CASL grant (Scan on role, Query on permission+index, GetItem on resource; no KMS needed):
-- `Folders/infrastructure/aws.template.yml` — `FolderReadRole` + `FolderWriteRole`
-- `DynamicTables/infrastructure/aws.template.yml` — 10 CASL roles: table read/write, column read/write, row read/write, document, agent-connection, filterbar-config, assistant-suggestions
+### Decisiones de producto
+- D1: share solo admin (supervisor/operator = futuro).
+- D2: PERMISSION_STRICT_MODE apagado (rollout coordinado aparte) → hoy el check share advierte pero no bloquea a no-admins.
 
-Agents were never affected (delete uses `assertRole` = JWT only, no DB).
+### Diferido
+- S10 dashboard (no existe la entidad backend).
+- Cleanup strict-tsc (~30 chatbotId + colisiones de tests; el repo no compila con tsc estricto, build real lo ignora).
 
-`cfn-lint` clean on both (only a pre-existing unrelated `AWS::Serverless::Api SecurityPolicy` warning).
+## PENDIENTE
+1. Commit + push + PR a develop.
+2. Correr seed-access-resources.ts (crea folder/agent/table.share).
+3. Desplegar 6 módulos: Access (tabla AccessAuditLog + soft delete), Teams, User, Folders, DynamicTables, Assistant.
+4. NO verificado: suite completa, dev real, review.
+5. 2 peticiones fuera de scope que el usuario mencionó (aún sin detallar).
 
-## Pending
-1. Branch + commit both templates (suggested: `fix/casl-iam-role-tables-folders-dynamictables`).
-2. Deploy Folders + DynamicTables stacks.
-3. Test as an admin: create/list/delete folder + table incl. the last one.
-4. Audit other modules using `assertPermission`/`requireTableAccess` for the same missing grant.
+## Cómo continuar
+- Correr suite completa de módulos tocados → confirmar.
+- Commit → push → PR a develop.
+- Seed + deploy + prueba dev.
 
-## Related Notes
-- [[Claude Sessions/silia/casl-iam-role-tables/2026-07-14]]
-- [[SAM Template Patterns]]
-- Previous: [[Claude Sessions/silia/access-deployment/2026-07-03]] (Access module deploy, same table naming)
+## Related
+- [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]]
+- [[Claude Sessions/silia/resource-counts-teams-users/2026-07-14]]

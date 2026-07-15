@@ -115,3 +115,10 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Code complete — pending commit + deploy + admin test
 - **Sessions:**
   - [[Claude Sessions/silia/casl-iam-role-tables/2026-07-14|2026-07-14]] — Granted CASL role/permission/resource tables to Folders (2 roles) + DynamicTables (10 roles). Fixes admin AccessDeniedException on delete/create/list.
+
+
+#### [Feature 5] access_grants polimórfico (SL-1282)
+- **Branch:** fix/SL-1282-access-polimorficos
+- **Status:** Desarrollo completo (todos los AC + soft delete + admin_objects), SIN COMMITEAR — falta commit/push/PR/seed/deploy/verify
+- **Sessions:**
+  - [[Claude Sessions/silia/feature-5-access-grants/2026-07-15|2026-07-15]] — Review + implementación completa de Feature 5: idempotencia, validar role, permiso share, audit log, cascadas, invalidación team, herencia (is_inherited+403), soft delete, admin_objects. Decisiones D1 (share solo admin) y D2 (strict mode apagado). Diferido: dashboard, cleanup strict-tsc.

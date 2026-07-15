@@ -198,6 +198,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "concepts/Silia Access Permission System.md",
+    "Claude Sessions/silia/feature-5-access-grants/2026-07-15.md",
+    "Claude Sessions/silia/feature-5-access-grants",
     "journal/2026-07-14.md",
     "Claude Sessions/silia/casl-iam-role-tables/2026-07-14.md",
     "Claude Sessions/silia/casl-iam-role-tables",
@@ -230,10 +233,7 @@
     "projects/silia/CASL Authorization Plan.md",
     "Claude Sessions/silia/suspension-fe/2026-05-27.md",
     "Claude Sessions/silia/casl-authorization-poc/2026-06-08.md",
-    "Claude Sessions/silia/casl-authorization-poc/2026-06-03.md",
     "Claude Sessions/silia/casl-authorization-poc",
-    "Claude Sessions/silia/filter-bar-config/2026-06-02.md",
-    "Claude Sessions/silia/filter-bar-config",
     "Untitled.canvas"
   ]
 }
