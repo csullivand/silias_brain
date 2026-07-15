@@ -5,38 +5,27 @@ updated: 2026-07-15
 
 # Active Context
 
-## Current Session
-- **Project:** Silia
-- **Topic:** [Feature 5] access_grants polimórfico (SL-1282)
-- **Branch:** fix/SL-1282-access-polimorficos (basada en develop, SIN COMMITEAR)
+## Estado (2026-07-15) — 2 líneas de trabajo activas
 
-## Estado (2026-07-15)
-Feature 5 (modelo AccessGrant + endpoints /access) — **desarrollo COMPLETO**, sin commitear. Detalle completo en [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]].
+### 1. Feature 5 access_grants (SL-1282)
+- **Rama:** `fix/SL-1282-access-polimorficos` — COMPLETO, commiteado + pusheado (commit e28ef04e0). Reviews (pr + adversarial) en verde.
+- Detalle: [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]].
+- Falta: abrir PR, correr seed, desplegar 6 módulos, review.
 
-### Implementado (todos los AC + extras)
-- S1 idempotencia, S2 validar role, S5 permiso share (object-level), S6 audit log (tabla dedicada), S7 cascada user/team, S8 cascada objeto, S9 invalidar miembros team, S3 herencia en listGrants (is_inherited+origen), S4 bloquear revocar heredado (403), S11 soft delete (reemplaza hard delete), S12 admin_objects (era stub).
-- 8 tests nuevos, verdes.
-
-### Decisiones de producto
-- D1: share solo admin (supervisor/operator = futuro).
-- D2: PERMISSION_STRICT_MODE apagado (rollout coordinado aparte) → hoy el check share advierte pero no bloquea a no-admins.
-
-### Diferido
-- S10 dashboard (no existe la entidad backend).
-- Cleanup strict-tsc (~30 chatbotId + colisiones de tests; el repo no compila con tsc estricto, build real lo ignora).
+### 2. Counters + Embeds (SL-1281 follow-up)
+- **Rama:** `feat/SL-1281-embed-teams-members` — commiteado + pusheado. 3 commits:
+  1. embeds: `teams`[{id,name}] en /management (reemplaza teamNames) + `members` en /teams.
+  2. (mismo)
+  3. **fix IAM**: AccessGrant Query en `TeamsGetAllRole` (commit 1177e8406).
+- **🐛 Bug de counters resuelto:** /teams daba 0 porque el rol real (`teams-get-all-role`) no tenía AccessGrant (el PR SL-1281 se lo puso a `TeamsGetByAccountRole`, rol equivocado). Fail-open lo tragaba. Fix pusheado. ⚠️ aplica al DESPLEGAR Teams. Ver [[Claude Sessions/silia/resource-counts-teams-users/2026-07-14]].
+- /management counters OK (UserListOrgUsersRole bien wired).
 
 ## PENDIENTE
-1. Commit + push + PR a develop.
-2. Correr seed-access-resources.ts (crea folder/agent/table.share).
-3. Desplegar 6 módulos: Access (tabla AccessAuditLog + soft delete), Teams, User, Folders, DynamicTables, Assistant.
-4. NO verificado: suite completa, dev real, review.
-5. 2 peticiones fuera de scope que el usuario mencionó (aún sin detallar).
-
-## Cómo continuar
-- Correr suite completa de módulos tocados → confirmar.
-- Commit → push → PR a develop.
-- Seed + deploy + prueba dev.
+- Abrir PRs de ambas ramas.
+- **Desplegar**: Feature 5 (6 módulos + seed) y Teams (fix de counters).
+- Coordinar con front el cambio teamNames→teams (breaking).
 
 ## Related
 - [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]]
 - [[Claude Sessions/silia/resource-counts-teams-users/2026-07-14]]
+- [[concepts/Silia Access Permission System]]
