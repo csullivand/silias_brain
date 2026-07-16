@@ -42,3 +42,21 @@ Conocimiento no obvio del módulo Access, aprendido implementando [[Claude Sessi
 
 ## Herencia (folder ancestry)
 - VisibilityResolver + PermissionResolver: un objeto hereda grants de carpetas ancestro. Path format: '/anc1/anc2/folderId'. Agent/table heredan de su folderId + ancestros de ese folder.
+
+
+---
+
+## ⚠️ CORRECCIÓN (2026-07-15): leer AccessGrant CMK SÍ requiere kms:Decrypt del caller
+
+La sección de arriba decía que 'reads de tablas CMK cross-stack NO requieren kms:Decrypt del caller'. **ESO ES INCORRECTO** — un error de producción lo probó (`teams-get-all-role` → KMS AccessDenied al leer AccessGrant).
+
+**Lo correcto:** leer una tabla DynamoDB cifrada con **CMK** requiere que el rol caller tenga:
+1. `dynamodb:Query/GetItem` sobre la tabla + GSI, **Y**
+2. `kms:Decrypt` (via-service dynamodb) en IAM, **Y**
+3. que el **KEY POLICY del CMK** lo permita (delegar a root vía DynamoDB = escalable).
+
+**AccessGrant CMK:** su key policy solo permitía el Role compartido → los roles dedicados fallaban. Fix (Opción A): statement `AllowAccountRolesViaDynamoDB` en el key policy (delega a root vía DynamoDB) + kms:Decrypt IAM en cada rol lector.
+
+**FoldersTable CMK:** ya delega a root (`EnableIAMUserPermissions: kms:*`) → solo faltaba el kms:Decrypt IAM en el rol.
+
+Ningún módulo leía AccessGrant cross-stack bien; los que lo intentaban (counters, listFolders?visible_to=me) fallaban silenciosamente (fail-open). Ver [[Claude Sessions/silia/resource-counts-teams-users/2026-07-14]] (BUG #2).
