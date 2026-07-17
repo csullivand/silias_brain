@@ -122,3 +122,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Desarrollo completo (todos los AC + soft delete + admin_objects), SIN COMMITEAR — falta commit/push/PR/seed/deploy/verify
 - **Sessions:**
   - [[Claude Sessions/silia/feature-5-access-grants/2026-07-15|2026-07-15]] — Review + implementación completa de Feature 5: idempotencia, validar role, permiso share, audit log, cascadas, invalidación team, herencia (is_inherited+403), soft delete, admin_objects. Decisiones D1 (share solo admin) y D2 (strict mode apagado). Diferido: dashboard, cleanup strict-tsc.
+
+#### Feature 10 — Roles custom + contadores + visibilidad (SL-1289)
+- **Branch:** fix/SL-1289-default-roles-migration
+- **Status:** Implementación completa (12 commits), review+adversarial PASS ✅. Pendiente: deploy + seed + PR.
+- **Sessions:**
+  - [[Claude Sessions/silia/feature-10-roles/2026-07-16|2026-07-16]] — Feature 10 BE completo (modelo roles custom por cuenta, CRUD, clone, category, audit, resolución account-aware S12, invalidación efectivos, seed); fix TDZ contadores management; contadores efectivos con herencia (management+teams); visibilidad fail-closed en folders; logging getLambdaLogger en grants+roles

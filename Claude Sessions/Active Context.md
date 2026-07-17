@@ -1,33 +1,30 @@
----
-tags: [claude-session, active-context]
-updated: 2026-07-15
----
-
 # Active Context
 
-## Estado (2026-07-15) — 2 ramas activas
+## Sesión actual: SL-1289 — Feature 10 roles + contadores + visibilidad + logging (2026-07-16)
+Nota completa: [[Claude Sessions/silia/feature-10-roles/2026-07-16]]
 
-### 1. Feature 5 access_grants (SL-1282)
-- **Rama:** `fix/SL-1282-access-polimorficos` — código COMPLETO, commiteado+pusheado (e28ef04e0). Reviews en verde.
-- **⚠️ PENDIENTE INMEDIATO: aplicar Opción A (KMS) a esta rama** — sus lectores cross-módulo de AccessGrant (roles dedicados: TeamsDeleteTeamRole, UserDeleteOrgUserRole, FolderWriteRole, DtTableWriteRole, RoleChatbotWrite, TeamsGetUsersRole) necesitan `kms:Decrypt` IAM (via-service) o fallarán al desplegar. El delegate del key policy llega vía el merge de la rama de counters.
-- Detalle: [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]].
+**Rama:** fix/SL-1289-default-roles-migration (12 commits, PR NO abierto).
+**Estado:** implementación completa; review+adversarial = PASS ✅. Falta DEPLOY + SEED + verificar.
 
-### 2. Counters + Embeds (SL-1281 follow-up)
-- **Rama:** `feat/SL-1281-embed-teams-members` — pusheada. 4 commits:
-  1. embeds `teams`[{id,name}] + `members`
-  2. fix IAM AccessGrant en TeamsGetAllRole (bug #1 DynamoDB)
-  3. **Opción A** (bug #2 KMS): delegate CMK AccessGrant + kms:Decrypt en TeamsGetAllRole/UserListOrgUsersRole
-  4. logs de resumen (no per-item)
-- **🐛 2 bugs de counters resueltos:** (1) IAM DynamoDB al rol equivocado; (2) KMS — leer AccessGrant CMK requiere kms:Decrypt del caller (mi suposición de Feature 5 era errónea). Ver [[Claude Sessions/silia/resource-counts-teams-users/2026-07-14]].
-- Falta: **desplegar Access+Teams+User juntos**.
+### Qué se hizo
+- Feature 10 backend completo (12 subtareas): modelo roles custom por cuenta (accountId nullable/isDefault/soft-delete + GSI), CRUD validado, clone, category, audit dedicado, resolución account-aware (S12 desbloquea Feature 11), invalidación efectivos, seed idempotente.
+- Contadores EFECTIVOS con herencia en management (listOrgUsers) y teams (getTeamsByAccount).
+- Fix TDZ "Cannot access uh before initialization" en listOrgUsers (import dinámico concurrente → carga memoizada).
+- Visibilidad fail-closed en listFolders (era fail-open = fuga).
+- Logging estructurado getLambdaLogger en grants+roles CRUD.
+- Teams: Folder/Chatbot via dynamic import memoizado (evita ciclo).
 
-## PENDIENTE
-1. **Aplicar Opción A a fix/SL-1282** (en curso).
-2. Abrir PRs de ambas ramas.
-3. Desplegar: counters (Access+Teams+User), Feature 5 (6 módulos + seed).
-4. Coordinar con front el breaking teamNames→teams.
+### Continuar por (en orden)
+1. DEPLOY infra (Roles GSI+RoleAuditLog+clone+envs+IAM dedicado; Teams envs FOLDERS/CHATBOT) + código Lambdas. Verificar cloneMin.js.
+2. Correr scripts/migrations/seed-default-roles.ts (pobla isDefault).
+3. Verificar: management counts≠0, teams herencia, log visible_to=me con operador.
+4. Abrir PR a develop con reportes review+adversarial.
 
-## Related
-- [[Claude Sessions/silia/feature-5-access-grants/2026-07-15]]
-- [[Claude Sessions/silia/resource-counts-teams-users/2026-07-14]]
-- [[concepts/Silia Access Permission System]]
+### Bloqueos de producto (datos, no código)
+- Matriz ~102 permisos validada → seed rol→permiso + category.
+- "Implementador" (PRD) vs superuser/superadmin (enum código).
+- Canal Slack para alerta >20 roles.
+
+### Pendiente futuro
+- Feature 11 (asignación custom) — S12 lo habilita.
+- KMS Opción A para conteo de grants en delete de rol.
