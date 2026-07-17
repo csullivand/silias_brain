@@ -35,3 +35,22 @@ resolveEffectivePermissions(user, account, role, objectType, objectId) = unión 
 ## Pendientes clave
 - Producto: matriz ~102 permisos validada, email provider, "Implementador" vs enum.
 - Código: F5 validar roleId + grants heredados inmutables + audit table; F7 drawer; F11 guardar roleId en user + asignación; F10 deploy+PR.
+
+
+## Flujos detallados (diagramas de secuencia + endpoints paso a paso)
+Documento: `docs/access-control-flows.md`. Cubre 13 flujos:
+- F0 Login/bootstrap (GET /me/permissions)
+- F1 Chequeo de un permiso (assertPermission, permisivo por default)
+- F2 Resolución efectiva (resolveEffectivePermissions = unión direct+team+inherited) ← el corazón
+- F3 Crear rol custom (GET catalog → POST /role)
+- F4 Editar permisos de rol → invalidación de efectivos (sync≤100/SQS>100)
+- F5 Clonar rol
+- F6 Crear usuario (POST /user/management)
+- F7 Crear team + members (POST /teams/, POST /teams/{id}/members)
+- F8 Share Access (POST /access/grants — team sobre folder)
+- F9 Operador navega home con herencia (GET /folders?visible_to=me, fail-closed)
+- F10 Mover objeto → recalcula herencia por path
+- F11 Linkeo agente-tabla (POST /tables/{id}/agents, doble permiso + tools)
+- F12 Borrados/cascadas (rol/user/team)
+
+Basepaths: Access=access, Folders=folders, Roles=permissions, Teams=teams, User=user, DynamicTables=dynamic-tables.
