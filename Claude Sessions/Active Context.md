@@ -1,30 +1,29 @@
 # Active Context
 
-## Sesión actual: SL-1289 — Feature 10 roles + hardening de seguridad (2026-07-16/17)
-Nota completa: [[Claude Sessions/silia/feature-10-roles/2026-07-16]]
+## Sesión actual: Feature 0 / Fase 3 — cablear permisos atómicos a endpoints (2026-07-17)
+Nota completa: [[Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17]]
 
-**Rama:** fix/SL-1289-default-roles-migration (~23 commits, PR NO abierto).
-**Estado:** implementación completa + cadena de reviews cerrada (6 hallazgos reales). Review PASS ✅ / Adversarial PASS ✅. Falta DEPLOY + SEED + PR.
+**Rama:** `feat/SL-0-permissions-catalog` (~9 commits de Feature 0, PR NO abierto).
+**Estado:** Fase 3 COMPLETA en código. 172 handlers cableados en 14 módulos + matriz de inbox validada por PM. Modo permisivo (no bloquea aún). Falta DEPLOY + SEED + PR + (Fase 6) flip a strict mode.
 
 ### Qué se hizo
-- Feature 10 BE completo (12 subtareas): modelo roles custom por cuenta, CRUD+clone+catálogo+audit, resolución account-aware (S12 desbloquea Feature 11), invalidación efectivos, seed.
-- Contadores efectivos con herencia (management + teams).
-- Fixes de sesión: TDZ en listOrgUsers, visibilidad fail-closed en folders, logging getLambdaLogger.
-- **Cadena de seguridad (6 fixes reales):** stale-name invalidation, seed account-scope (evita lockear rol de cliente), IDOR en create/update/delete/clone, inmutabilidad pre-seed por nombre, fugas de lectura (get/get-permissions/permission-get), **escalada de privilegios vía /permission CRUD**, empty-name en update. CMK dedicada para RoleAuditLog (patrón Billing).
+- **Fase 3 (cablear can() a endpoints):** assertPermission/assertObjectPermission (o CASL_PERMISSION env-var en Billing) en 14 módulos: Access/Folders/Roles/Teams/User/DynamicTables (previos) + Billing/Metrics/Messages/Workflows/Flows/Accounts/Training/Assistant (esta sesión). Piso assertRole preservado.
+- **Doc** `docs/permission-mapping-for-pms.md`: propuesta tentativa → estado de cableado real por módulo (✅/🟡/🔴/⚪) + decisiones de PM.
+- **Decisiones PM aplicadas:** ChunkMetadata (guard por método), Metrics /get+/aggregated (agent.metrics.view cuenta), PUT /conversation (→agent.inbox.reassign); audiences/Integrations/ExecuteWorkflow = solo assertRole; varios confirmados as-is.
+- **Matriz inbox Operador VALIDADA:** view/take_control/send_reply/resolve_ticket ✅, reassign ❌. Flags _review removidos, test actualizado.
 
 ### Continuar por (en orden)
-1. DEPLOY infra (Roles: GSI accountId-name-index ACTIVE, RoleAuditLog+CMK, clone fn, envs; Teams: FOLDERS/CHATBOT envs) + código Lambdas. Verificar cloneMin.js.
-2. Correr scripts/migrations/seed-default-roles.ts (pobla isDefault).
-3. Verificar: management counts≠0, teams herencia, visible_to=me con operador, tenant-isolation en /role y /permission.
-4. Abrir PR a develop.
+1. DEPLOY Lambdas actualizados.
+2. Correr seeds EN ORDEN por env: seed-default-roles (B1) → seed-permissions-catalog (B2) → seed-role-permissions (B4). Sin B2+B4 el permisivo no tiene contra qué resolver.
+3. Abrir PR feat/SL-0-permissions-catalog → develop.
+4. Fase 6 (después): PERMISSION_STRICT_MODE=true (rollout coordinado) → recién ahí aplican los 403.
 
-### Bloqueos de producto (datos, no código)
-- Matriz ~102 permisos validada → seed rol→permiso + category.
-- 'Implementador' (PRD) vs superuser/superadmin (enum).
-- Canal Slack alerta >20 roles.
+### Sin cablear a propósito (decidido)
+- audiences (authorized-users, 9) · Integrations (25) · ExecuteWorkflow → solo assertRole (NOTE en código).
+- Latentes sin endpoint: platform.accounts.switch, platform.implementers.*.
 
-### Follow-ups documentados
-- get.ts findAll() scan → optimizar (defaults no están en el GSI).
-- rename de rol no cascadea a user.role → guardar roleId en user (Feature 11).
-- Roles IAM dedicados del template definidos-pero-no-cableados (ruido).
-- Feature 11 (asignación) · KMS Opción A para conteo de grants en delete.
+### Aprendizaje operativo (importante)
+- Subagentes + `git stash` (repo-wide) + hooks auto-commit RTA = pérdida de trabajo sin commitear en módulos en carrera. Regla: **commitear por módulo apenas termina cada agente**; excluir submódulos (RTA/Agent/Voice) del commit.
+
+### Sesión anterior (relacionada)
+- [[Claude Sessions/silia/feature-10-roles/2026-07-16]] — SL-1289 Feature 10 (roles custom). Fase 3 depende del catálogo/matriz de Feature 0.

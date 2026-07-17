@@ -128,3 +128,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Implementación completa (12 commits), review+adversarial PASS ✅. Pendiente: deploy + seed + PR.
 - **Sessions:**
   - [[Claude Sessions/silia/feature-10-roles/2026-07-16|2026-07-16]] — Feature 10 BE completo (modelo roles custom por cuenta, CRUD, clone, category, audit, resolución account-aware S12, invalidación efectivos, seed); fix TDZ contadores management; contadores efectivos con herencia (management+teams); visibilidad fail-closed en folders; logging getLambdaLogger en grants+roles
+
+#### Feature 0 — Permissions Wiring (Fase 3) — catálogo 102 permisos atómicos
+- **Branch:** feat/SL-0-permissions-catalog
+- **Status:** Fase 3 completa en código (172 handlers, 14 módulos) + matriz inbox validada. Modo permisivo. Pendiente: deploy + seed (B1→B2→B4) + PR + Fase 6 (strict mode).
+- **Sessions:**
+  - [[Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17|2026-07-17]] — Cablear can() a endpoints en 14 módulos (assertPermission/assertObjectPermission + CASL_PERMISSION en Billing). Doc mapping por módulo. Decisiones PM 1x1 (ChunkMetadata por-método, Metrics dashboard, PUT conversation→reassign, audiences/Integrations/ExecuteWorkflow=assertRole). Matriz inbox Operador validada (opera salvo reassign). Delegación a subagentes en paralelo; aprendizaje: git stash + hooks RTA revierten trabajo sin commitear.
