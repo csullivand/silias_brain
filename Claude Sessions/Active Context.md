@@ -1,29 +1,27 @@
 # Active Context
 
-## Sesión actual: Feature 0 / Fase 3 — cablear permisos atómicos a endpoints (2026-07-17)
-Nota completa: [[Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17]]
+## Sesión actual: Feature 0 CASL — IAM grants + CORS + public-endpoint bug (2026-07-22)
+Nota completa: [[Claude Sessions/silia/feature-0-casl-iam-grants/2026-07-22]]
 
-**Rama:** `feat/SL-0-permissions-catalog` (~9 commits de Feature 0, PR NO abierto).
-**Estado:** Fase 3 COMPLETA en código. 172 handlers cableados en 14 módulos + matriz de inbox validada por PM. Modo permisivo (no bloquea aún). Falta DEPLOY + SEED + PR + (Fase 6) flip a strict mode.
+**Rama:** `feat/SL-1282-permissions` (HEAD 4d3d172e0). CASL IAM grants (12 módulos) YA commiteados. Fixes de hoy SIN commitear: webpack devtool, logger refactor, getWebChatConfig, Workflows/Integrations CORS.
 
-### Qué se hizo
-- **Fase 3 (cablear can() a endpoints):** assertPermission/assertObjectPermission (o CASL_PERMISSION env-var en Billing) en 14 módulos: Access/Folders/Roles/Teams/User/DynamicTables (previos) + Billing/Metrics/Messages/Workflows/Flows/Accounts/Training/Assistant (esta sesión). Piso assertRole preservado.
-- **Doc** `docs/permission-mapping-for-pms.md`: propuesta tentativa → estado de cableado real por módulo (✅/🟡/🔴/⚪) + decisiones de PM.
-- **Decisiones PM aplicadas:** ChunkMetadata (guard por método), Metrics /get+/aggregated (agent.metrics.view cuenta), PUT /conversation (→agent.inbox.reassign); audiences/Integrations/ExecuteWorkflow = solo assertRole; varios confirmados as-is.
-- **Matriz inbox Operador VALIDADA:** view/take_control/send_reply/resolve_ticket ✅, reassign ❌. Flags _review removidos, test actualizado.
+### Estado por problema
+1. **CASL IAM grants** → aplicados a los 12 módulos (~91 roles). Commiteados. Falta DESPLEGAR.
+2. **Seeds** → STAGING (A+B) y DEV (B) corridos. DEV: role=7, resource=190, permission=572.
+3. **Workflows/Integrations CORS** → era 401 en OPTIONS preflight. Fix: `AddDefaultAuthorizerToCorsPreflight: false`. Sin commitear/desplegar.
+4. **Accounts deploy** → bloqueado por (a) tabla huérfana `dev-app-silia-com-FolderAssistantCreditAllocations` (borrarla) y (b) `ResetAssistantCreditsFunction` >250MB (fix webpack devtool→false, sin commitear).
+5. **/chatbot/{id} 403** → BUG REAL (no deploy stale): endpoint PÚBLICO (sin authorizer) al que Jul-17 le metieron `assertPermission`. Quité el guard de `getWebChatConfig.ts`. Sin commitear/desplegar.
+6. **Logger** → requirePermission.ts migrado a Pino securityLog. Sin commitear.
 
-### Continuar por (en orden)
-1. DEPLOY Lambdas actualizados.
-2. Correr seeds EN ORDEN por env: seed-default-roles (B1) → seed-permissions-catalog (B2) → seed-role-permissions (B4). Sin B2+B4 el permisivo no tiene contra qué resolver.
-3. Abrir PR feat/SL-0-permissions-catalog → develop.
-4. Fase 6 (después): PERMISSION_STRICT_MODE=true (rollout coordinado) → recién ahí aplican los 403.
+### Continuar por
+1. Borrar tabla huérfana → redeploy Accounts (CI Deploy Service hace build limpio).
+2. Commitear fixes de hoy + redeploy Assistant/Workflows/Integrations/Metrics via GitHub Actions.
+3. Auditoría fiable (sub-agents por módulo) de OTRAS rutas públicas con guard erróneo.
+4. Añadir ACAO a DEFAULT_4XX/5XX gateway responses.
 
-### Sin cablear a propósito (decidido)
-- audiences (authorized-users, 9) · Integrations (25) · ExecuteWorkflow → solo assertRole (NOTE en código).
-- Latentes sin endpoint: platform.accounts.switch, platform.implementers.*.
+### Aprendizaje clave
+- CI (`deploy-service.yml`) ya hace `npx nx reset` + runner efímero → builds FRESCOS. La 'stale deploy' NO era la causa; los bugs eran de config/código (authorizer faltante, guard en endpoint público, source-maps >250MB).
+- `assertPermission` (con accountId) necesita Query en `-role/accountId-name-index`; super short-circuit oculta gaps.
 
-### Aprendizaje operativo (importante)
-- Subagentes + `git stash` (repo-wide) + hooks auto-commit RTA = pérdida de trabajo sin commitear en módulos en carrera. Regla: **commitear por módulo apenas termina cada agente**; excluir submódulos (RTA/Agent/Voice) del commit.
-
-### Sesión anterior (relacionada)
-- [[Claude Sessions/silia/feature-10-roles/2026-07-16]] — SL-1289 Feature 10 (roles custom). Fase 3 depende del catálogo/matriz de Feature 0.
+### Sesiones previas
+- [[Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17]] — cableado permisos.

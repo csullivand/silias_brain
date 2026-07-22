@@ -134,3 +134,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Fase 3 completa en código (172 handlers, 14 módulos) + matriz inbox validada. Modo permisivo. Pendiente: deploy + seed (B1→B2→B4) + PR + Fase 6 (strict mode).
 - **Sessions:**
   - [[Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17|2026-07-17]] — Cablear can() a endpoints en 14 módulos (assertPermission/assertObjectPermission + CASL_PERMISSION en Billing). Doc mapping por módulo. Decisiones PM 1x1 (ChunkMetadata por-método, Metrics dashboard, PUT conversation→reassign, audiences/Integrations/ExecuteWorkflow=assertRole). Matriz inbox Operador validada (opera salvo reassign). Delegación a subagentes en paralelo; aprendizaje: git stash + hooks RTA revierten trabajo sin commitear.
+
+#### CASL IAM Grants Gap (Feature 0 deploy prerequisite)
+- **Branch:** develop (fixes in stash@{0}); needs fix/<TICKET>-casl-iam-grants
+- **Status:** In progress — Accounts+Workflows patched (stashed, uncommitted); 11 modules remaining
+- **Sessions:**
+  - [[Claude Sessions/silia/feature-0-casl-iam-grants/2026-07-22|2026-07-22]] — Systemic: Fase 3 wired assertPermission but per-Lambda IAM roles never granted CASL tables (-role/-permission/-resource) → AccessDenied for non-super. Full audit of 11 modules.
