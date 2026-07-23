@@ -1,27 +1,24 @@
 # Active Context
 
-## Sesión actual: Feature 0 CASL — IAM grants + CORS + public-endpoint bug (2026-07-22)
-Nota completa: [[Claude Sessions/silia/feature-0-casl-iam-grants/2026-07-22]]
+## Sesión actual: SL-1281 temas-counter — PR review + PR description (2026-07-23)
+Nota completa: [[Claude Sessions/silia/SL-1281-temas-counter/2026-07-23]]
 
-**Rama:** `feat/SL-1282-permissions` (HEAD 4d3d172e0). CASL IAM grants (12 módulos) YA commiteados. Fixes de hoy SIN commitear: webpack devtool, logger refactor, getWebChatConfig, Workflows/Integrations CORS.
+**Rama:** `feat/SL-1281-temas-counter` (base develop). SIN commits — todo el trabajo está en el working tree sin commitear. Por eso scripts/pr-review.sh y scripts/adversarial-verify.sh dan diff VACÍO (develop...HEAD).
 
-### Estado por problema
-1. **CASL IAM grants** → aplicados a los 12 módulos (~91 roles). Commiteados. Falta DESPLEGAR.
-2. **Seeds** → STAGING (A+B) y DEV (B) corridos. DEV: role=7, resource=190, permission=572.
-3. **Workflows/Integrations CORS** → era 401 en OPTIONS preflight. Fix: `AddDefaultAuthorizerToCorsPreflight: false`. Sin commitear/desplegar.
-4. **Accounts deploy** → bloqueado por (a) tabla huérfana `dev-app-silia-com-FolderAssistantCreditAllocations` (borrarla) y (b) `ResetAssistantCreditsFunction` >250MB (fix webpack devtool→false, sin commitear).
-5. **/chatbot/{id} 403** → BUG REAL (no deploy stale): endpoint PÚBLICO (sin authorizer) al que Jul-17 le metieron `assertPermission`. Quité el guard de `getWebChatConfig.ts`. Sin commitear/desplegar.
-6. **Logger** → requirePermission.ts migrado a Pino securityLog. Sin commitear.
+### Qué hace el branch
+1. **Phantom-grant fix** en `expandEffectiveCounts` (duplicada en User/application/get/listOrgUsers.ts EXPORTED y Teams/application/get/getTeamsByAccount.ts privada): antes sembraba el set con los IDs otorgados crudos → contaba folders/agents borrados. Ahora arranca vacío y sólo cuenta grants que resuelven a un recurso VIVO + herencia.
+2. **Elevated short-circuit removido** en computeUserCounts (listOrgUsers.ts): admin/superuser ya NO devuelven el total de la cuenta; ahora cuentan sus propios grants (super sin grants → 0). Import ELEVATED_ROLES eliminado.
+3. +3 tests de regresión phantom-grant.
+
+### Estado
+- Tests: 8 (listOrgUsers.effectiveCounts) + 2 (getTeamsByAccount) → verde.
+- Review: Approved with suggestions. Adversarial: PASS (1 nota INFO).
 
 ### Continuar por
-1. Borrar tabla huérfana → redeploy Accounts (CI Deploy Service hace build limpio).
-2. Commitear fixes de hoy + redeploy Assistant/Workflows/Integrations/Metrics via GitHub Actions.
-3. Auditoría fiable (sub-agents por módulo) de OTRAS rutas públicas con guard erróneo.
-4. Añadir ACAO a DEFAULT_4XX/5XX gateway responses.
+1. **Commitear** los 3 archivos de código para que scripts/CI tengan diff.
+2. (Opc) extraer expandEffectiveCounts a helper compartido + espejar tests phantom para Teams.
+3. Confirmar con FE que usuarios elevados muestren conteo per-grant (no total de cuenta).
+4. Abrir PR contra develop con la descripción ya redactada.
 
-### Aprendizaje clave
-- CI (`deploy-service.yml`) ya hace `npx nx reset` + runner efímero → builds FRESCOS. La 'stale deploy' NO era la causa; los bugs eran de config/código (authorizer faltante, guard en endpoint público, source-maps >250MB).
-- `assertPermission` (con accountId) necesita Query en `-role/accountId-name-index`; super short-circuit oculta gaps.
-
-### Sesiones previas
-- [[Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17]] — cableado permisos.
+### Sesión previa (otro tema)
+- [[Claude Sessions/silia/feature-0-casl-iam-grants/2026-07-22]] — Feature 0 CASL IAM grants (rama feat/SL-1282-permissions).

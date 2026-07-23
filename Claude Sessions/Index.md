@@ -140,3 +140,15 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** In progress — Accounts+Workflows patched (stashed, uncommitted); 11 modules remaining
 - **Sessions:**
   - [[Claude Sessions/silia/feature-0-casl-iam-grants/2026-07-22|2026-07-22]] — Systemic: Fase 3 wired assertPermission but per-Lambda IAM roles never granted CASL tables (-role/-permission/-resource) → AccessDenied for non-super. Full audit of 11 modules.
+
+#### SL-1281 temas-counter (per-user folders/agents counter)
+- **Branch:** feat/SL-1281-temas-counter
+- **Status:** In review — logic clean, 10 tests pass, NOT yet committed
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1281-temas-counter/2026-07-23|2026-07-23]] — PR review + adversarial verify + PR description; phantom-grant + elevated-role fixes
+
+#### Implementador Role (SL-1272)
+- **Branch:** feat/SL-1272-add-implementador-role
+- **Status:** In review — PR #1696, adversarial-verify PASS; seeds not yet run per env
+- **Sessions:**
+  - [[Claude Sessions/silia/implementador-role/2026-07-23|2026-07-23]] — New distinct matrix-driven role; kept out of ELEVATED_ROLES for escalation safety; fixed 3 real review BLOCKs (ELEVATED_ROLES escalation, update.ts, GetChannels/PutChannels) + a merge-induced build break
