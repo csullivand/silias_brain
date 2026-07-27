@@ -152,3 +152,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** In review — PR #1696, adversarial-verify PASS; seeds not yet run per env
 - **Sessions:**
   - [[Claude Sessions/silia/implementador-role/2026-07-23|2026-07-23]] — New distinct matrix-driven role; kept out of ELEVATED_ROLES for escalation safety; fixed 3 real review BLOCKs (ELEVATED_ROLES escalation, update.ts, GetChannels/PutChannels) + a merge-induced build break
+
+#### Access grants, counters + escalation-inbox (SL-1281 / SL-1278)
+- **Branches:** fix/SL-1281-* (#1700, #1701), fix/SL-1278-cross-account-grants (#1714)
+- **Status:** 3 PRs open/green — pending merge + redeploy (User/Teams/Access); Assistant→staging redeploy pending for escalation-inbox
+- **Sessions:**
+  - [[Claude Sessions/silia/access-grants-counters/2026-07-27|2026-07-27]] — user/teams counters (merge regression + Teams tokenizer bundling), role-editor = FE-only slug (dangling grants), SL-1278 cross-account grants, escalation-inbox staging stale-IAM (deploy gap)

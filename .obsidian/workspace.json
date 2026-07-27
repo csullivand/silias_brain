@@ -198,6 +198,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "journal/2026-07-27.md",
+    "Claude Sessions/silia/access-grants-counters/2026-07-27.md",
+    "Claude Sessions/silia/access-grants-counters",
     "journal/2026-07-23.md",
     "Claude Sessions/silia/implementador-role/2026-07-23.md",
     "Claude Sessions/silia/implementador-role",
@@ -231,9 +234,6 @@
     "projects/silia/Move Objects Between Folders.md",
     "projects/silia/DynamicTables Migration Script.md",
     "projects/silia/Tables Refactor Deployment Runbook.md",
-    "projects/silia/Tables Refactor - Complete Guide.md",
-    "concepts/Webpack Cross-Module Imports.md",
-    "concepts",
     "Untitled.canvas"
   ]
 }
