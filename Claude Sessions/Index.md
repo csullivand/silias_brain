@@ -158,3 +158,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** 3 PRs open/green — pending merge + redeploy (User/Teams/Access); Assistant→staging redeploy pending for escalation-inbox
 - **Sessions:**
   - [[Claude Sessions/silia/access-grants-counters/2026-07-27|2026-07-27]] — user/teams counters (merge regression + Teams tokenizer bundling), role-editor = FE-only slug (dangling grants), SL-1278 cross-account grants, escalation-inbox staging stale-IAM (deploy gap)
+
+#### SL-1283 subject grants inheritance + SL-1278 org mutations
+- **Branch:** fix/SL-1283-subject-grants-inheritance (3 commits pushed, HEAD c928a14c7)
+- **Status:** Done locally — BE+FE tsc clean, 45+15 tests pass; PR not opened yet, no redeploy
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1283-subject-grants-inheritance/2026-07-28|2026-07-28]] — GET /access/grants returns team + inherited (subfolder/agent) grants like the count column (computeUserCounts); read-only synthetic ids; AccessModal color-only inherited rows; org mutation handlers cross-account (id→entity→account)

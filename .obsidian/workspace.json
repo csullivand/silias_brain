@@ -198,6 +198,10 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "journal/2026-07-28.md",
+    "2026-07-28.md",
+    "Claude Sessions/silia/SL-1283-subject-grants-inheritance/2026-07-28.md",
+    "Claude Sessions/silia/SL-1283-subject-grants-inheritance",
     "journal/2026-07-27.md",
     "Claude Sessions/silia/access-grants-counters/2026-07-27.md",
     "Claude Sessions/silia/access-grants-counters",
@@ -229,11 +233,7 @@
     "projects/silia/Folders and Permissions Frontend Guide.md",
     "projects/silia/Permission Invalidation Design.md",
     "Claude Sessions/silia/permission-invalidation/2026-06-30.md",
-    "Claude Sessions/silia/permission-invalidation",
     "Claude Sessions/silia/refactor-tables-pr/2026-06-26.md",
-    "projects/silia/Move Objects Between Folders.md",
-    "projects/silia/DynamicTables Migration Script.md",
-    "projects/silia/Tables Refactor Deployment Runbook.md",
     "Untitled.canvas"
   ]
 }
