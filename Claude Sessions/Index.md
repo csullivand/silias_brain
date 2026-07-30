@@ -164,3 +164,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Done locally — BE+FE tsc clean, 45+15 tests pass; PR not opened yet, no redeploy
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1283-subject-grants-inheritance/2026-07-28|2026-07-28]] — GET /access/grants returns team + inherited (subfolder/agent) grants like the count column (computeUserCounts); read-only synthetic ids; AccessModal color-only inherited rows; org mutation handlers cross-account (id→entity→account)
+
+#### SL-1545 role list enrichment (userCount + sections) + seed Implementador
+- **Branch:** feat/SL-1545-role-count (pushed, 15 tests green)
+- **Status:** Done locally + DEV seeded; PR to develop pending
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1545-role-count/2026-07-30|2026-07-30]] — GET /permissions/role list now returns userCount + sections (6 PRD modules: platform/account/organization/folder/agent/table); seeded Implementador role in DEV (id 0db6bed5, 99 permission rows); resolved develop merge conflict (kept PRD-modules version)

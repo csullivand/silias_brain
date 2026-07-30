@@ -198,6 +198,9 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "journal/2026-07-30.md",
+    "Claude Sessions/silia/SL-1545-role-count/2026-07-30.md",
+    "Claude Sessions/silia/SL-1545-role-count",
     "journal/2026-07-28.md",
     "2026-07-28.md",
     "Claude Sessions/silia/SL-1283-subject-grants-inheritance/2026-07-28.md",
@@ -228,12 +231,9 @@
     "Claude Sessions/silia/casl-iam-role-tables/2026-07-14.md",
     "Claude Sessions/silia/casl-iam-role-tables",
     "Claude Sessions/silia/resource-counts-teams-users/2026-07-14.md",
-    "Claude Sessions/silia/resource-counts-teams-users",
     "projects/silia/SAM Template Patterns.md",
     "projects/silia/Folders and Permissions Frontend Guide.md",
     "projects/silia/Permission Invalidation Design.md",
-    "Claude Sessions/silia/permission-invalidation/2026-06-30.md",
-    "Claude Sessions/silia/refactor-tables-pr/2026-06-26.md",
     "Untitled.canvas"
   ]
 }
