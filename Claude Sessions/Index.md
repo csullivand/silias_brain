@@ -170,3 +170,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Done locally + DEV seeded; PR to develop pending
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1545-role-count/2026-07-30|2026-07-30]] — GET /permissions/role list now returns userCount + sections (6 PRD modules: platform/account/organization/folder/agent/table); seeded Implementador role in DEV (id 0db6bed5, 99 permission rows); resolved develop merge conflict (kept PRD-modules version)
+
+#### SL-1545 fix PUT /role timeout (batch permission writes)
+- **Branch:** feat/SL-1545-role-batch-uodate (sic typo), pushed HEAD 23815c70a, 57 tests green
+- **Status:** Done locally; PR to develop pending
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1545-role-batch-update/2026-07-31|2026-07-31]] — 504 on permission edits fixed: batch writes (BatchWriteItem/bulkWrite) + batch reads (findAll), ~180 round-trips → ~5; new bulkWrite primitive on both DB backends; adversarial-caught silent-drop fixed with throw; FE needs no change
