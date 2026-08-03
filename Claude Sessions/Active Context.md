@@ -1,34 +1,32 @@
 # Active Context
 
-## Sesión actual: SL-1545 fix PUT /role timeout — batch permission writes (2026-07-31)
-Nota completa: [[Claude Sessions/silia/SL-1545-role-batch-update/2026-07-31]]
+## Sesión actual: Feature 5.1 KPI prefs (BE) + contexto agent-access 9.1 (2026-08-03)
+Nota completa: [[Claude Sessions/silia/Feature-5.1-kpi-prefs/2026-08-03]]
 
-**Rama:** `feat/SL-1545-role-batch-uodate` (sic typo) — pusheada, HEAD `23815c70a`. 57 tests verdes, tsc limpio.
+**Feature 5.1 commiteado `a969064ab` (9 files +732) SIN PUSH, en rama `feat/SL-1272-template-update`.** 19 tests verdes, tsc limpio, YAML validado.
 
-### Qué se hizo hoy
-- **Bug (Camila):** PUT /permissions/role/{id} da 504 al editar PERMISOS (name/desc solo = rápido). El cambio SÍ persiste aunque diga que falló.
-- **Causa:** el handler hacía N save() + M delete() + N GetItems individuales (~180 round-trips a DynamoDB) → excede timeout del gateway. Writes completan server-side → persiste.
-- **Fix (Phases 1+2):**
-  - Nuevo primitivo `bulkWrite({TableName,puts,deletes})` en DBClient interface + AWSDynamoService (BatchWriteItem, chunks 25, **throw si quedan UnprocessedItems** — no silent drop) + MongoDB (collection.bulkWrite) + DB.class (delega + fallback per-item).
-  - `PermissionModel.bulkApply` colapsa los loops en 1 llamada batcheada.
-  - `ResourceModel.findByIds` = 1 findAll scan en vez de N GetItems.
-  - Neto: ~180 → ~5 round-trips. Contrato/audit/filas SIN cambio.
-- **Phase 3 NO hecha** (mover invalidación Redis KEYS fuera del hot path) — el volumen de round-trips era el driver. Siguiente lever si aún lento.
-- **Adversarial encontró BLOCK real:** bulkWrite dropeaba UnprocessedItems tras 5 reintentos sin error → false-success. **Arreglado con throw.** Tras fix: Approved ✅ + 5/5 PASS.
-- **Frontend NO necesita cambios** — contrato idéntico, solo más rápido.
+### Feature 5.1 — KPI prefs por usuario y tabla (HECHO)
+- GET/PUT `/tables/{tableId}/kpi-prefs` — config de KPI cards por (usuario, tabla), cross-device, aislada por usuario.
+- Modelo `DynamicTableKpiPrefs` clave {userId, tableId} + GSI tableId-index; `normalizeCards` (retrocompat enabled→true/unit→auto); cleanup on deleteTable (fail-open).
+- GET: vacío (no 404) si no configuró; cards tal cual (colgantes se quedan, FE las omite). PUT: valida ≤6 cards, kind/unit enum, __records__ único; acepta colgantes.
+- Auth **table.view** (config personal, no permiso nuevo). Espejé `FilterBarConfig`.
+- Infra: KMS+tabla(GSI)+rol+2 funciones+Globals env+perms cleanup en DtTableWriteRole. Build webpack auto-descubre los handlers.
+- **kind enum del PRD F6** — sync con kanban.ts cuando Camila portee 1.1 (comentario lo marca).
 
-### Ramas SL-1545 (separadas, PRs independientes)
-- `feat/SL-1545-role-batch-uodate` — este fix (timeout).
-- `feat/SL-1545-role-count` — enrichment del LIST (userCount + sections/módulos PRD). [[Claude Sessions/silia/SL-1545-role-count/2026-07-30]]
+### Contexto agent-access (9.1 de David) → `docs/agent-access-model.md` (untracked)
+- 'Menú del agente' = ShareAccessModal compartido → /access/grants (object_type=agent). Modelo DUAL: **AccessGrant** (canónico con roleId) vs **AgentAccess** (solo wizard, sin rol). Resolver YA existe: `PermissionResolver.resolveEffectivePermissions` (directo>team>herencia). 9.1 = decisión de unificar en AccessGrant, no crear sharedUsers nuevo.
+
+### 1.1 [FE] KpiCards
+NO necesita backend (puro, computa sobre props). El feature sí: Feature 6 (agregación BE sobre dataset paginado) + Feature 5 (persistencia = esto).
 
 ### Continuar por
-1. PR feat/SL-1545-role-batch-uodate → develop (typo en rama; recreable desde 23815c70a).
-2. Verificar en vivo: rol con ~90 permisos responde <pocos seg.
-3. Si aún lento → Phase 3.
+1. Feature 5.1: mover a rama propia antes de PR; push cuando el usuario diga; pr-review/adversarial si se pide.
+2. Sync enum kind con kanban.ts (1.1).
+3. 9.1: David define unificación con dueño del PRD + forma del resolver para 8.1.
 
-### Sesiones previas
-- [[Claude Sessions/silia/SL-1545-role-count/2026-07-30]] — enrichment role list + seed Implementador DEV.
-- [[Claude Sessions/silia/SL-1283-subject-grants-inheritance/2026-07-28]] — grants heredados + team.
+### Ramas abiertas (sesiones previas)
+- feat/SL-1545-role-count — enrichment role list (userCount + sections/módulos PRD). [[Claude Sessions/silia/SL-1545-role-count/2026-07-30]]
+- feat/SL-1545-role-batch-uodate — fix timeout PUT /role (batch writes). [[Claude Sessions/silia/SL-1545-role-batch-update/2026-07-31]]
 
-### Pendiente de sesiones previas
+### Pendiente viejo
 - escalation-inbox STAGING 500: redeploy Assistant→staging. [[project_casl_iam_grants_gap]]

@@ -176,3 +176,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Done locally; PR to develop pending
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1545-role-batch-update/2026-07-31|2026-07-31]] — 504 on permission edits fixed: batch writes (BatchWriteItem/bulkWrite) + batch reads (findAll), ~180 round-trips → ~5; new bulkWrite primitive on both DB backends; adversarial-caught silent-drop fixed with throw; FE needs no change
+
+#### Feature 5.1 KPI prefs persistence (Data Views) + agent-access context (9.1)
+- **Branch:** feat/SL-1272-template-update (commit a969064ab, NOT pushed), 19 tests green
+- **Status:** Implemented locally; move to own branch + PR pending
+- **Sessions:**
+  - [[Claude Sessions/silia/Feature-5.1-kpi-prefs/2026-08-03|2026-08-03]] — GET/PUT /tables/{id}/kpi-prefs per-user KPI card prefs (composite key, GSI cleanup, back-compat, table.view auth, full SAM infra); + docs/agent-access-model.md context for Feature 9.1 (AccessGrant vs AgentAccess, PermissionResolver already exists)
