@@ -1,32 +1,28 @@
 # Active Context
 
-## Sesión actual: Feature 5.1 KPI prefs (BE) + contexto agent-access 9.1 (2026-08-03)
-Nota completa: [[Claude Sessions/silia/Feature-5.1-kpi-prefs/2026-08-03]]
+## Sesión actual: SL-1557 RBAC estricto + Feature 11 análisis + account 403 fix (2026-08-04)
+Nota completa: [[Claude Sessions/silia/SL-1557-rbac-strict/2026-08-04]]
 
-**Feature 5.1 commiteado `a969064ab` (9 files +732) SIN PUSH, en rama `feat/SL-1272-template-update`.** 19 tests verdes, tsc limpio, YAML validado.
+**Rama `fix/SL-1557-validacion-estricta` — 3 commits SIN push:**
+- `4f509fe9a` roles anti-escalamiento (findUngrantableResourceIds + assertRole floor + FE excluye god-mode).
+- `7d2de6a79` flag PERMISSION_STRICT_MODE (14 templates).
+- `f9fe20f96` account graduated payload (fix 403 operator).
 
-### Feature 5.1 — KPI prefs por usuario y tabla (HECHO)
-- GET/PUT `/tables/{tableId}/kpi-prefs` — config de KPI cards por (usuario, tabla), cross-device, aislada por usuario.
-- Modelo `DynamicTableKpiPrefs` clave {userId, tableId} + GSI tableId-index; `normalizeCards` (retrocompat enabled→true/unit→auto); cleanup on deleteTable (fail-open).
-- GET: vacío (no 404) si no configuró; cards tal cual (colgantes se quedan, FE las omite). PUT: valida ≤6 cards, kind/unit enum, __records__ único; acepta colgantes.
-- Auth **table.view** (config personal, no permiso nuevo). Espejé `FilterBarConfig`.
-- Infra: KMS+tabla(GSI)+rol+2 funciones+Globals env+perms cleanup en DtTableWriteRole. Build webpack auto-descubre los handlers.
-- **kind enum del PRD F6** — sync con kanban.ts cuando Camila portee 1.1 (comentario lo marca).
+### Qué se hizo hoy
+1. **SL-1557 (commiteado, cambios del usuario):** un caller no puede autorizar un rol con permisos > los suyos (bloquea 'clonar Super Admin'); piso assertRole en handlers de roles; flag PERMISSION_STRICT_MODE por ambiente (enforce vs log). assertRole SIGUE vigente (95 handlers, 53 usan ambos).
+2. **Fix 403 GET /accounts/{id} (commiteado f9fe20f96):** el operator recibía 403 al arranque porque AccountContext hace GET /accounts/{id} para cargar nombre/status, y el endpoint exigía account.information.view (admin+). Solución: **payload graduado** — piso canAccessAccount + full/summary según permiso REAL (no según flag cliente) + ?view=summary opcional (solo baja) + scope en respuesta. FE no cambia. Test 6 casos.
 
-### Contexto agent-access (9.1 de David) → `docs/agent-access-model.md` (untracked)
-- 'Menú del agente' = ShareAccessModal compartido → /access/grants (object_type=agent). Modelo DUAL: **AccessGrant** (canónico con roleId) vs **AgentAccess** (solo wizard, sin rol). Resolver YA existe: `PermissionResolver.resolveEffectivePermissions` (directo>team>herencia). 9.1 = decisión de unificar en AccessGrant, no crear sharedUsers nuevo.
+### Gaps analizados (NO implementados aún)
+- **CSV import:** mismatch FE↔BE — FE preview acepta roles custom pero createOrgUser/patchOrgUser solo aceptan [ADMIN,SUPERVISOR,OPERATOR] → filas custom fallan al crear.
+- **Feature 11 [FE] dropdowns roles custom:** backend PARCIAL. Endpoint de roles ✅, grants/share access ✅, PERO **crear/editar usuario con rol custom ❌** (mismo gap del CSV). = EL gap central.
+- **Pendiente clave (resuelve CSV + Feature 11):** abrir createOrgUser/patchOrgUser a roles custom de la cuenta, manteniendo bloqueo god-mode + guards SL-1557.
 
-### 1.1 [FE] KpiCards
-NO necesita backend (puro, computa sobre props). El feature sí: Feature 6 (agregación BE sobre dataset paginado) + Feature 5 (persistencia = esto).
+### Nota pre-existente
+Accounts/application/get/getById.test.ts roto de antes (require .handler que ya no existe). No es de mi cambio.
 
-### Continuar por
-1. Feature 5.1: mover a rama propia antes de PR; push cuando el usuario diga; pr-review/adversarial si se pide.
-2. Sync enum kind con kanban.ts (1.1).
-3. 9.1: David define unificación con dueño del PRD + forma del resolver para 8.1.
-
-### Ramas abiertas (sesiones previas)
-- feat/SL-1545-role-count — enrichment role list (userCount + sections/módulos PRD). [[Claude Sessions/silia/SL-1545-role-count/2026-07-30]]
-- feat/SL-1545-role-batch-uodate — fix timeout PUT /role (batch writes). [[Claude Sessions/silia/SL-1545-role-batch-update/2026-07-31]]
+### Otras ramas SIN push
+- feat/SL-1272-template-update — Feature 5.1 KPI prefs (a969064ab). [[Claude Sessions/silia/Feature-5.1-kpi-prefs/2026-08-03]]
+- feat/SL-1545-role-count, feat/SL-1545-role-batch-uodate.
 
 ### Pendiente viejo
 - escalation-inbox STAGING 500: redeploy Assistant→staging. [[project_casl_iam_grants_gap]]

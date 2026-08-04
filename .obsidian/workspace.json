@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": true
+                "autoReveal": true,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -198,6 +200,12 @@
   },
   "active": "3842513b74267942",
   "lastOpenFiles": [
+    "journal/2026-08-04.md",
+    "Claude Sessions/silia/SL-1557-rbac-strict/2026-08-04.md",
+    "Claude Sessions/silia/SL-1557-rbac-strict",
+    "concepts/Deploy Before Role Migration.md",
+    "Claude Sessions/silia/SL-1557-custom-roles/2026-08-04.md",
+    "Claude Sessions/silia/SL-1557-custom-roles",
     "journal/2026-08-03.md",
     "Claude Sessions/silia/Feature-5.1-kpi-prefs/2026-08-03.md",
     "Claude Sessions/silia/Feature-5.1-kpi-prefs",
@@ -225,15 +233,9 @@
     "Untitled 1.md",
     "journal/2026-07-17.md",
     "Claude Sessions/silia/feature-0-permissions-wiring/2026-07-17.md",
-    "Claude Sessions/silia/feature-0-permissions-wiring",
     "concepts/Sistema de Accesos y Roles (Features 0-11).md",
     "journal/2026-07-16.md",
     "Claude Sessions/silia/feature-10-roles/2026-07-16.md",
-    "Claude Sessions/silia/feature-10-roles",
-    "concepts/Silia Access Permission System.md",
-    "Claude Sessions/silia/feature-5-access-grants/2026-07-15.md",
-    "journal/2026-07-14.md",
-    "Claude Sessions/silia/casl-iam-role-tables/2026-07-14.md",
     "Untitled.canvas"
   ]
 }

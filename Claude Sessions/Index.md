@@ -182,3 +182,15 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** Implemented locally; move to own branch + PR pending
 - **Sessions:**
   - [[Claude Sessions/silia/Feature-5.1-kpi-prefs/2026-08-03|2026-08-03]] — GET/PUT /tables/{id}/kpi-prefs per-user KPI card prefs (composite key, GSI cleanup, back-compat, table.view auth, full SAM infra); + docs/agent-access-model.md context for Feature 9.1 (AccessGrant vs AgentAccess, PermissionResolver already exists)
+
+#### SL-1557 Custom Roles + Batch Import Hardening
+- **Branch:** fix/SL-1557-validacion-estricta
+- **Status:** Pushed; ⚠️ DEV 403 open — assertRole fix not deployed (migration ran ahead of deploy)
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1557-custom-roles/2026-08-04|2026-08-04]] — Custom account roles for org users end-to-end, batch import hardening (dedup/idempotency/CMK), assertRole god-mode bypass, user-role migration (superuser→superadmin, user/seller→operator)
+
+#### SL-1557 RBAC estricto + Feature 11 análisis + account 403 fix
+- **Branch:** fix/SL-1557-validacion-estricta (3 commits, NOT pushed)
+- **Status:** RBAC hardening + account graduated payload commiteados; gap createOrgUser/patchOrgUser→custom roles pendiente
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1557-rbac-strict/2026-08-04|2026-08-04]] — anti-escalamiento en autoría de roles (findUngrantableResourceIds + assertRole floor) + flag PERMISSION_STRICT_MODE; fix 403 operator en GET /accounts/{id} vía payload graduado (summary/full por permiso); análisis CSV + Feature 11 (gap: user create/patch rechazan roles custom)
