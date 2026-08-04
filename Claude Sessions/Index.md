@@ -10,6 +10,12 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### SL-1526 KPI Prefs Persistence (Feature 5)
+- **Branch:** feat/SL-1526-persistencia-kpis-usuario-tabla
+- **Status:** Complete — 2 commits, 19/19 tests, pr-review + adversarial PASS, no push
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1526-kpi-prefs-persistence/2026-08-04|2026-08-04]] — Aislé Feature 5 en rama nueva (cherry-pick a969064ab), quité accountId (footgun cross-account SL-1278), doc FE
+
 #### Access Module Deployment
 - **Branch:** fix/SL-1278-endpoint-objetos-visibles-usuario
 - **Status:** Complete — template fixed, resources seeded
