@@ -1,30 +1,27 @@
 # Active Context
 
-## Sesión actual: SL-1526 aislar Feature 5 (KPI prefs) + quitar accountId (2026-08-04)
-Nota completa: [[Claude Sessions/silia/SL-1526-kpi-prefs-persistence/2026-08-04]]
+## Sesión actual: SL-1528 Feature 6 — KPI aggregations endpoint (2026-08-05/06)
+Nota completa: [[Claude Sessions/silia/SL-1528-kpi-aggregations/2026-08-05]]
 
-**Rama `feat/SL-1526-persistencia-kpis-usuario-tabla` (nueva) — 2 commits SIN push:**
-- `bf63ab643` feat(data-views): persist per-user KPI card preferences by table (Feature 5.1) — cherry-pick de `a969064ab` (venía de feat/SL-1272-template-update).
-- `273d17a11` refactor: drop unused accountId from KPI prefs.
+**Rama `feat/SL-1528-agregaciones-dataset-kpis` — commit Feature 6 `943b6902b` (SIN push):**
+- `POST /tables/{tableId}/aggregations` — calcula el VALOR de cada KPI card sobre el set filtrado completo. Complemento de Feature 5 (persistencia).
+- Basada en develop (ya trae Feature 5.1 mergeado: `708cfe04c`).
 
-### Qué se hizo hoy
-1. **Recuperación de "archivos perdidos":** los 4 access-control docs (flows/roadmap/system-overview/permission-mapping-for-pms) NO se perdieron por cambio de rama — están en `.gitignore` (líneas 95-98, "keep local"). Restaurados a disco desde `fix/SL-1289-default-roles-migration`, pero son untracked-ignored (no commiteables). Scripts pr-review/adversarial-verify tampoco estaban perdidos (viven en develop).
-2. **Aislé Feature 5 en rama SL-1526:** basada en develop + cherry-pick del commit KPI. (El trabajo estaba solo en feat/SL-1272-template-update.)
-3. **Quité `accountId`** del modelo KPI prefs (Option A): nunca se usa (key = (userId, tableId)), y se tomaba del authorizer = cuenta home → mal para superadmin en cuenta cambiada (SL-1278). Alineado con PRD spec. 19/19 tests. Commit + pr-review + adversarial = **Approved/PASS**.
-4. **Doc FE** creado `docs/kpi-prefs-frontend-integration.md` (untracked, usuario pidió NO commitear docs).
+### Qué se hizo
+1. **Feature 6 completo:** service `kpiAggregationService.ts` (streamea 1 vez con paginateFilteredRows + filterBuilder reusados; mapea 13 kinds a computeAggregation), handler `postAggregations.ts` (auth table.view, valida vs KPI_KINDS máx 24, 422 en filtro malo), tipos, template `RowsAggregations` (DtRowReadRole), build entry. **17 tests verdes.** pr-review + adversarial = Approved/PASS.
+2. **Arquitectura:** DynamoDB (no SQL) -> agregación in-memory. Soft cap `KPI_AGG_MAX_ROWS` (default 50000) -> `partial:true`. Reusé la maquinaria del table assistant (AGE-109/110).
+3. **Docs FE (untracked, sin commitear):** `docs/kpi-aggregations-frontend-integration.md` (ES, para Camila) + `docs/kpi-prefs-frontend-integration.md` (EN).
 
-### Contrato con Feature 6 (ticket aparte)
-- SL-1526 = Feature 5 (persistencia: guarda QUÉ cards). Feature 6 = `POST /data-views/:id/aggregations` (calcula los VALORES) — pendiente, ticket separado.
-- Compartido: `KPI_KINDS` (13) + `KPI_RECORDS_ID='__records__'`. **Feature 6 debe importar de `DynamicTables/domain/types/tables.types.ts`, no redeclarar** (evitar drift).
-- Gaps de producto/FE (no bloquean SL-1526): defaults-seeding, validación calc-vs-tipo-columna, poda de cards con columna borrada.
+### Contrato
+- Body `{filters?, search?, metrics:[{columnId|"__records__", kind}]}` -> `{tableId, rowCount, partial, results:[{columnId, kind, value|null, computable, reason?}]}`.
+- Asimetría: metrics usa `columnId`; filters usa `column` (NOMBRE) = payload del listado de filas.
+- 0 filas -> porcentajes `null` (no 0).
 
-### Notas útiles
-- `yarn` roto sin `GH_PACKAGES_TOKEN` → usar `GH_PACKAGES_TOKEN=dummy npx jest --testPathPattern="..."`.
+### Pendiente / dudas
+- **Max cards 6 vs 4:** código+PRD+docs = **6** (`KPI_MAX_CARDS=6`); Camila creía 4. A confirmar (cambio de 1 línea si es 4).
+- **BUG develop:** Feature 5.1 en develop NO trae los build entries de KpiPrefs -> no despliega. Re-agregados en esta rama; **falta hotfix a develop** (mi fix `c5b4c527b` solo en rama SL-1526).
+- Push + PR de SL-1528. Suggestion MEDIUM review: bajar cap default o subir page size (500 RTTs vs límite 29s API GW).
 
-### Otras ramas SIN push (contexto previo)
-- fix/SL-1557-validacion-estricta — RBAC estricto + account 403 fix. [[Claude Sessions/silia/SL-1557-rbac-strict/2026-08-04]]
-- feat/SL-1272-template-update (tiene el a969064ab original + otras cosas), feat/SL-1545-role-count, feat/SL-1545-role-batch-uodate.
-
-### Pendiente viejo
-- escalation-inbox STAGING 500: redeploy Assistant→staging. [[project_casl_iam_grants_gap]]
-- SL-1557: abrir createOrgUser/patchOrgUser a roles custom (resuelve CSV import + Feature 11 FE).
+### Contexto previo
+- SL-1526 Feature 5 (persistencia KPI prefs) — mergeado a develop. [[Claude Sessions/silia/SL-1526-kpi-prefs-persistence/2026-08-04]]
+- Nota útil: `yarn` roto sin token -> `GH_PACKAGES_TOKEN=dummy npx jest`.

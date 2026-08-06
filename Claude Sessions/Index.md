@@ -10,6 +10,12 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### SL-1528 KPI Aggregations (Feature 6)
+- **Branch:** feat/SL-1528-agregaciones-dataset-kpis
+- **Status:** Complete — commit 943b6902b, 17/17 tests, pr-review + adversarial PASS, no push
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1528-kpi-aggregations/2026-08-05|2026-08-05]] — POST /aggregations (valores de las KPI cards sobre el set filtrado); reusa paginateFilteredRows + computeAggregation; doc FE para Camila
+
 #### SL-1526 KPI Prefs Persistence (Feature 5)
 - **Branch:** feat/SL-1526-persistencia-kpis-usuario-tabla
 - **Status:** Complete — 2 commits, 19/19 tests, pr-review + adversarial PASS, no push
