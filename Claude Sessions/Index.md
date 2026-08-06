@@ -10,6 +10,12 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### Escalación forzada por admin (inbox)
+- **Branch:** (pendiente) — análisis + plan hechos, sin implementar
+- **Status:** Diseño listo — doc con diagramas [[projects/Escalacion Forzada Admin - Analisis y Plan]]
+- **Sessions:**
+  - [[Claude Sessions/silia/escalacion-forzada-admin/2026-08-06|2026-08-06]] — Análisis del flujo escalación→ticket→asignación + plan (endpoint force, +2 columnas isForced/forcedBy)
+
 #### SL-1528 KPI Aggregations (Feature 6)
 - **Branch:** feat/SL-1528-agregaciones-dataset-kpis
 - **Status:** Complete — commit 943b6902b, 17/17 tests, pr-review + adversarial PASS, no push
