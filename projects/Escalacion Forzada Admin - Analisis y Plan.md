@@ -1,21 +1,23 @@
 ---
-tags: [silia, escalaciones, inbox, forced-escalation, analysis, plan, project]
+tags: [silia, escalaciones, inbox, manual-escalation, SL-1579, feature-1, analysis, plan, project]
 ---
 
 > Nota de proyecto. Fuente en repo: `docs/escalacion-forzada-admin-analisis-y-plan.md`.
+> Guía FE: `docs/escalacion-forzada-frontend-integration.md`.
 > Relacionado: [[Claude Sessions/Active Context]] · sesión [[Claude Sessions/silia/escalacion-forzada-admin/2026-08-06]]
 
-# Escalación forzada por admin — Análisis del sistema actual + Plan de implementación
+# Manual escalation (escalación manual + tomar control) — Análisis + Plan
 
-> **Objetivo de negocio:** que **cualquier persona con acceso al inbox** pueda hacer una
-> **escalación forzada** en cualquier momento y horario, que convierta la conversación en
-> ticket y **tome control** (el bot deja de responder). El ticket entra al inbox **SIN
-> asignar**; luego se **asigna manualmente** desde la sección de tickets del front (con el
-> flujo de asignación que ya existe). Además, dos columnas nuevas para auditar *que* fue
-> forzada y *por quién*.
+> **Objetivo de negocio (ticket Feature 1, SL-1579):** que **cualquier operador del inbox**
+> pueda escalar manualmente una conversación a **Tickets** y **tomar el control** en el
+> momento, a cualquier hora: crea el ticket (si no existe), lo **asigna al operador que
+> ejecuta la acción** (`in_progress`), el bot deja de responder y la vista salta a Tickets.
+> Es **idempotente**: si la conversación ya tenía ticket, no crea otro — el operador toma el
+> control del existente. Además, dos columnas nuevas para auditar *que* fue manual y *por quién*.
 >
-> **Cambios de alcance (revisados):** ~~solo admin~~ → **permiso para todos**;
-> ~~auto-asignada al que la hizo~~ → **asignación manual posterior** desde tickets.
+> **Historial de alcance:** ~~solo admin~~ → **permiso nuevo para todos los roles del inbox**;
+> ~~sin asignar / asignación manual posterior~~ → **auto-asigna al operador (toma control)**;
+> ~~409 si ya hay ticket~~ → **idempotente: toma control del existente**.
 
 ---
 
@@ -28,10 +30,10 @@ tags: [silia, escalaciones, inbox, forced-escalation, analysis, plan, project]
 - El **gate de horario** vive **solo** en el evaluador del LLM
   (`EscalationEvaluatorService`), **no** en la creación del registro. Por lo tanto, un
   flujo que llame directo a `createEscalation()` **ya ignora el horario**.
-- La feature = **una llamada directa a `createEscalation()`** (que ya existe) detrás de
-  un endpoint nuevo con permiso amplio, marcando el registro como forzado. La
-  **asignación NO es parte de este flujo** — se hace después, manual, con el endpoint
-  `assign` que ya existe. + 2 columnas de auditoría en el modelo.
+- La feature = componer piezas que **ya existen** detrás de un endpoint nuevo con permiso
+  propio: `createEscalation()` (forzada, bloquea) **+ `assignToAgent()`** para tomar el
+  control; y si ya hay ticket, `assignToAgent`/`handoffEscalation` sobre el existente
+  (idempotente). + 2 columnas de auditoría en el modelo.
 
 ---
 
@@ -119,10 +121,10 @@ timeToFirstResponse?, timeToResolution?, createdAt, updatedAt`
 
 | Tema | Decisión |
 |---|---|
-| Permiso | **Para todos** los que tienen acceso al inbox → gate con `agent.inbox.view` (permiso amplio que ya tienen todos los roles del inbox). Sin restricción de admin. |
-| Asignación | **NO se auto-asigna.** El ticket entra `requires_takecontrol` **sin asignar**; la persona lo toma **manual** desde tickets con el endpoint `assign` existente. |
-| Conversación | **Bloquear / tomar control** (`blockConversation: true`) → el bot deja de responder mientras el ticket espera ser tomado |
-| Duplicados | Si ya hay escalación activa → **rechazar 409**; el FE además **oculta el botón** |
+| Permiso | **Permiso nuevo `agent.inbox.force_escalate`**, otorgado a **todos** los roles del inbox (superadmin, superuser, implementador, admin, supervisor, operator) en el seed. Sin restricción de admin. |
+| Asignación | **SÍ se auto-asigna** al operador que escala (toma control) → `in_progress`, `assignedTo` = operador. *(Actualizado por el ticket Feature 1; revierte la versión previa "sin asignar".)* |
+| Conversación | **Bloquear / tomar control** (`blockConversation: true`) → el bot deja de responder |
+| Duplicados / ya tiene ticket | **Idempotente — tomar control**, no 409: si ya hay escalación activa, no crea otra; reasigna la existente al operador (aunque esté `in_progress` con otro; doble clic del mismo = no-op). |
 | Identidad (auditoría) | **Del token** (`forcedBy` = userId; `forcedByName` = nombre del que forzó). No se usa para asignar, solo para auditar. |
 | Auditoría | **+2 columnas**: `isForced` y `forcedBy`/`forcedByName` |
 
@@ -130,15 +132,19 @@ timeToFirstResponse?, timeToResolution?, createdAt, updatedAt`
 
 ```mermaid
 flowchart TD
-    A[Cualquiera pulsa 'Escalar' en el inbox] --> R[POST /{chatbotId}/escalations/force<br/>Force/index.ts]
-    R --> PERM{Permiso<br/>agent.inbox.view?}
+    A[Operador pulsa 'Manual escalation'] --> R[POST /{chatbotId}/escalations/force<br/>Force/index.ts]
+    R --> PERM{Permiso<br/>agent.inbox.force_escalate?}
     PERM -->|No| F403[403]
     PERM -->|Sí| DUP{¿Conversación ya<br/>tiene escalación activa?}
-    DUP -->|Sí| F409[409 ya existe escalación activa]
-    DUP -->|No| C[createEscalation<br/>isForced: true<br/>forcedBy/forcedByName: del token<br/>blockConversation: true<br/>category: 'Forzada'<br/>status: requires_takecontrol]
-    C --> WS[WS: escalation.created]
-    WS --> OK[200 → ticket forzado SIN asignar, bot silenciado]
-    OK -.-> M[Después: alguien lo toma manual<br/>POST /escalations/assign existente<br/>status: in_progress]
+    DUP -->|No| C[createEscalation<br/>isForced: true, forcedBy: del token<br/>blockConversation: true, category: 'Forzada']
+    C --> AS[assignToAgent<br/>operador del token<br/>status: in_progress]
+    DUP -->|Sí, sin asignar| AS2[assignToAgent existente<br/>toma control]
+    DUP -->|Sí, de otro operador| HO[handoffEscalation<br/>toma control auditado]
+    DUP -->|Sí, del mismo operador| NOOP[no-op idempotente]
+    AS --> OK[200 → ticket in_progress, asignado al operador, bot silenciado]
+    AS2 --> OK
+    HO --> OK
+    NOOP --> OK
 ```
 
 ### 6.3 Cambios por archivo
@@ -165,29 +171,38 @@ flowchart TD
 > **Retrocompatibilidad:** los registros automáticos y los viejos (sin el campo) se leen
 > como `isForced: false`. Los dos campos **no cambian** en handoff ni al resolver.
 
-**B) Servicio — método de creación forzada (sin asignar)**
+**B) Servicio — escalación manual + tomar control (idempotente)**
 - `Assistant/domain/services/EscalationRecordService.ts` — nuevo `forceEscalate(input)`:
-  1. Cargar la conversación; si `hasActiveEscalation` → lanzar error tipado (→ 409).
-  2. `createEscalation({ ...datos, isForced: true, forcedBy, forcedByName,
-     blockConversation: true, category: 'Forzada', escalationConfigId: 'manual',
-     reason, triggerMessage })`.
-  3. Devolver el record creado (`requires_takecontrol`, forzado, **sin asignar**).
-- **No** llama a `assignToAgent`. La asignación se hace después, manual, con el endpoint
-  `POST /{chatbotId}/escalations/assign` que **ya existe** (desde la sección de tickets).
+  1. Cargar la conversación.
+  2. **Si YA tiene escalación activa** (`hasActiveEscalation` + `activeEscalationId`):
+     buscar el registro con `EscalationRecordModel.findByConversation` y **tomar control**:
+     - `requires_takecontrol` → `assignToAgent(operador)`.
+     - `in_progress` con **otro** operador → `handoffEscalation(from→operador)`.
+     - `in_progress` con el **mismo** operador → no-op (devuelve el existente).
+     - (No crea otro ticket.)
+  3. **Si NO tiene escalación activa:** `createEscalation({ ...datos, isForced: true,
+     forcedBy, forcedByName, blockConversation: true, category: 'Forzada',
+     escalationConfigId: 'manual', reason, triggerMessage })` **y luego**
+     `assignToAgent(operador)` → `in_progress` (toma control).
+  4. Devolver el ticket resultante (`in_progress`, `assignedTo` = operador).
+- Reusa `assignToAgent` y `handoffEscalation` existentes (sin lógica de takeover duplicada).
 
 **C) Handler nuevo**
 - `Assistant/application/Escalations/Lifecycle/Force/index.ts` (mirror de `Assign/index.ts`):
-  - `assertPermission(event, 'agent.inbox.view')` — permiso amplio (todos los del inbox).
-  - `userId`/`userName` desde el contexto del token → solo para `forcedBy`/`forcedByName`.
-  - Body: `{ conversationId, channelId?, reason? }` (chatbotId del path).
-  - Validar que la conversación pertenece al `chatbotId`/cuenta.
-  - Llamar `forceEscalate`; mapear el error de duplicado a **409**.
+  - `assertPermission(event, 'agent.inbox.force_escalate')` — permiso nuevo (todos los del inbox).
+  - `forcedBy` = `userId` del token (autoritativo); `forcedByName` = `body.forcedByName ?? email` del token.
+  - Body: `{ conversationId, channelId, reason?, forcedByName? }` (chatbotId del path).
+  - Validar que la escalación pertenece al `chatbotId`.
+  - Devolver `{ status, assignedTo, ... }`. **Sin 409** (idempotente); errores: 400/401/403/500.
 
-**D) Permiso CASL**
-- **No se crea permiso nuevo.** Se reutiliza `agent.inbox.view` (lo tienen todos los roles
-  con acceso al inbox), de modo que la escalación forzada esté disponible **para todos**.
-  Si más adelante se quiere granular, se puede introducir un permiso dedicado otorgado a
-  todos los roles.
+**D) Permiso CASL (permiso NUEVO)**
+- **`agent.inbox.force_escalate`** agregado al catálogo backend
+  (`scripts/migrations/permissions-catalog.json`, `_meta.total` 102→103) y a la matriz
+  rol→permiso (`scripts/migrations/role-permissions.json`) otorgado a **todos** los roles
+  del inbox. También registrado en el catálogo FE (`app/src/features/auth/permissions/catalog.ts`).
+- ⚠️ **Orden de deploy:** el permiso debe **sembrarse en la BD** (correr el seed de permisos)
+  ANTES de que el endpoint sea usable; hasta entonces `assertPermission` lo niega para
+  todos (salvo superuser god-mode). Igual que cualquier permiso nuevo del catálogo.
 
 **E) Infra**
 - `Assistant/infrastructure/aws.template.yml` — recurso Lambda + ruta `POST
@@ -195,21 +210,25 @@ flowchart TD
   (el build es por-handler; sin la entrada no se empaqueta).
 
 **F) Tests**
-- Servicio: fuerza OK → record `requires_takecontrol` **sin asignar**, `isForced: true`,
-  `forcedBy` seteado; rechaza si ya hay escalación activa.
-- Handler: 200 happy path; 403 sin permiso `agent.inbox.view`; 409 con escalación activa;
-  `forcedBy`/`forcedByName` tomados del token.
+- Servicio (5 casos): sin activa → create + assign; activa sin asignar → assign; activa de
+  otro → handoff; activa del mismo → no-op; flag activo sin registro (stale) → create+assign.
+- Handler: 200 happy path (respuesta con `status: in_progress` + `assignedTo`); 403 sin
+  permiso; 400 body inválido; 401 sin identidad; `forcedBy`/`forcedByName` del token.
 
-### 6.4 Ítem abierto a confirmar
-- **`userName` para `forcedByName`:** confirmar si viene en los claims del JWT o si hay
-  que resolverlo con un lookup de `User` por `userId`. Ya **no es bloqueante** (es solo el
-  nombre para mostrar en la columna de auditoría; `forcedBy`=userId sí sale seguro del token).
+### 6.4 Ítems / notas
+- **`userName` para `forcedByName`:** el token trae `userId` + `email` pero no nombre →
+  `forcedByName` = `body.forcedByName ?? email`. `forcedBy`=userId es autoritativo.
+- **Atomicidad en fallo:** si `assignToAgent` falla tras `createEscalation`, queda un ticket
+  creado-sin-asignar (estado válido y recuperable, no corrupto). Rollback transaccional total
+  = follow-up si se requiere.
 
-### 6.5 Fuera de alcance (Frontend / otro repo)
-- Botón "Escalar" (forzar) en el inbox, oculto cuando la conversación ya tiene escalación activa.
-- **Asignación manual** del ticket forzado desde la sección de tickets (usa el endpoint
-  `assign` existente) — este es el paso que reemplaza la auto-asignación.
-- Mostrar badge "Forzada" y columna "Forzada por {nombre}" usando `isForced`/`forcedByName`.
+### 6.5 Fuera de alcance (Frontend / otro repo) — según el ticket Feature 1
+- Botón **"Manual escalation"** en el header de la conversación (`ThreadPanel` en `InboxPage`),
+  visible solo en Conversations (`section === 'chats'`); oculto en Tickets y en Calls.
+- Al pulsar: llamar al endpoint, saltar a la pestaña **Tickets**, marcar controlada por el
+  operador, toast de confirmación (~2.6s) y habilitar el campo de responder. En error: no
+  cambiar de pestaña/asignación y avisar para reintentar.
+- Mostrar badge "Manual" (`isForced`) y columna "Escalada por" (`forcedByName`) en tickets.
 
 ---
 

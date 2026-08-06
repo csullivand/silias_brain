@@ -11,8 +11,8 @@ Organized by project > topic/ticket > dated sessions.
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
 #### Escalación forzada por admin (inbox)
-- **Branch:** (pendiente) — análisis + plan hechos, sin implementar
-- **Status:** Diseño listo — doc con diagramas [[projects/Escalacion Forzada Admin - Analisis y Plan]]
+- **Branch:** feat/SL-1579-force-escalation — IMPLEMENTADO (backend), 23/23 tests, sin commitear
+- **Status:** Implementado — doc + guía FE [[projects/Escalacion Forzada Admin - Analisis y Plan]]
 - **Sessions:**
   - [[Claude Sessions/silia/escalacion-forzada-admin/2026-08-06|2026-08-06]] — Análisis del flujo escalación→ticket→asignación + plan (endpoint force, +2 columnas isForced/forcedBy)
 
