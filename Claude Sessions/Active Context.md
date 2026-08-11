@@ -1,29 +1,31 @@
 # Active Context
 
-## Sesión actual: Manual escalation (SL-1579 / Feature 1) — IMPLEMENTADO (2026-08-06)
-Nota: [[Claude Sessions/silia/escalacion-forzada-admin/2026-08-06]] · Doc: [[projects/Escalacion Forzada Admin - Analisis y Plan]]
+## Sesión actual: SL-1579 Manual escalation — cadena de bugs (2026-08-07/11)
+Nota: [[Claude Sessions/silia/SL-1579-manual-escalation-debug/2026-08-07]] · Plan: [[projects/Escalacion Forzada Admin - Analisis y Plan]]
 
-**Rama `feat/SL-1579-force-escalation` — feature implementada, tests verdes, SIN commitear.**
+**Rama `feat/SL-1579-force-escalation` — varios commits de fix, mayormente SIN push.**
 
-Endpoint `POST /{chatbotId}/escalations/force`: operador escala manual una conversación a Tickets y TOMA control, a cualquier hora.
+Feature "Manual escalation" (SL-1579) ya en develop; esta sesión = arreglar los bugs al probar en dev.
 
-### Comportamiento (idempotente)
-- Sin ticket activo → crea (forzada, bloquea bot) + asigna al operador → `in_progress`.
-- Ya tiene ticket → toma control del existente (assign si libre, handoff si de otro, no-op si del mismo). Sin 409.
-- Permiso NUEVO `agent.inbox.force_escalate` (todos los roles del inbox). +2 columnas auditoría `isForced` + `forcedBy`/`forcedByName`.
-- Identidad del token. Respuesta trae `status: in_progress` + `assignedTo`.
+### Fixes hechos (todos necesitan `sam deploy` real para surtir efecto)
+1. `cf9aeb512` — resolver conversación por channelId (no solo id); 404 si no resuelve.
+2. `8370e1782` — infra: `CHAT_TABLE` env + IAM sobre tabla `Chat` en RoleEscalationsLifecycle.
+3. reactivación de conversaciones cerradas + reconciliación de memory-TTL (guard expectedStatus / closedAt / expirationTime).
+4. `df325e34e` — idempotencia por la tabla de Escalaciones (anti-duplicado), no por el flag de la conversación.
+5. `60434378a` — FE: ocultar botón "Manual escalation" si ya está escalada.
 
-### Archivos tocados
-- Assistant: IEscalationRecord.interface.ts, EscalationRecord.model.ts, EscalationRecordService.ts (forceEscalate), schemas/escalationRecord.schema.ts, Escalations/Lifecycle/Force/index.ts (nuevo), aws.template.yml + package.json (build entry).
-- Permiso: scripts/migrations/permissions-catalog.json (+total 102→103) + role-permissions.json + app catalog.ts + tests bumped.
-- Tests: 23/23 verdes (Force handler + forceEscalate servicio + permisos).
+### ⚠️ Bloqueo actual
+- El usuario subió CÓDIGO manual, pero eso NO aplica env/IAM (vienen del template). Agregué `CHAT_TABLE` por CLI; el **IAM sobre `Chat` NO** pude (mi SSO no tiene `iam:PutRolePolicy`). → sigue 404 hasta un `sam deploy` real.
+- **Acción pendiente #1: push + sam deploy del Assistant a dev.**
 
-### Pendientes
-- ⚠️ Sembrar el permiso en la BD (seed) ANTES de habilitar el endpoint (si no, 403 para todos salvo superuser).
-- Commitear (excluye docs + submódulo Agent) + pr-review/adversarial.
-- FE: implementar con la guía `docs/escalacion-forzada-frontend-integration.md`.
+### Comportamiento "si ya está escalada"
+200 take-control (no 409, no duplica): mismo op → no-op; sin asignar → assign; otro op → handoff. Devuelve el ticket existente.
 
-### Contexto previo (KPI cards)
-- SL-1528 Feature 6 KPI aggregations — commit `943b6902b`. [[Claude Sessions/silia/SL-1528-kpi-aggregations/2026-08-05]]
-- SL-1526 Feature 5 KPI prefs — en develop. Duda: max cards 6 vs 4. BUG: develop no despliega KpiPrefs (build entries).
-- Nota: `GH_PACKAGES_TOKEN=dummy npx jest`.
+### Notas
+- Regresión aparente `ConversationCoordinator.isHumanMode.AGE18` = pre-existente de develop (no mío).
+- Perfil dev: `silia-engineer-operator-817389378997` (SSO, expira). Stack `dev-app-silia-com`.
+- `GH_PACKAGES_TOKEN=dummy npx jest` para tests.
+
+### Contexto previo
+- SL-1528 Feature 6 KPI aggregations. [[Claude Sessions/silia/SL-1528-kpi-aggregations/2026-08-05]]
+- SL-1526 Feature 5 KPI prefs (en develop).

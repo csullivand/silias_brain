@@ -15,6 +15,7 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** Implementado — doc + guía FE [[projects/Escalacion Forzada Admin - Analisis y Plan]]
 - **Sessions:**
   - [[Claude Sessions/silia/escalacion-forzada-admin/2026-08-06|2026-08-06]] — Análisis del flujo escalación→ticket→asignación + plan (endpoint force, +2 columnas isForced/forcedBy)
+  - [[Claude Sessions/silia/SL-1579-manual-escalation-debug/2026-08-07|2026-08-07]] — Depuración cadena de bugs (channel-resolution, idempotencia, TTL/reactivación, infra CHAT_TABLE/IAM, FE botón); bloqueo: falta sam deploy real
 
 #### SL-1528 KPI Aggregations (Feature 6)
 - **Branch:** feat/SL-1528-agregaciones-dataset-kpis
