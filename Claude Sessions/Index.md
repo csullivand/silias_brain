@@ -10,6 +10,18 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### SL-1432 Feature 7 — Detail-view reconcile fix (columna quitada reaparece)
+- **Branch:** feat/SL-1432-user-level-detail-config
+- **Status:** 3 commits PUSHEADOS (379d3b13b, 453dac312, 44a3b538e); 60 tests en 6 suites, tsc limpio; NO verificado en vivo (falta sam deploy). Bug aparte descubierto (listGrants HandlerNotFound) sin arreglar.
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1432-detail-view-reconcile/2026-08-13|2026-08-13/14]] — reconcile de lectura reponía columnas quitadas; fix con sello propio del layout (DetailViewConfig.updatedAt); resolvió BLOCK del adversarial-verify (overlay sólo-visibilidad); descubrió mismatch de handler webpack→esbuild [[concepts/esbuild handler shape - webpack to esbuild migration]]
+
+#### Data Views FE contracts + fix role_name
+- **Branch:** feat/SL-1432-user-level-detail-config
+- **Status:** Fix role_name COMPLETO (15/15 tests, sin commit); contratos FE de Feature 4.3 y 2.1 entregados (BE no implementado)
+- **Sessions:**
+  - [[Claude Sessions/silia/data-views-contracts-grants-rolename/2026-08-14|2026-08-14]] — role_name en GET /access/grants (helper attachRoleNames); docs FE kanban-view-config (4.3, estilo KpiPrefs) y row-fill-rules (2.1, regla=condición filtro+color); fix husky/GH Desktop
+
 #### Escalación forzada por admin (inbox)
 - **Branch:** feat/SL-1579-force-escalation — IMPLEMENTADO (backend), 23/23 tests, sin commitear
 - **Status:** Implementado — doc + guía FE [[projects/Escalacion Forzada Admin - Analisis y Plan]]

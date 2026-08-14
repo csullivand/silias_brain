@@ -1,31 +1,25 @@
 # Active Context
 
-## Sesión actual: SL-1579 Manual escalation — cadena de bugs (2026-08-07/11)
-Nota: [[Claude Sessions/silia/SL-1579-manual-escalation-debug/2026-08-07]] · Plan: [[projects/Escalacion Forzada Admin - Analisis y Plan]]
+## Sesión actual: Data Views FE contracts + fix role_name (2026-08-14)
+Nota: [[Claude Sessions/silia/data-views-contracts-grants-rolename/2026-08-14]]
 
-**Rama `feat/SL-1579-force-escalation` — varios commits de fix, mayormente SIN push.**
+**Rama `feat/SL-1432-user-level-detail-config` — cambios en working tree, SIN commitear (política no-auto-commit).**
 
-Feature "Manual escalation" (SL-1579) ya en develop; esta sesión = arreglar los bugs al probar en dev.
+### Hecho esta sesión
+1. **Fix bug (Antonio):** `GET /access/grants` ahora devuelve `role_name` además de `role_id`. Helper `attachRoleNames` en `Access/application/Grants/get/listGrants.ts` (espejo de attachSubjectNames), en ambas rutas. Sin infra/IAM. **15/15 tests.** PR desc no-técnica lista.
+2. **Contrato FE Feature 4.3 (Kanban view config):** `docs/kanban-view-config-api.md`. Recomendación: store dedicado estilo KpiPrefs (PUT blob = last-write-wins), `GET/PUT /dynamic-tables/tables/{tableId}/kanban-view-config`, permiso table.view.
+3. **Contrato FE Feature 2.1 (Row Fill rules):** `docs/row-fill-rules-api.md`. Regla = condición de filtro `{column, op, value, valueTo, values}` + `color` (reusa ALLOWED_OPERATORS). Endpoint dedicado `GET/PUT /dynamic-tables/tables/{tableId}/row-fill-rules`.
 
-### Fixes hechos (todos necesitan `sam deploy` real para surtir efecto)
-1. `cf9aeb512` — resolver conversación por channelId (no solo id); 404 si no resuelve.
-2. `8370e1782` — infra: `CHAT_TABLE` env + IAM sobre tabla `Chat` en RoleEscalationsLifecycle.
-3. reactivación de conversaciones cerradas + reconciliación de memory-TTL (guard expectedStatus / closedAt / expirationTime).
-4. `df325e34e` — idempotencia por la tabla de Escalaciones (anti-duplicado), no por el flag de la conversación.
-5. `60434378a` — FE: ocultar botón "Manual escalation" si ya está escalada.
+### Pendiente
+- Commit/push del fix role_name (esperando OK).
+- BE de 4.3 y 2.1 NO implementados — solo contratos.
+- Row Fill: 2 open questions de producto (por-vista vs por-tabla; reordenar reglas con drag).
 
-### ⚠️ Bloqueo actual
-- El usuario subió CÓDIGO manual, pero eso NO aplica env/IAM (vienen del template). Agregué `CHAT_TABLE` por CLI; el **IAM sobre `Chat` NO** pude (mi SSO no tiene `iam:PutRolePolicy`). → sigue 404 hasta un `sam deploy` real.
-- **Acción pendiente #1: push + sam deploy del Assistant a dev.**
-
-### Comportamiento "si ya está escalada"
-200 take-control (no 409, no duplica): mismo op → no-op; sin asignar → assign; otro op → handoff. Devuelve el ticket existente.
-
-### Notas
-- Regresión aparente `ConversationCoordinator.isHumanMode.AGE18` = pre-existente de develop (no mío).
-- Perfil dev: `silia-engineer-operator-817389378997` (SSO, expira). Stack `dev-app-silia-com`.
-- `GH_PACKAGES_TOKEN=dummy npx jest` para tests.
+### Aprendizajes reutilizables
+- **Filtros/orden de Data Views NO se persisten server-side** (son query-string). Persistencia = shared (registro table) o per-user stores (KpiPrefs/FilterBarConfig/UserViewConfig, key userId+tableId, GSI tableId-index para cascade).
+- **Motor de filtros ya server-side:** `ALLOWED_OPERATORS` + `validateAndResolveFilters` en DynamicTables/domain. Paleta de color es FE-only.
+- **GitHub Desktop + husky:** node de nvm no está en el PATH mínimo de GH Desktop → `~/.config/husky/init.sh` carga nvm.
 
 ### Contexto previo
-- SL-1528 Feature 6 KPI aggregations. [[Claude Sessions/silia/SL-1528-kpi-aggregations/2026-08-05]]
-- SL-1526 Feature 5 KPI prefs (en develop).
+- SL-1579 Manual escalation — bugs, falta sam deploy real. [[Claude Sessions/silia/SL-1579-manual-escalation-debug/2026-08-07]]
+- SL-1528 KPI aggregations / SL-1526 KPI prefs (en develop).
