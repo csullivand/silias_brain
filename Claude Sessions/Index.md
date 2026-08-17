@@ -237,3 +237,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** ⚠️ crash fix aún NO en develop (buggy export const mergeado por PR #1962) — cold starts de GetWorkflows crasheando en prod hasta re-merge/hotfix
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1592-workflows-batch-picker-authz/2026-08-14|2026-08-14]] — GET /v1/workflows batch ?assistantIds= (tablas usan AgentTableConnections, no chatbotId) + fix IDOR filterByAccount + fix crash Lambda (ESM export const vs CJS exports.handler = getter TypeError; solución todo-CJS + exports.getWorkflowsHandlerImpl) + status filter en batch path
+
+#### Feature 4.3 — Kanban view config per user (BE)
+- **Branch:** (sin rama aún; análisis en feat/SL-1576)
+- **Status:** ANÁLISIS en progreso (2026-08-17). Contrato FE congelado en docs/kanban-view-config-api.md. Espejo de SL-1576 Row Fill / KpiPrefs. BE no implementado.
+- **Sessions:**
+  - [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17|2026-08-17]] — análisis del ticket; store per-(userId,tableId) blob JSON (groupBy/lanes/cards/sorts/aggs); GET/PUT + cascade-delete; discrepancia de contrato 422 vs 400+errorCode y updatedAt ms vs seg

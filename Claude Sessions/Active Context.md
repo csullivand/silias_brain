@@ -1,27 +1,31 @@
 # Active Context
 
-## Sesión actual: SL-1576 Feature 2.1 [BE] Row Fill Rules (2026-08-14)
-Nota: [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
+## Sesión actual: [Feature 4.3][BE] Kanban View Config per user (2026-08-17)
+Nota: [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17]]
 
-**Rama `feat/SL-1576-persistencia-reglas-fill` · PR #1991 (base develop) · 4 commits pusheados.**
+**Análisis entregado. Sin rama aún (en feat/SL-1576). Implementación NO iniciada. 2 decisiones de contrato BLOQUEANTES.**
 
-BE para persistir reglas de coloreado condicional de filas (columna+operador+valor→color), **per-usuario** (por vista, como filtros), espejo de FilterBarConfig.
+Feature 4.3 = persistir config de vista Kanban per-(userId,tableId): blob JSON (groupByColumnId, laneOrder, laneColors, showUncategorized, cardTitleColumnId, cardFields[], laneSorts, summaryAggs). Clon del patrón SL-1576 Row Fill.
 
-### Hecho
-- Validador propio (`domain/utils/rowFillRules.ts`) — resuelve columna por **id** (no por name como `validateAndResolveFilters`), DROP columnas borradas, REJECT op/shape/color con 400+errorCode. Paleta cerrada de **10** (+orange,cyan,pink,brown).
-- Store per-user (PK userId, SK tableId) + GSI tableId-index; GET `table.view`, PUT `table.filter`; 400+errorCode, updatedAt en segundos.
-- Cascade-delete al borrar tabla (se suma a KpiPrefs/UserViewConfig en deleteTable).
-- Reviews: PR review Approved-with-suggestions + adversarial verify independiente **PASS** (5 lentes).
-- Doc FE `docs/row-fill-rules-api.md` **removido del PR** (commit 822190cdc) — se trackea fuera del PR de BE.
-- 24 tests row-fill + deleteTable verdes, tsc limpio.
+### Conclusión
+- **Molde:** SL-1576 RowFillRules (modelo PK=userId/SK=tableId + GSI tableId-index; handlers GET/PUT /tables/{tableId}/kanban-view-config; cascade fail-open deleteTable.ts:44-57; infra tabla+GSI+KMS+rol). Esfuerzo BAJO ~1 día.
+- BE guarda VERBATIM (reconcilia FE). Solo valida enums direction/calcs/__no_status__.
 
-### ⚠️ Pendiente
-1. `sam deploy` a dev + round-trip real (tabla nueva se crea con GSI).
-2. Tokens de los 4 colores nuevos: los define Design System → pedir a Camila (para el doc FE, fuera del PR).
-3. `.changeset/beige-friends-sip.md`: `major` → debería ser `minor`; typo "persit configration".
-4. FE integración: único cambio vs contrato original = 422→400 y updatedAt ms→seg.
+### ⚠️ BLOQUEADO — 2 decisiones de producto
+1. **Contrato casa vs doc FE congelado** (docs/kanban-view-config-api.md):
+   - updatedAt: doc=ms vs casa=SEGUNDOS · error: doc=422 vs RowFill=400+errorCode · permiso PUT: doc=table.view vs RowFill=table.filter · éxito: doc envuelto vs casa desenvuelto.
+   - Rec: alinear a casa + actualizar doc.
+2. **Orden manual de cards (mover/arreglar posición):**
+   - Mover ENTRE lanes = muta group_by en la fila = DATA compartida, endpoint row-update existente (NO 4.3).
+   - Arreglar DENTRO de lane = GAP: contrato solo tiene laneSorts (por columna), no orden manual.
+   - ¿per-user (blob laneManualOrder) o COMPARTIDO (rank/position en fila)? ⚠️ per-user en blob crece O(filas) → revienta item 400KB DynamoDB.
+   - Rec: COMPARTIDO → rank/position en la fila (fractional/lexo-rank).
+
+### Cómo continuar
+1. Resolver las 2 decisiones.
+2. Confirmar mover-entre-lanes = endpoint row-update existente.
+3. Espejar RowFillRules → KanbanViewConfig; infra SAM + cascade +1 línea; tests.
 
 ### Contexto previo
-- SL-1432 Feature 7 detail-view reconcile fix. [[Claude Sessions/silia/SL-1432-detail-view-reconcile/2026-08-13]]
-- Feature 4.3 (Kanban view config per user) — ticket aparte, NO desarrollado. Doc FE `docs/kanban-view-config-api.md` (untracked).
-- SL-1579 Manual escalation. [[Claude Sessions/silia/SL-1579-manual-escalation-debug/2026-08-07]]
+- SL-1576 Feature 2.1 [BE] Row Fill Rules — PR #1991 base develop, reviews PASS, NO deployado. [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
+- SL-1432 Feature 7 detail-view reconcile. [[Claude Sessions/silia/SL-1432-detail-view-reconcile/2026-08-13]]
