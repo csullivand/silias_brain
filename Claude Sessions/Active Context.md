@@ -1,31 +1,29 @@
 # Active Context
 
-## Sesión actual: [Feature 4.3][BE] Kanban View Config per user (2026-08-17)
+## Sesión actual: [Feature 4.3][BE] Kanban View Config (2026-08-17)
 Nota: [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17]]
 
-**Análisis entregado. Sin rama aún (en feat/SL-1576). Implementación NO iniciada. 2 decisiones de contrato BLOQUEANTES.**
+**Análisis + decisiones CERRADAS. Sin rama aún. Implementación NO iniciada. Listo para codificar.**
 
-Feature 4.3 = persistir config de vista Kanban per-(userId,tableId): blob JSON (groupByColumnId, laneOrder, laneColors, showUncategorized, cardTitleColumnId, cardFields[], laneSorts, summaryAggs). Clon del patrón SL-1576 Row Fill.
+Feature 4.3 = persistir config de vista Kanban (groupByColumnId, laneOrder, laneColors, showUncategorized, cardTitleColumnId, cardFields[], laneSorts, summaryAggs).
 
-### Conclusión
-- **Molde:** SL-1576 RowFillRules (modelo PK=userId/SK=tableId + GSI tableId-index; handlers GET/PUT /tables/{tableId}/kanban-view-config; cascade fail-open deleteTable.ts:44-57; infra tabla+GSI+KMS+rol). Esfuerzo BAJO ~1 día.
-- BE guarda VERBATIM (reconcilia FE). Solo valida enums direction/calcs/__no_status__.
+### ✅ DECISIONES FINALES (confirmadas por usuario + PRD)
+1. **COMPARTIDA por tabla** (NO per-user). Clave solo tableId, sin userId, sin GSI. Usuario: 'el PRD está mal, ya se corrige' (PRD dice por-usuario pero queda invalidado).
+2. **Orden manual de tarjetas NO persiste** (PRD lo pone fuera de alcance; Feature 7 = sort automático client-side). Sin rank.
+3. **Contrato = convención casa SL-1576:** updatedAt SEGUNDOS, error 400+{errorCode,message}, GET sin config → {config:null,updatedAt:null}.
+4. **Permiso:** GET=table.view; PUT=table.column.edit (config compartida = permiso de edición, como reorderColumns). Pendiente confirmar mapeo.
 
-### ⚠️ BLOQUEADO — 2 decisiones de producto
-1. **Contrato casa vs doc FE congelado** (docs/kanban-view-config-api.md):
-   - updatedAt: doc=ms vs casa=SEGUNDOS · error: doc=422 vs RowFill=400+errorCode · permiso PUT: doc=table.view vs RowFill=table.filter · éxito: doc envuelto vs casa desenvuelto.
-   - Rec: alinear a casa + actualizar doc.
-2. **Orden manual de cards (mover/arreglar posición):**
-   - Mover ENTRE lanes = muta group_by en la fila = DATA compartida, endpoint row-update existente (NO 4.3).
-   - Arreglar DENTRO de lane = GAP: contrato solo tiene laneSorts (por columna), no orden manual.
-   - ¿per-user (blob laneManualOrder) o COMPARTIDO (rank/position en fila)? ⚠️ per-user en blob crece O(filas) → revienta item 400KB DynamoDB.
-   - Rec: COMPARTIDO → rank/position en la fila (fractional/lexo-rank).
+### Molde a copiar
+SL-1576 RowFillRules, PERO simplificado: PK=tableId (no userId), SIN GSI, cascade trivial. Handlers GET/PUT /tables/{tableId}/kanban-view-config. Validar solo enums (direction asc/desc, calcs x13, __no_status__). BE guarda VERBATIM (FE reconcilia).
 
-### Cómo continuar
-1. Resolver las 2 decisiones.
-2. Confirmar mover-entre-lanes = endpoint row-update existente.
-3. Espejar RowFillRules → KanbanViewConfig; infra SAM + cascade +1 línea; tests.
+### Cómo continuar (implementar)
+1. (Opcional) confirmar PUT=table.column.edit.
+2. Modelo KanbanViewConfig (PK=tableId) + util validador + handlers GET/PUT + cascade deleteTable.ts + infra SAM (tabla+KMS+rol, SIN GSI) + tests.
+3. Actualizar docs/kanban-view-config-api.md (quitar userId, seg/400).
+
+### Docs a corregir (no-código)
+Ticket + PRD (por-usuario→compartida); docs/kanban-view-config-api.md.
 
 ### Contexto previo
-- SL-1576 Feature 2.1 [BE] Row Fill Rules — PR #1991 base develop, reviews PASS, NO deployado. [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
+- SL-1576 Feature 2.1 Row Fill Rules — PR #1991, reviews PASS, NO deployado. [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
 - SL-1432 Feature 7 detail-view reconcile. [[Claude Sessions/silia/SL-1432-detail-view-reconcile/2026-08-13]]
