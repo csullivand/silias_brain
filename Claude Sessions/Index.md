@@ -10,6 +10,12 @@ Organized by project > topic/ticket > dated sessions.
 ### silia
 Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 
+#### SL-1576 Feature 2.1 — Row Fill Rules persistence (BE)
+- **Branch:** feat/SL-1576-persistencia-reglas-fill · **PR #1991** (base develop)
+- **Status:** Implementado + reviews PASS (PR review + adversarial verify); 4 commits pusheados; NO deployado. Doc FE removido del PR.
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14|2026-08-14]] — coloreado condicional de filas per-usuario (columna+op+valor→color); validador por-id reusando ALLOWED_OPERATORS; store per-user + GSI + cascade-delete; paleta cerrada 6→10; 400+errorCode, updatedAt segundos [[concepts/esbuild handler shape - webpack to esbuild migration]]
+
 #### SL-1432 Feature 7 — Detail-view reconcile fix (columna quitada reaparece)
 - **Branch:** feat/SL-1432-user-level-detail-config
 - **Status:** 3 commits PUSHEADOS (379d3b13b, 453dac312, 44a3b538e); 60 tests en 6 suites, tsc limpio; NO verificado en vivo (falta sam deploy). Bug aparte descubierto (listGrants HandlerNotFound) sin arreglar.
@@ -225,3 +231,9 @@ Repo: `/Users/sulli/Documents/PersonalWork/Loteria/loteria-suerte/`
 - **Status:** RBAC hardening + account graduated payload commiteados; gap createOrgUser/patchOrgUser→custom roles pendiente
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1557-rbac-strict/2026-08-04|2026-08-04]] — anti-escalamiento en autoría de roles (findUngrantableResourceIds + assertRole floor) + flag PERMISSION_STRICT_MODE; fix 403 operator en GET /accounts/{id} vía payload graduado (summary/full por permiso); análisis CSV + Feature 11 (gap: user create/patch rechazan roles custom)
+
+#### SL-1592 Workflows batch picker + account isolation + Lambda crash fix
+- **Branch:** feat/SL-1592-refactor-workflows-td (pushed 53e49a83a..1f1e2adbd)
+- **Status:** ⚠️ crash fix aún NO en develop (buggy export const mergeado por PR #1962) — cold starts de GetWorkflows crasheando en prod hasta re-merge/hotfix
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1592-workflows-batch-picker-authz/2026-08-14|2026-08-14]] — GET /v1/workflows batch ?assistantIds= (tablas usan AgentTableConnections, no chatbotId) + fix IDOR filterByAccount + fix crash Lambda (ESM export const vs CJS exports.handler = getter TypeError; solución todo-CJS + exports.getWorkflowsHandlerImpl) + status filter en batch path
