@@ -1,28 +1,29 @@
 # Active Context
 
-## Sesión actual: [Feature 4.3][BE] Kanban View Config (2026-08-17)
+## Sesión actual: [Feature 4.3][BE] Kanban View Config (SL-1477) — COMPLETA + COMMITEADA
 Nota: [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17]]
 
-**Análisis + decisiones CERRADAS. Sin rama aún. Implementación NO iniciada. Listo para codificar.**
+**Rama feat/SL-1477-persistencia-vista-usuario-kanban · commit a079d4d0e (local, SIN push) · 11 archivos +924 · 32 tests verdes.**
 
-Feature 4.3 = persistir config de vista Kanban (groupByColumnId, laneOrder, laneColors, showUncategorized, cardTitleColumnId, cardFields[], laneSorts, summaryAggs).
+Config de vista Kanban **COMPARTIDA por tabla** (una sola para todos, NO per-usuario): blob JSON (groupByColumnId, laneOrder, laneColors, showUncategorized, cardTitleColumnId, cardFields[], laneSorts, summaryAggs). Espejo simplificado de SL-1576 RowFillRules.
 
-### ✅ DECISIONES FINALES (confirmadas por usuario + PRD)
-1. **COMPARTIDA por tabla** (NO per-user). Clave solo tableId, sin userId, sin GSI. Usuario: 'el PRD está mal, ya se corrige' (PRD dice por-usuario pero queda invalidado).
-2. **Orden manual de tarjetas NO persiste** (PRD lo pone fuera de alcance; Feature 7 = sort automático client-side). Sin rank.
-3. **Contrato = convención casa SL-1576:** updatedAt SEGUNDOS, error 400+{errorCode,message}, GET sin config → {config:null,updatedAt:null}.
-4. **Permiso:** GET=table.view; PUT=table.column.edit (config compartida = permiso de edición, como reorderColumns). Pendiente confirmar mapeo.
+### Hecho
+- Store PK=tableId (sin userId/GSI); GET/PUT /tables/{tableId}/kanban-view-config; GET table.view, PUT table.column.edit; updatedAt SEGUNDOS; error 400+errorCode; guarda VERBATIM (FE reconcilia).
+- Validador solo enums (direction asc/desc, calcs x13, __no_status__) + forma.
+- Cascade-delete fail-open en deleteTable.ts. Infra SAM: KMS, tabla sin GSI, env var, DtKanbanViewConfigRole (CASL+AccessGrant+KMS), 2 Lambdas, RequestModel.
+- Reviews: adversarial verify PASS ✅ + PR review Approved-with-suggestions ⚠️. Convergieron en updatedBy sin @IsOptional → FIX + test de regresión.
+- Commit a079d4d0e (Conventional Commits, scope eca, hooks OK). SOLO DynamicTables.
 
-### Molde a copiar
-SL-1576 RowFillRules, PERO simplificado: PK=tableId (no userId), SIN GSI, cascade trivial. Handlers GET/PUT /tables/{tableId}/kanban-view-config. Validar solo enums (direction asc/desc, calcs x13, __no_status__). BE guarda VERBATIM (FE reconcilia).
+### ⚠️ Pendiente
+1. git push + PR (descripción no técnica ya lista).
+2. sam deploy a dev + round-trip real.
+3. Doc FE docs/kanban-view-config-api.md actualizado (compartida/seg/400/table.column.edit) pero FUERA del commit — decidir si va aparte (como SL-1576).
+4. Corregir PRD/ticket: 'por-usuario' → 'compartida por tabla'.
 
-### Cómo continuar (implementar)
-1. (Opcional) confirmar PUT=table.column.edit.
-2. Modelo KanbanViewConfig (PK=tableId) + util validador + handlers GET/PUT + cascade deleteTable.ts + infra SAM (tabla+KMS+rol, SIN GSI) + tests.
-3. Actualizar docs/kanban-view-config-api.md (quitar userId, seg/400).
-
-### Docs a corregir (no-código)
-Ticket + PRD (por-usuario→compartida); docs/kanban-view-config-api.md.
+### Decisiones clave (producto)
+- Kanban config = COMPARTIDA por tabla (reemplaza al PRD que dice por-usuario; 'el PRD está mal, se corrige').
+- Orden manual de tarjetas NO persiste (PRD fuera de alcance). Sin rank.
+- Convención de casa (seg/400/table.column.edit), no el doc congelado original (ms/422/table.view).
 
 ### Contexto previo
 - SL-1576 Feature 2.1 Row Fill Rules — PR #1991, reviews PASS, NO deployado. [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
