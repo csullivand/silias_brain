@@ -48,3 +48,9 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** IMPLEMENTADO + 2 rondas review (PR Approved/Changes-fixed + adversarial PASS). 75 tests. NO deployado. Ticket FE, se implementaron los gaps de BE.
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1290-role-dropdowns/2026-08-19|2026-08-19]] — fix seguridad grants (cross-tenant + no-asignables); GET /role ?assignable&light; POST /role/{id}/reassign (reasignación masiva); asignabilidad allowlist relativa al caller (superadmin asigna todo); doc FE
+
+#### Feature 11 / SL-1293 — Role dropdowns: casing + superadmin + ShareAccess (BE+FE)
+- **Branch:** feat/SL-1293-include-custom-roles-dropdown · **commits 1f178ffce + 6aa248924 PUSHEADOS** · NO deployado
+- **Status:** COMPLETO + múltiples rondas review/adversarial (todas resueltas, incl. 1 BLOCK del adversarial en listByAccount). Validado en vivo + contra BD dev. Docs FE sin commitear.
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1293-role-dropdowns-casing/2026-08-20|2026-08-20]] — case-insensitive de rol end-to-end (resolve/asignar/contar/listar/filtrar/reasignar); superadmin asigna cualquier rol a usuarios; POST /role/{id}/reassign; ShareAccessModal deriva el rol del usuario seleccionado; fixes de cache invalidation + Org>Users filter
