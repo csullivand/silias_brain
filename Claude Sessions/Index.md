@@ -42,3 +42,9 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 #### SL-1528 KPI Aggregations (Feature 6)
 - **Branch:** feat/SL-1528-agregaciones-dataset-kpis
 - **Status:** Complete — commit 943b6902b, 17/17 tests, pr-review + adversarial PASS, no push
+
+#### Feature 11 / SL-1290 — Role dropdowns con roles custom (BE)
+- **Branch:** (sin rama propia; en working tree sobre feat/SL-1477) · SIN commit
+- **Status:** IMPLEMENTADO + 2 rondas review (PR Approved/Changes-fixed + adversarial PASS). 75 tests. NO deployado. Ticket FE, se implementaron los gaps de BE.
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1290-role-dropdowns/2026-08-19|2026-08-19]] — fix seguridad grants (cross-tenant + no-asignables); GET /role ?assignable&light; POST /role/{id}/reassign (reasignación masiva); asignabilidad allowlist relativa al caller (superadmin asigna todo); doc FE

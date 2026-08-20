@@ -1,30 +1,31 @@
 # Active Context
 
-## Sesión actual: [Feature 4.3][BE] Kanban View Config (SL-1477) — COMPLETA + COMMITEADA
-Nota: [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17]]
+## Sesión actual: [Feature 11][BE] Role dropdowns con roles custom (SL-1290) — 2026-08-19
+Nota: [[Claude Sessions/silia/SL-1290-role-dropdowns/2026-08-19]]
 
-**Rama feat/SL-1477-persistencia-vista-usuario-kanban · commit a079d4d0e (local, SIN push) · 11 archivos +924 · 32 tests verdes.**
+**Implementado + 2 rondas de review (Approved/PASS). En working tree, SIN commit, SIN rama propia (mezclado en feat/SL-1477). 75 tests verdes.**
 
-Config de vista Kanban **COMPARTIDA por tabla** (una sola para todos, NO per-usuario): blob JSON (groupByColumnId, laneOrder, laneColors, showUncategorized, cardTitleColumnId, cardFields[], laneSorts, summaryAggs). Espejo simplificado de SL-1576 RowFillRules.
+Ticket FE SL-1290 → review del BE + implementar gaps. El BE ya tenía GET /role y CRUD custom (Feature 10); faltaba: seguridad grants, filtro assignable, reasignación masiva.
 
-### Hecho
-- Store PK=tableId (sin userId/GSI); GET/PUT /tables/{tableId}/kanban-view-config; GET table.view, PUT table.column.edit; updatedAt SEGUNDOS; error 400+errorCode; guarda VERBATIM (FE reconcilia).
-- Validador solo enums (direction asc/desc, calcs x13, __no_status__) + forma.
-- Cascade-delete fail-open en deleteTable.ts. Infra SAM: KMS, tabla sin GSI, env var, DtKanbanViewConfigRole (CASL+AccessGrant+KMS), 2 Lambdas, RequestModel.
-- Reviews: adversarial verify PASS ✅ + PR review Approved-with-suggestions ⚠️. Convergieron en updatedBy sin @IsOptional → FIX + test de regresión.
-- Commit a079d4d0e (Conventional Commits, scope eca, hooks OK). SOLO DynamicTables.
+### Hecho (bloque Feature 11 BE)
+1. **Fix seguridad grants:** createGrant/updateGrant validan rol visible-a-cuenta + asignable (antes solo existencia+active → fuga cross-tenant + aceptaba superadmin por id).
+2. **GET /role ?assignable=true&light=true:** filtra a asignables (relativo al caller) y omite userCount/sections. Default sin flags intacto.
+3. **POST /role/{id}/reassign {targetRoleId, deleteSource?}:** reasignación masiva users(nombre)+grants(id), invalida cache, opcional soft-delete. Best-effort/idempotente.
+4. **Asignabilidad ALLOWLIST relativa al caller:** normal = admin/supervisor/operator + custom; **superadmin asigna cualquier rol visible** (por instrucción del usuario). superuser 'ya no es rol' → allowlist no lo enumera.
+5. Doc FE docs/role-dropdowns-frontend-integration.md.
+
+### Reviews
+- PR review: Changes required (1 blocker: faltaba build script reassign) → CORREGIDO. Adversarial: PASS (bypass superadmin NO escala). Nit SQS → corregido.
 
 ### ⚠️ Pendiente
-1. git push + PR (descripción no técnica ya lista).
-2. sam deploy a dev + round-trip real.
-3. Doc FE docs/kanban-view-config-api.md actualizado (compartida/seg/400/table.column.edit) pero FUERA del commit — decidir si va aparte (como SL-1576).
-4. Corregir PRD/ticket: 'por-usuario' → 'compartida por tabla'.
+1. Crear rama feat/SL-1290 + committear SOLO Feature 11 (Access+Roles+shared); decidir doc dentro/aparte.
+2. Changeset: recomendado MINOR (no major; aditivo).
+3. sam deploy Access+Roles a dev + round-trip.
+4. Feature 10 aparte: propagar rename a user.role.
 
-### Decisiones clave (producto)
-- Kanban config = COMPARTIDA por tabla (reemplaza al PRD que dice por-usuario; 'el PRD está mal, se corrige').
-- Orden manual de tarjetas NO persiste (PRD fuera de alcance). Sin rank.
-- Convención de casa (seg/400/table.column.edit), no el doc congelado original (ms/422/table.view).
+### Tensión con AC (documentada)
+'Super Admin nunca asignable' vs 'superadmin asigna todo' → implementado según usuario (caller superadmin sí; resto no). Doc §7.
 
 ### Contexto previo
-- SL-1576 Feature 2.1 Row Fill Rules — PR #1991, reviews PASS, NO deployado. [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
-- SL-1432 Feature 7 detail-view reconcile. [[Claude Sessions/silia/SL-1432-detail-view-reconcile/2026-08-13]]
+- Feature 4.3 Kanban view config (SL-1477) — COMMIT a079d4d0e local, sin push, NO deployado. [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17]]
+- SL-1576 Row Fill Rules — PR #1991. [[Claude Sessions/silia/SL-1576-row-fill-rules/2026-08-14]]
