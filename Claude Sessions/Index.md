@@ -16,6 +16,12 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Sessions:**
   - [[Claude Sessions/silia/Feature-4.3-kanban-view-config/2026-08-17|2026-08-17/19]] — store per-tabla (PK=tableId, sin userId/GSI); GET table.view / PUT table.column.edit; validador de enums; cascade-delete; infra SAM; fix updatedBy @IsOptional tras reviews
 
+#### Feature 7 / SL-1477 — Kanban laneSorts PER-USER (BE+FE)
+- **Branch:** feat/SL-1477-persistencia-vista-usuario-kanban · **commits 42f4873cc + 098673731 pusheados**, 4e32abb1c local
+- **Status:** COMPLETO + reviews PASS (PR ⚠️ / adversarial ✅). BE 37/37, FE KanbanBoard 73/73, tsc limpio. NO deployado. Decisión clave: laneSorts es la ÚNICA pieza per-user; board FE ahora CONTROLADO (fix del async-seed race). BLOCK de reversibilidad descartado (sin datos reales). Nit pendiente: debounce timer compartido entre tablas.
+- **Sessions:**
+  - [[Claude Sessions/silia/SL-1477-kanban-lanesorts-per-user/2026-08-21|2026-08-21]] — split per-user (PK=userId/SK=tableId/GSI); 2 BLOCKs (config:null loss + async-seed race → board controlado); ControlledBoard tests + regression guard de hidratación; reversibility BLOCK moot
+
 #### SL-1576 Feature 2.1 — Row Fill Rules persistence (BE)
 - **Branch:** feat/SL-1576-persistencia-reglas-fill · **PR #1991** (base develop)
 - **Status:** Implementado + reviews PASS; 4 commits pusheados; NO deployado. Doc FE removido del PR.
