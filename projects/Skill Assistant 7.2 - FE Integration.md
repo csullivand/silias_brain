@@ -1,3 +1,6 @@
+---
+tags: silia,skills,feature-7,frontend,integration,api
+---
 # Skill Assistant (7.2) — Guía de integración Frontend
 
 > Backend del **Skill Assistant**: el asistente flotante del editor de skills que
