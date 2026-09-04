@@ -1,25 +1,23 @@
 # Active Context
 
-## Sesión actual: [Feature 7.2 BE] Servicio del Skill Assistant (2026-08-31)
-Nota: [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-08-28]]
+## Sesión actual: [SL-1637 / 7.2] Deploy del Skill Assistant + investigación 9.2 (2026-09-04)
+Nota: [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-09-04]]
 
-**Rama develop. Sin código aún — fase de diseño. Entregable: docs/skill-assistant-7.2-plan.md (nuevo, sin commit).**
+**Estado: 7.2 desplegándose vía PR #2292 (bump del puntero de Skills). 9.2 solo investigado.**
 
-### Hecho
-1. **Review completo** del ticket 7.2 vs código del submódulo Skills/. El code assistant de custom integrations (Skills/application/CustomIntegrations/Assistant/) es el TEMPLATE — mismo patrón conversación+persistencia+LiteLLM+function-calling.
-2. **6 decisiones cerradas con dev (Daniel Rubiano):**
-   - Contexto del agente lo LEE el back de la tabla ${StackName}-Chatbot (estilo Voice, con chatbotId). Front NO lo manda; solo chatbotId + skill. No existe flow_context en repo. Falta env CHATBOT_TABLE + grant IAM read.
-   - El servicio NUNCA escribe el skill; propone, front aplica al borrador, Save persiste (PUT /flows/{flowId}).
-   - action = PARCHE (qué regla/qué párrafo), no diff ni doc regenerado.
-   - Alcance v1 = 4 acciones: insert_instructions, edit_instructions, add_rule, edit_rule. Integration/MCP FUERA (ya en modales VOX-187/188/199).
-   - Conversación: tope 100 turnos, sin resumen, sin TTL, borra solo con Reset (POST .../reset).
-   - IA: mismo proxy LiteLLM que ya usa Skills (inference-ui + SSM /{StackName}/ai/rta/litellm/master-key). No OpenAI directo.
-3. **Plan escrito** (docs/skill-assistant-7.2-plan.md): contrato API, modelo de datos (tabla FlowAssistantConversations, key userFlowKey=userId#flowId), agentContext.ts (el único trozo nuevo, read Chatbot estilo Voice replicado — Skills submódulo no puede importar Assistant/), system prompt per-tab, function-calling tools mode-gated, infra SAM, checklist.
+### Hecho hoy
+1. **Contract open item cerrado:** `edit_instructions.anchor` = `{ segmentIndex, start, end }` (no texto exacto). Backend emite `null` si el modelo no produce anchor válido; FE deja el borrador intacto. Landeado en Skills develop (`10a3e69`).
+2. **Reviews (PR + adversarial):** código 7.2 correcto/seguro/testeado (5/5 lentes). Barrido del repo: era el único caso del anti-patrón exact-text-anchor.
+3. **CI replicado localmente:** lint, tests (58/58 Assistant), compare-eslint, runtime-consistency, governance → verde. Checkov marcó 2 tablas PREEXISTENTES de Alejandro (CustomIntegrations/McpServers, sin PITR) — no nuestras.
+4. **Corrección clave del deploy:** un pointer-bump se ve como gitlink → los jobs file-scoped (iac-scan/security-lint/runtime-consistency/secret-scan) SE SALTAN el submódulo. lint + tests sí cubren Skills y pasan. **No se espera rojo; Checkov ni mira el template.**
+5. **Deploy:** rama `chore/SL-1637-bump-skills-pointer`, commit `2b51933b2` (gitlink `d856f8c → 6b9788e`), **PR #2292 → develop** abierto.
+6. **Investigación 9.2** (`docs/feature-9.2-plan.md`): el motor de ejecución YA existe (loop TS `CompletionService`/`ToolsService` + submódulo Python `Agent`). El net-new es el PUENTE `ProcessFlow`(Skills)→engine por intent + sync; y Data Views enforcement runtime + MCP callTool + trigger de entrada. Boundary: modo `ENGINE` delega al engine Python (hoy un solo `agent_engine_flow_id`).
 
 ### Pendientes
-1. Usuario revisa/aprueba el plan.
-2. Confirmar con FE (7.1): locator de edit_instructions (propuesto 'anchor' textual) + shape del body.
-3. Si aprueba: implementar según checklist §12 del plan.
+1. Revisar/aprobar **PR #2292**; al mergear a develop dispara deploy (+ promote-envs).
+2. 9.2: llevar §2 (boundary) del plan al equipo AGE/engine — quién dueña el sync `ProcessFlow`→engine y cómo unir `pipeline/layer3` (selección) con `engine-poc` (ejecución). Cerrar 3 open questions del PRD.
+3. Cleanup 7.2 opcional (no bloqueante): `Post/index.ts:114` instanceof redundante; `errors.ts:40` msg default dice "code assistant"; cobertura 409-vía-appendTurn.
 
 ### Contexto previo
-- Feature 7 SL-1477 Kanban laneSorts per-user — commits pusheados. [[Claude Sessions/silia/SL-1477-kanban-lanesorts-per-user/2026-08-21]]
+- Sesión anterior (2026-08-31): diseño del servicio 7.2 (plan BE). [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-08-28]]
+- Docs de referencia (untracked en Silia): [[Skill Assistant 7.2 - Plan BE]], [[Skill Assistant 7.2 - FE Integration]], `docs/feature-9.2-plan.md`.

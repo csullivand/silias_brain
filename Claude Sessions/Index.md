@@ -60,3 +60,10 @@ Repo: `/Users/sulli/Projects/silia/06-11-25/silia/`
 - **Status:** COMPLETO + múltiples rondas review/adversarial (todas resueltas, incl. 1 BLOCK del adversarial en listByAccount). Validado en vivo + contra BD dev. Docs FE sin commitear.
 - **Sessions:**
   - [[Claude Sessions/silia/SL-1293-role-dropdowns-casing/2026-08-20|2026-08-20]] — case-insensitive de rol end-to-end (resolve/asignar/contar/listar/filtrar/reasignar); superadmin asigna cualquier rol a usuarios; POST /role/{id}/reassign; ShareAccessModal deriva el rol del usuario seleccionado; fixes de cache invalidation + Org>Users filter
+
+#### SL-1637 Feature 7.2 — Skill Assistant BE (autor de instrucciones/reglas)
+- **Branch (Skills submodule):** develop @ `6b9788e` (PR #9 merged) · **Silia deploy: PR #2292** (bump puntero `d856f8c → 6b9788e`)
+- **Status:** 7.2 MERGED en Skills develop; desplegándose vía PR #2292. Reviews PR ⚠️ / adversarial ✅. Contrato: anchor `{segmentIndex,start,end}`. CI: pointer-bump → iac-scan/Checkov no aplica; lint+tests cubren Skills y pasan.
+- **Sessions:**
+  - [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-08-28|2026-08-28/31]] — diseño del servicio (plan BE)
+  - [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-09-04|2026-09-04]] — anchor fix + reviews + CI replicado + deploy pointer-bump (PR #2292); investigación Feature 9.2 (docs/feature-9.2-plan.md)
