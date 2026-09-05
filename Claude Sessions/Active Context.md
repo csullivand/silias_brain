@@ -1,23 +1,20 @@
 # Active Context
 
-## Sesión actual: [SL-1637 / 7.2] Deploy del Skill Assistant + investigación 9.2 (2026-09-04)
+## Sesión actual: [SL-1637 / 7.2 deploy] + [Feature 9.2 investigación VERIFICADA] (2026-09-04)
 Nota: [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-09-04]]
 
-**Estado: 7.2 desplegándose vía PR #2292 (bump del puntero de Skills). 9.2 solo investigado.**
+**Estado: 7.2 desplegándose vía PR #2292 (BLOQUEADO por build de sharp). 9.2 investigado y verificado; In Progress, sin código.**
 
-### Hecho hoy
-1. **Contract open item cerrado:** `edit_instructions.anchor` = `{ segmentIndex, start, end }` (no texto exacto). Backend emite `null` si el modelo no produce anchor válido; FE deja el borrador intacto. Landeado en Skills develop (`10a3e69`).
-2. **Reviews (PR + adversarial):** código 7.2 correcto/seguro/testeado (5/5 lentes). Barrido del repo: era el único caso del anti-patrón exact-text-anchor.
-3. **CI replicado localmente:** lint, tests (58/58 Assistant), compare-eslint, runtime-consistency, governance → verde. Checkov marcó 2 tablas PREEXISTENTES de Alejandro (CustomIntegrations/McpServers, sin PITR) — no nuestras.
-4. **Corrección clave del deploy:** un pointer-bump se ve como gitlink → los jobs file-scoped (iac-scan/security-lint/runtime-consistency/secret-scan) SE SALTAN el submódulo. lint + tests sí cubren Skills y pasan. **No se espera rojo; Checkov ni mira el template.**
-5. **Deploy:** rama `chore/SL-1637-bump-skills-pointer`, commit `2b51933b2` (gitlink `d856f8c → 6b9788e`), **PR #2292 → develop** abierto.
-6. **Investigación 9.2** (`docs/feature-9.2-plan.md`): el motor de ejecución YA existe (loop TS `CompletionService`/`ToolsService` + submódulo Python `Agent`). El net-new es el PUENTE `ProcessFlow`(Skills)→engine por intent + sync; y Data Views enforcement runtime + MCP callTool + trigger de entrada. Boundary: modo `ENGINE` delega al engine Python (hoy un solo `agent_engine_flow_id`).
+### Hecho
+1. **7.2:** anchor fix cerrado (`{segmentIndex,start,end}`), reviews PASS, CI replicado. Deploy vía bump de puntero de Skills → **PR #2292** (`d856f8c → 6b9788e`).
+2. **BLOQUEO de deploy (NO es 7.2):** `nx build Skills` falla en `SaveCustomIntegration` — webpack no parsea el `.so` de sharp (cadena Chatbot.model → VectorDuplicationService → transformers → sharp). Fix = externals de sharp/@img/@xenova en `webpack.config.js`. **Otro equipo lo toma** (PR infra aparte). 7.2 no despliega hasta ese fix.
+3. **Feature 9.2:** `docs/feature-9.2-plan.md` — investigación (5 agentes) + **2ª pasada adversarial (3 verificadores): 12/12 claims CONFIRMED**. Reframe clave: el motor de ejecución YA existe (loop TS + engine Python con selección por intent, version-pin, run-log); el net-new es el PUENTE `ProcessFlow`→engine + sync, más Data Views enforcement runtime + MCP callTool + trigger de entrada. Boundary Skills↔Agent es la decisión que gatea.
 
 ### Pendientes
-1. Revisar/aprobar **PR #2292**; al mergear a develop dispara deploy (+ promote-envs).
-2. 9.2: llevar §2 (boundary) del plan al equipo AGE/engine — quién dueña el sync `ProcessFlow`→engine y cómo unir `pipeline/layer3` (selección) con `engine-poc` (ejecución). Cerrar 3 open questions del PRD.
-3. Cleanup 7.2 opcional (no bloqueante): `Post/index.ts:114` instanceof redundante; `errors.ts:40` msg default dice "code assistant"; cobertura 409-vía-appendTurn.
+1. **Deploy 7.2:** esperar el fix de webpack (otro equipo); luego mergear PR #2292 → develop dispara deploy.
+2. **9.2 arranque:** bloque TS-puro de tablas (AC3+AC4) — dispatcher canónico→Data Views + `assertAgentCanOperate` runtime + tool enums cerrados (reuso alto, no depende del boundary). En paralelo: cerrar boundary con AGE (quién dueña sync ProcessFlow→engine; qué subsistema ejecuta) + 3 open questions del PRD.
+3. Cleanup 7.2 opcional: `Post/index.ts:114`, `errors.ts:40`, cobertura 409-vía-appendTurn.
 
-### Contexto previo
-- Sesión anterior (2026-08-31): diseño del servicio 7.2 (plan BE). [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-08-28]]
-- Docs de referencia (untracked en Silia): [[Skill Assistant 7.2 - Plan BE]], [[Skill Assistant 7.2 - FE Integration]], `docs/feature-9.2-plan.md`.
+### Referencia
+- [[Skill Assistant 7.2 - Plan BE]] · [[Skill Assistant 7.2 - FE Integration]] · `docs/feature-9.2-plan.md`
+- Sesión previa (2026-08-31): diseño 7.2. [[Claude Sessions/silia/Feature-7.2-skill-assistant-service/2026-08-28]]
